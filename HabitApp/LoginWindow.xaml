@@ -1,4 +1,4 @@
-﻿<Window x:Class="HabitApp.MainWindow"
+﻿<Window x:Class="HabitApp.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,6 +8,6 @@
         mc:Ignorable="d"
         Title="Habit App" Height="700" Width="1200">
     <Grid>
-        <TextBlock Text="Main page"/>
+        
     </Grid>
 </Window>
