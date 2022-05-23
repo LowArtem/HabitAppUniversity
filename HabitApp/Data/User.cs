@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HabitApp.Data
+﻿namespace HabitApp.Data
 {
     public class User
     {
@@ -15,11 +9,6 @@ namespace HabitApp.Data
         public long Money { get; set; }
         public int? GroupId { get; set; }
 
-        public User()
-        {
-
-        }
-
         public User(int id, string username, string password, long experience, long money, int? groupId)
         {
             Id = id;
@@ -28,6 +17,16 @@ namespace HabitApp.Data
             Experience = experience;
             Money = money;
             GroupId = groupId;
+        }
+
+        public User(string username, string password)
+        {
+            Id = 0;
+            Username = username;
+            Password = password;
+            Experience = 0;
+            Money = 0;
+            GroupId = null;
         }
     }
 }
