@@ -106,7 +106,7 @@
     <Compile Include="Implementation\UserRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="VM\LoginVM.cs" />
-    <Page Include="LoginWindow.xaml">
+    <Page Include="View\LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -115,17 +115,17 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Data\User.cs" />
-    <Compile Include="LoginWindow.xaml.cs">
+    <Compile Include="View\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MainWindow.xaml">
+    <Page Include="View\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
