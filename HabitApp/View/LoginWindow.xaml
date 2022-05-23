@@ -12,6 +12,6 @@
         <vm:LoginVM/>
     </Window.DataContext>
     <Grid>
-        
+        <Button Margin="80" Height="50" Content="Application Closing Button" FontFamily="Tahoma" FontSize="20" Command="{Binding CloseApplicationCommand}" Cursor="Hand"/>
     </Grid>
 </Window>

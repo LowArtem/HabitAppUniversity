@@ -12,7 +12,6 @@ namespace HabitApp.VM
 {
     public class LoginVM : ViewModel
     {
-
         #region Title : string - Заголовок окна
 
         /// <summary>Заголовок окна</summary>
