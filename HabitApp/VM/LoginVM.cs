@@ -19,7 +19,7 @@ namespace HabitApp.VM
         #region Title : string - Заголовок окна
 
         /// <summary>Заголовок окна</summary>
-        private string _Title = "Habit App";
+        private string _Title = "Habit Application";
 
         /// <summary>Заголовок окна</summary>
         public string Title
@@ -57,6 +57,24 @@ namespace HabitApp.VM
         }
 
         #endregion
+
+
+
+        #region CurrentView : object - Текущий объект View
+
+        /// <summary>Текущий объект View</summary>
+        private object _CurrentView;
+
+        /// <summary>Текущий объект View</summary>
+        public object CurrentView
+        {
+            get => _CurrentView;
+            set => Set(ref _CurrentView, value);
+        }
+
+        #endregion
+
+
 
         #region LoginCommand
 
@@ -109,5 +127,18 @@ namespace HabitApp.VM
         }
 
         #endregion
+
+        #region OpenMainWindowCommand
+
+        public ICommand OpenMainWindowCommand { get; }
+        private bool CanOpenMainWindowCommandExecute(object p) => true;
+
+        private void OnOpenMainWindowCommandExecuted(object p)
+        {
+            this._CurrentView = new MainWindow();
+        }
+
+        #endregion
+
     }
 }

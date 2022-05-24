@@ -4,12 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:HabitApp.VM"
+        xmlns:view="clr-namespace:HabitApp.View"
         xmlns:local="clr-namespace:HabitApp"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         DataContext="{Binding Path=LoginVM, Source={StaticResource VMLocator}}"
         Title="{Binding Path=Title}" Height="700" Width="1200">
     <Grid>
-        
+        <Button Content="Switch" Command="{Binding OpenMainWindowCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <ContentControl Content="{Binding Path=CurrentView}" Margin="40" BorderThickness="2" BorderBrush="Black"/>
     </Grid>
 </Window>

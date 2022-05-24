@@ -4,9 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HabitApp"
-        mc:Ignorable="d"
-        Height="700" Width="1200">
-    <Grid>
+        DataContext="{Binding Path=MainVM, Source={StaticResource VMLocator}}"
+        Height="500"
+        Width="500"             
+        mc:Ignorable="d">
+    <Grid Background="White">
         <TextBlock Text="Main page"/>
     </Grid>
 </UserControl>
