@@ -10,5 +10,6 @@ namespace HabitApp.VM
     public class VMLocator
     {
         public LoginVM LoginVM => App.Host.Services.GetRequiredService<LoginVM>();
+        public MainVM MainVM => App.Host.Services.GetRequiredService<MainVM>();
     }
 }

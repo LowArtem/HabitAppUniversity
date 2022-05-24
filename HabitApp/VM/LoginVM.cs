@@ -72,9 +72,9 @@ namespace HabitApp.VM
 
             if (result)
             {
-                MainWindow mainWindow = new MainWindow();
-                // разобраться с навигацией
-                mainWindow.Show();
+                //MainWindow mainWindow = new MainWindow();
+                //// разобраться с навигацией
+                //mainWindow.Show();
             }
             else
             {
@@ -98,9 +98,9 @@ namespace HabitApp.VM
 
             if (result)
             {
-                MainWindow mainWindow = new MainWindow();
-                // разобраться с навигацией
-                mainWindow.Show();
+                //MainWindow mainWindow = new MainWindow();
+                //// разобраться с навигацией
+                //mainWindow.Show();
             }
             else
             {
