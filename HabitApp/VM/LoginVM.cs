@@ -8,12 +8,12 @@ namespace HabitApp.VM
     public class LoginVM : ViewModel
     {
         private readonly LoginService _loginService;
-        public LoginVM()
+        public LoginVM(LoginService loginService)
         {
             LoginCommand = new BaseCommand(OnLoginCommandExecuted, CanLoginCommandExecute);
-            
-            // прикрутить DI
-            _loginService = new LoginService(new Implementation.UserRepository());
+            RegisterCommand = new BaseCommand(OnRegisterCommandExecuted, CanRegisterCommandExecute);
+
+            _loginService = loginService;
         }
 
         #region Title : string - Заголовок окна

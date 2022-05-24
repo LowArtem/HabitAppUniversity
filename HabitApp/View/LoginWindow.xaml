@@ -7,10 +7,8 @@
         xmlns:local="clr-namespace:HabitApp"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
+        DataContext="{Binding Path=LoginVM, Source={StaticResource VMLocator}}"
         Title="{Binding Path=Title}" Height="700" Width="1200">
-    <Window.DataContext>
-        <vm:LoginVM/>
-    </Window.DataContext>
     <Grid>
         
     </Grid>
