@@ -1,17 +1,21 @@
 ﻿using HabitApp.Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using HabitApp.Services;
+using HabitApp.View;
 using System.Windows.Input;
 
 namespace HabitApp.VM
 {
     public class LoginVM : ViewModel
     {
+        private readonly LoginService _loginService;
+        public LoginVM()
+        {
+            LoginCommand = new BaseCommand(OnLoginCommandExecuted, CanLoginCommandExecute);
+            
+            // прикрутить DI
+            _loginService = new LoginService(new Implementation.UserRepository());
+        }
+
         #region Title : string - Заголовок окна
 
         /// <summary>Заголовок окна</summary>
@@ -54,20 +58,56 @@ namespace HabitApp.VM
 
         #endregion
 
-        #region CloseApplicationCommand
+        #region LoginCommand
 
-        public ICommand CloseApplicationCommand { get; }
-        private bool CanCloseApplicationCommandExecute(object p) => true;
-        private void OnCloseApplicationCommandExecuted(object p)
+        public ICommand LoginCommand { get; }
+        private bool CanLoginCommandExecute(object p)
         {
-            Application.Current.Shutdown();
+            return !string.IsNullOrEmpty(_Username) && !string.IsNullOrEmpty(_Password);
+        }
+
+        private void OnLoginCommandExecuted(object p)
+        {
+            bool result = _loginService.Login(_Username, _Password);
+
+            if (result)
+            {
+                MainWindow mainWindow = new MainWindow();
+                // разобраться с навигацией
+                mainWindow.Show();
+            }
+            else
+            {
+                // Вывести сообщение об ошибке
+            }
         }
 
         #endregion
 
-        public LoginVM()
+        #region RegisterCommand
+
+        public ICommand RegisterCommand { get; }
+        private bool CanRegisterCommandExecute(object p)
         {
-            CloseApplicationCommand = new BaseCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecute);
+            return !string.IsNullOrEmpty(_Username) && !string.IsNullOrEmpty(_Password);
         }
+
+        private void OnRegisterCommandExecuted(object p)
+        {
+            bool result = _loginService.Register(_Username, _Password);
+
+            if (result)
+            {
+                MainWindow mainWindow = new MainWindow();
+                // разобраться с навигацией
+                mainWindow.Show();
+            }
+            else
+            {
+                // Вывести сообщение об ошибке
+            }
+        }
+
+        #endregion
     }
 }
