@@ -148,5 +148,44 @@ namespace HabitApp.Implementation
             con.Close();
             return entity;
         }
+
+        public User GetUserByCredentials(string username, string password)
+        {
+            NpgsqlConnection con = new NpgsqlConnection(connectionString);
+            con.Open();
+            if (con.FullState == ConnectionState.Broken || con.FullState == ConnectionState.Closed)
+            {
+                throw new Exception("Не работает соединение с бд");
+            }
+
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            command.CommandText = $"select * from users where username={username} and password={password}";
+            var reader = command.ExecuteReader();
+
+            User user = null;
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    int? groupid = null;
+                    if (reader["groupid"] != null)
+                        groupid = Convert.ToInt32(reader["groupid"].ToString());
+
+                    user = new User
+                        (id: Convert.ToInt32(reader["id"].ToString()),
+                         username: reader["username"].ToString(),
+                         password: reader["password"].ToString(),
+                         experience: Convert.ToInt64(reader["experience"].ToString()),
+                         money: Convert.ToInt64(reader["money"].ToString()),
+                         groupId: groupid);
+                }
+                reader.Close();
+            }
+
+            con.Close();
+            return user;
+        }
     }
 }

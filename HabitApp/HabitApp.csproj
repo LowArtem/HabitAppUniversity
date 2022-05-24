@@ -111,6 +111,7 @@
     <Compile Include="Model\ViewModel.cs" />
     <Compile Include="Implementation\UserRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Services\LoginService.cs" />
     <Compile Include="VM\LoginVM.cs" />
     <Page Include="View\LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -160,9 +161,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

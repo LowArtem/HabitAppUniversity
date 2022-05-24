@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HabitApp.Data;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,6 @@ namespace HabitApp
     /// </summary>
     public partial class App : Application
     {
+        public User CurrentUser { get; set; } = null;
     }
 }
