@@ -10,6 +10,6 @@
         Height="700" Width="1200">
     <Grid>
         <TextBlock Text="{Binding Text}" FontSize="40" VerticalAlignment="Top"/>
-        <Button Content="To login" VerticalAlignment="Top" HorizontalAlignment="Left" Width="140" Height="40" Margin="0, 70, 0, 0" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.OpenSomenthingCommand}"/>
+        <Button Content="To login" VerticalAlignment="Top" HorizontalAlignment="Left" Width="140" Height="40" Margin="0, 70, 0, 0" Command="{Binding LoginPageOpenCommand}"/>
     </Grid>
 </UserControl>

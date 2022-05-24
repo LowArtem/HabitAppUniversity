@@ -1,5 +1,6 @@
 ﻿using HabitApp.Model;
 using HabitApp.Services;
+using HabitApp.View;
 using System.Windows.Input;
 
 namespace HabitApp.VM
@@ -7,12 +8,15 @@ namespace HabitApp.VM
     public class LoginVM : ViewModel
     {
         private readonly LoginService _loginService;
-        public LoginVM(LoginService loginService)
+        private readonly PageNavigationManager _pageNavigationManager;
+
+        public LoginVM(LoginService loginService, PageNavigationManager pageNavigationManager)
         {
             LoginCommand = new BaseCommand(OnLoginCommandExecuted, CanLoginCommandExecute);
             RegisterCommand = new BaseCommand(OnRegisterCommandExecuted, CanRegisterCommandExecute);
 
             _loginService = loginService;
+            _pageNavigationManager = pageNavigationManager;
         }
 
         #region Username : string - Имя пользователя
@@ -57,7 +61,7 @@ namespace HabitApp.VM
 
             if (result)
             {
-                // разобраться с навигацией
+                _pageNavigationManager.ChangePage(new HomeView());
             }
             else
             {
@@ -81,7 +85,7 @@ namespace HabitApp.VM
 
             if (result)
             {
-                // разобраться с навигацией
+                _pageNavigationManager.ChangePage(new HomeView());
             }
             else
             {

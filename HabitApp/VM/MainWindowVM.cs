@@ -1,6 +1,7 @@
 ﻿using HabitApp.Model;
 using HabitApp.Services;
 using HabitApp.View;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace HabitApp.VM
@@ -8,11 +9,15 @@ namespace HabitApp.VM
     public class MainWindowVM : ViewModel
     {
         private readonly LoginService _loginService;
-        public MainWindowVM(LoginService loginService)
+        private readonly PageNavigationManager _pageNavigationManager;
+
+        public MainWindowVM(LoginService loginService, PageNavigationManager pageNavigationManager)
         {
             _loginService = loginService;
+            _pageNavigationManager = pageNavigationManager;
 
-            OpenSomenthingCommand = new BaseCommand(OnOpenSomenthingCommandExecuted, CanOpenSomenthingCommandExecute);
+            _pageNavigationManager.OnPageChanged += (page) => CurrentView = page;
+            _pageNavigationManager.ChangePage(new HomeView());
         }
 
         #region Title : string - Заголовок окна
@@ -30,32 +35,18 @@ namespace HabitApp.VM
         #endregion
 
 
-        #region CurrentView : object - Выбранное окно на экране
+        #region CurrentView : UserControl - Выбранное окно на экране
 
         /// <summary>Выбранное окно на экране</summary>
-        private object _CurrentView = new HomeView();
+        private UserControl _CurrentView;
 
         /// <summary>Выбранное окно на экране</summary>
-        public object CurrentView
+        public UserControl CurrentView
         {
             get => _CurrentView;
             set => Set(ref _CurrentView, value);
         }
 
         #endregion
-
-
-        #region OpenSomenthingCommand
-
-        public ICommand OpenSomenthingCommand { get; }
-        private bool CanOpenSomenthingCommandExecute(object p) => true;
-
-        private void OnOpenSomenthingCommandExecuted(object p)
-        {
-            CurrentView = new LoginView();
-        }
-
-        #endregion
-
     }
 }

@@ -218,6 +218,7 @@
     </ApplicationDefinition>
     <Compile Include="Model\BaseCommand.cs" />
     <Compile Include="Model\Command.cs" />
+    <Compile Include="Model\PageNavigationManager.cs" />
     <Compile Include="Model\ViewModel.cs" />
     <Compile Include="Implementation\UserRepository.cs" />
     <Compile Include="Program.cs" />

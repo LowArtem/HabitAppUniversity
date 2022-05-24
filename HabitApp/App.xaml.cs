@@ -1,6 +1,8 @@
 ﻿using HabitApp.Data;
 using HabitApp.Implementation;
+using HabitApp.Model;
 using HabitApp.Services;
+using HabitApp.View;
 using HabitApp.VM;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -61,6 +63,8 @@ namespace HabitApp
             services.AddSingleton<MainWindowVM>();
             services.AddSingleton<HomeVM>();
             services.AddSingleton<LoginVM>();
+
+            services.AddSingleton<PageNavigationManager>();
         }
     }
 }
