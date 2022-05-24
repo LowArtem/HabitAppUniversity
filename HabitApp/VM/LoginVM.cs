@@ -1,6 +1,5 @@
 ﻿using HabitApp.Model;
 using HabitApp.Services;
-using HabitApp.View;
 using System.Windows.Input;
 
 namespace HabitApp.VM
@@ -15,20 +14,6 @@ namespace HabitApp.VM
 
             _loginService = loginService;
         }
-
-        #region Title : string - Заголовок окна
-
-        /// <summary>Заголовок окна</summary>
-        private string _Title = "Habit App";
-
-        /// <summary>Заголовок окна</summary>
-        public string Title
-        {
-            get => _Title;
-            set => Set(ref _Title, value);
-        }
-
-        #endregion
 
         #region Username : string - Имя пользователя
 
@@ -56,7 +41,7 @@ namespace HabitApp.VM
             set => Set(ref _Password, value);
         }
 
-        #endregion
+        #endregion       
 
         #region LoginCommand
 
@@ -72,9 +57,7 @@ namespace HabitApp.VM
 
             if (result)
             {
-                MainWindow mainWindow = new MainWindow();
                 // разобраться с навигацией
-                mainWindow.Show();
             }
             else
             {
@@ -98,9 +81,7 @@ namespace HabitApp.VM
 
             if (result)
             {
-                MainWindow mainWindow = new MainWindow();
                 // разобраться с навигацией
-                mainWindow.Show();
             }
             else
             {
