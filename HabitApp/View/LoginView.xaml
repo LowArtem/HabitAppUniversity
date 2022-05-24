@@ -1,15 +1,14 @@
-﻿<Window x:Class="HabitApp.View.LoginWindow"
+﻿<UserControl x:Class="HabitApp.View.LoginView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:HabitApp.VM"
-        xmlns:local="clr-namespace:HabitApp"
-        WindowStartupLocation="CenterScreen"
+        xmlns:local="clr-namespace:HabitApp.View"
         mc:Ignorable="d"
+        d:Background="White"
         DataContext="{Binding Path=LoginVM, Source={StaticResource VMLocator}}"
-        Title="{Binding Path=Title}" Height="700" Width="1200">
+        Height="450" Width="800">
     <Grid>
-        
+        <TextBlock Text="Login" FontSize="40" VerticalAlignment="Top"/>
     </Grid>
-</Window>
+</UserControl>

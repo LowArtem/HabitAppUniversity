@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="HabitApp.View.HomeView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HabitApp"
+        DataContext="{Binding Path=HomeVM, Source={StaticResource VMLocator}}"
+        mc:Ignorable="d"
+        d:Background="White"
+        Height="700" Width="1200">
+    <Grid>
+        <TextBlock Text="{Binding Text}" FontSize="40" VerticalAlignment="Top"/>
+        <Button Content="To login" VerticalAlignment="Top" HorizontalAlignment="Left" Width="140" Height="40" Margin="0, 70, 0, 0" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.OpenSomenthingCommand}"/>
+    </Grid>
+</UserControl>

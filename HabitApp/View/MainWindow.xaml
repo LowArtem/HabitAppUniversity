@@ -3,11 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:HabitApp.VM"
         xmlns:local="clr-namespace:HabitApp"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="Habit App" Height="700" Width="1200">
+        DataContext="{Binding Path=MainWindowVM, Source={StaticResource VMLocator}}"
+        Title="{Binding Path=Title}" Height="700" Width="1200">
     <Grid>
-        <TextBlock Text="Main page"/>
+        <ContentControl Content="{Binding CurrentView}" />
     </Grid>
 </Window>

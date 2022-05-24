@@ -58,6 +58,8 @@ namespace HabitApp
 
             services.AddTransient<LoginService>();
 
+            services.AddSingleton<MainWindowVM>();
+            services.AddSingleton<HomeVM>();
             services.AddSingleton<LoginVM>();
         }
     }
