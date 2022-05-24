@@ -1,5 +1,6 @@
 ﻿using HabitApp.Model;
 using HabitApp.View;
+using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Input;
 
 namespace HabitApp.VM
@@ -37,7 +38,7 @@ namespace HabitApp.VM
 
         private void OnLoginPageOpenCommandExecuted(object p)
         {
-            _pageNavigationManager.ChangePage(new LoginView());
+            _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<LoginView>());
         }
 
         #endregion

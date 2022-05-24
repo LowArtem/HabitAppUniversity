@@ -1,23 +1,20 @@
 ﻿using HabitApp.Model;
-using HabitApp.Services;
 using HabitApp.View;
+using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace HabitApp.VM
 {
     public class MainWindowVM : ViewModel
     {
-        private readonly LoginService _loginService;
         private readonly PageNavigationManager _pageNavigationManager;
 
-        public MainWindowVM(LoginService loginService, PageNavigationManager pageNavigationManager)
+        public MainWindowVM(PageNavigationManager pageNavigationManager)
         {
-            _loginService = loginService;
             _pageNavigationManager = pageNavigationManager;
 
             _pageNavigationManager.OnPageChanged += (page) => CurrentView = page;
-            _pageNavigationManager.ChangePage(new HomeView());
+            _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<HomeView>());
         }
 
         #region Title : string - Заголовок окна

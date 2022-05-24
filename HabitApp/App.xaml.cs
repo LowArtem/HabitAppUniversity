@@ -64,6 +64,9 @@ namespace HabitApp
             services.AddSingleton<HomeVM>();
             services.AddSingleton<LoginVM>();
 
+            services.AddTransient<HomeView>();
+            services.AddTransient<LoginView>();
+
             services.AddSingleton<PageNavigationManager>();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using HabitApp.Model;
 using HabitApp.Services;
 using HabitApp.View;
+using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Input;
 
 namespace HabitApp.VM
@@ -61,7 +62,7 @@ namespace HabitApp.VM
 
             if (result)
             {
-                _pageNavigationManager.ChangePage(new HomeView());
+                _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<HomeView>());
             }
             else
             {
@@ -85,7 +86,7 @@ namespace HabitApp.VM
 
             if (result)
             {
-                _pageNavigationManager.ChangePage(new HomeView());
+                _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<HomeView>());
             }
             else
             {
