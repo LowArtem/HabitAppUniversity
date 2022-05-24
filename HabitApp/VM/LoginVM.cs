@@ -12,6 +12,7 @@ namespace HabitApp.VM
         {
             LoginCommand = new BaseCommand(OnLoginCommandExecuted, CanLoginCommandExecute);
             RegisterCommand = new BaseCommand(OnRegisterCommandExecuted, CanRegisterCommandExecute);
+            OpenMainWindowCommand = new BaseCommand(OnOpenMainWindowCommandExecuted, CanOpenMainWindowCommandExecute);
 
             _loginService = loginService;
         }
@@ -63,7 +64,7 @@ namespace HabitApp.VM
         #region CurrentView : object - Текущий объект View
 
         /// <summary>Текущий объект View</summary>
-        private object _CurrentView;
+        private object _CurrentView = new TestWindow();
 
         /// <summary>Текущий объект View</summary>
         public object CurrentView
@@ -135,7 +136,7 @@ namespace HabitApp.VM
 
         private void OnOpenMainWindowCommandExecuted(object p)
         {
-            this._CurrentView = new MainWindow();
+            CurrentView = new MainWindow();
         }
 
         #endregion

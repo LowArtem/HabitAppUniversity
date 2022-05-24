@@ -12,6 +12,6 @@
         Title="{Binding Path=Title}" Height="700" Width="1200">
     <Grid>
         <Button Content="Switch" Command="{Binding OpenMainWindowCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <ContentControl Content="{Binding Path=CurrentView}" Margin="40" BorderThickness="2" BorderBrush="Black"/>
+        <ContentControl Content="{Binding Path=CurrentView}" Margin="40"/>
     </Grid>
 </Window>

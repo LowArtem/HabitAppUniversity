@@ -9,6 +9,7 @@
         Width="500"             
         mc:Ignorable="d">
     <Grid Background="White">
-        <TextBlock Text="Main page"/>
+        <TextBlock Text="Main page" FontSize="40" VerticalAlignment="Top"/>
+        <TextBlock Text="{Binding Path=Text}" FontSize="40" VerticalAlignment="Top" Margin="0, 70, 0, 0"/>
     </Grid>
 </UserControl>
