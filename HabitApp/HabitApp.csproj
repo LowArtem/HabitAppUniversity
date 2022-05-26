@@ -216,6 +216,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data\DailyHabit.cs" />
+    <Compile Include="Data\Habit.cs" />
+    <Compile Include="Data\Task.cs" />
+    <Compile Include="Implementation\HabitRepository.cs" />
     <Compile Include="Model\BaseCommand.cs" />
     <Compile Include="Model\Command.cs" />
     <Compile Include="Model\PageNavigationManager.cs" />
