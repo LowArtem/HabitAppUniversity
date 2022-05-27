@@ -7,11 +7,6 @@ using HabitApp.VM;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace HabitApp
@@ -57,6 +52,9 @@ namespace HabitApp
         public static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
             services.AddSingleton<UserRepository>();
+            services.AddSingleton<HabitRepository>();
+            services.AddSingleton<TaskRepository>();
+            services.AddSingleton<DailyHabitRepository>();
 
             services.AddTransient<LoginService>();
 
