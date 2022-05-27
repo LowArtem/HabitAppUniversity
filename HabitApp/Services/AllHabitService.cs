@@ -75,6 +75,11 @@ namespace HabitApp.Services
             habit.Difficulty = difficulty;
             return _habitRepository.Update(habit);
         }
+
+        public Habit ChangeHabit(Habit habit)
+        {
+            return _habitRepository.Update(habit);
+        }
         #endregion
 
         #region ChangeDailyHabit
@@ -112,6 +117,11 @@ namespace HabitApp.Services
             dailyHabit.Deadline = deadline;
             return _dailyHabitRepository.Update(dailyHabit);
         }
+
+        public DailyHabit ChangeDailyHabit(DailyHabit dailyHabit)
+        {
+            return _dailyHabitRepository.Update(dailyHabit);
+        }
         #endregion
 
         #region ChangeTask
@@ -147,6 +157,11 @@ namespace HabitApp.Services
         {
             var task = _taskRepository.GetById(taskId);
             task.Deadline = deadline;
+            return _taskRepository.Update(task);
+        }
+
+        public Data.Task ChangeTask(Data.Task task)
+        {
             return _taskRepository.Update(task);
         }
         #endregion

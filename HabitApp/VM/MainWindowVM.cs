@@ -14,7 +14,7 @@ namespace HabitApp.VM
             _pageNavigationManager = pageNavigationManager;
 
             _pageNavigationManager.OnPageChanged += (page) => CurrentView = page;
-            _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<HomeView>());
+            _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<LoginView>());
         }
 
         #region Title : string - Заголовок окна
@@ -30,7 +30,6 @@ namespace HabitApp.VM
         }
 
         #endregion
-
 
         #region CurrentView : UserControl - Выбранное окно на экране
 

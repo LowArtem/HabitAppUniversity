@@ -2,6 +2,7 @@
 using HabitApp.Services;
 using HabitApp.View;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
 using System.Windows.Input;
 
 namespace HabitApp.VM
@@ -66,7 +67,7 @@ namespace HabitApp.VM
             }
             else
             {
-                // Вывести сообщение об ошибке
+                MessageBox.Show("Операция входа не удалась. Возможно вы ввели неверные данные");
             }
         }
 
@@ -90,7 +91,7 @@ namespace HabitApp.VM
             }
             else
             {
-                // Вывести сообщение об ошибке
+                MessageBox.Show("Операция входа не удалась. Возможно вы ввели неверные данные");
             }
         }
 
