@@ -57,6 +57,7 @@ namespace HabitApp
             services.AddSingleton<DailyHabitRepository>();
 
             services.AddTransient<LoginService>();
+            services.AddTransient<AllHabitService>();
 
             services.AddSingleton<MainWindowVM>();
             services.AddSingleton<HomeVM>();
