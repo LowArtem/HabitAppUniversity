@@ -49,17 +49,23 @@ namespace HabitApp.VM
 
         #endregion       
 
+
         #region LoginCommand
 
         public ICommand LoginCommand { get; }
         private bool CanLoginCommandExecute(object p)
         {
-            return !string.IsNullOrEmpty(_Username) && !string.IsNullOrEmpty(_Password);
+            //return !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password);
+            return true;
         }
 
         private void OnLoginCommandExecuted(object p)
         {
-            bool result = _loginService.Login(_Username, _Password);
+            // TODO: подумать, как это можно улучшить, видимо, в этом и проблема активности кнопок
+
+            Password = ((CustomControls.HintTextBox)p).password.Password;
+
+            bool result = _loginService.Login(Username, Password);
 
             if (result)
             {
@@ -78,12 +84,12 @@ namespace HabitApp.VM
         public ICommand RegisterCommand { get; }
         private bool CanRegisterCommandExecute(object p)
         {
-            return !string.IsNullOrEmpty(_Username) && !string.IsNullOrEmpty(_Password);
+            return !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password);
         }
 
         private void OnRegisterCommandExecuted(object p)
         {
-            bool result = _loginService.Register(_Username, _Password);
+            bool result = _loginService.Register(Username, Password);
 
             if (result)
             {
@@ -95,6 +101,7 @@ namespace HabitApp.VM
             }
         }
 
-        #endregion
+        #endregion            
+
     }
 }

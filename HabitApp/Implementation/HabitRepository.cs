@@ -9,7 +9,7 @@ namespace HabitApp.Implementation
 {
     public class HabitRepository : IRepository<Habit>
     {
-        private const string connectionString = "User=root;Password=root;Host=localhost;Port=5432;Database=habit_db;";
+        private const string connectionString = "User Id=postgres;Password=root;Host=localhost;Port=5432;Database=habit_db;";
 
         public Habit Add(Habit entity)
         {

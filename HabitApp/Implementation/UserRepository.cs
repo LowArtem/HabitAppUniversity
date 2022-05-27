@@ -9,7 +9,7 @@ namespace HabitApp.Implementation
 {
     public class UserRepository : IRepository<User>
     {
-        private const string connectionString = "User=root;Password=root;Host=localhost;Port=5432;Database=habit_db;";
+        private const string connectionString = "User Id=postgres;Password=root;Host=localhost;Port=5432;Database=habit_db;";
 
         public User Add(User entity)
         {
@@ -22,7 +22,7 @@ namespace HabitApp.Implementation
 
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
-            command.CommandText = $"insert into users (username, experience, password, money, groupid) values ({entity.Username}, {entity.Experience}, {entity.Password}, {entity.Money}, {entity.GroupId}) returning id";
+            command.CommandText = $"insert into users (username, experience, password, money, groupid) values ('{entity.Username}', {entity.Experience}, '{entity.Password}', {entity.Money}, {entity.GroupId}) returning id";
             var reader = command.ExecuteReader();
             if (reader.HasRows)
             {
@@ -142,7 +142,7 @@ namespace HabitApp.Implementation
 
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
-            command.CommandText = $"update users set username={entity.Username} set experience={entity.Experience} set password={entity.Password} set money={entity.Money} set groupid={entity.GroupId} where id={entity.Id}";
+            command.CommandText = $"update users set username='{entity.Username}' set experience={entity.Experience} set password='{entity.Password}' set money={entity.Money} set groupid={entity.GroupId} where id={entity.Id}";
             command.ExecuteNonQuery();
 
             con.Close();
@@ -160,7 +160,7 @@ namespace HabitApp.Implementation
 
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
-            command.CommandText = $"select * from users where username={username} and password={password}";
+            command.CommandText = $"select * from users where username='{username}' and password='{password}'";
             var reader = command.ExecuteReader();
 
             User user = null;
@@ -170,7 +170,7 @@ namespace HabitApp.Implementation
                 while (reader.Read())
                 {
                     int? groupid = null;
-                    if (reader["groupid"] != null)
+                    if (!String.IsNullOrEmpty(reader["groupid"].ToString()))
                         groupid = Convert.ToInt32(reader["groupid"].ToString());
 
                     user = new User

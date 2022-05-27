@@ -4,11 +4,55 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HabitApp.View"
+        xmlns:customControls="clr-namespace:HabitApp.CustomControls"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        d:Background="White"
+        d:Background="WhiteSmoke"             
         DataContext="{Binding Path=LoginVM, Source={StaticResource VMLocator}}"
-        Height="450" Width="800">
+        Height="700" Width="1200">
     <Grid>
-        <TextBlock Text="Login" FontSize="40" VerticalAlignment="Top"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" Text="Login/Registration" FontFamily="Tahoma" FontSize="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <customControls:HintTextBox 
+            Grid.Row="1"
+            Width="800"
+            Placeholder="Username"
+            Text="{Binding Username, Mode=TwoWay}"/>
+
+        <customControls:HintTextBox 
+            x:Name="PasswordTextBox"
+            Grid.Row="2"
+            Width="800"
+            Placeholder="Password"
+            IsPassword="True"/>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button
+                Margin="90"
+                FontSize="28"
+                Height="50"
+                Grid.Column="0"
+                Content="Login"
+                Command="{Binding LoginCommand}"
+                CommandParameter="{Binding ElementName=PasswordTextBox}"/>
+            
+            <Button 
+                Margin="90"
+                FontSize="28"
+                Height="50"
+                Grid.Column="1"
+                Content="Register" 
+                Command="{Binding RegisterCommand}"/>
+        </Grid>
     </Grid>
 </UserControl>

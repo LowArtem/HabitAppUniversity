@@ -9,7 +9,7 @@ namespace HabitApp.Implementation
 {
     public class TaskRepository : IRepository<Task>
     {
-        private const string connectionString = "User=root;Password=root;Host=localhost;Port=5432;Database=habit_db;";
+        private const string connectionString = "User Id=postgres;Password=root;Host=localhost;Port=5432;Database=habit_db;";
 
         public Task Add(Task entity)
         {
