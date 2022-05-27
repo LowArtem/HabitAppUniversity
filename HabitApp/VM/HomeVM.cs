@@ -3,7 +3,9 @@ using HabitApp.Model;
 using HabitApp.Services;
 using HabitApp.View;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 
 namespace HabitApp.VM
@@ -21,6 +23,21 @@ namespace HabitApp.VM
             ChangeHabitCommand = new BaseCommand(OnChangeHabitCommandExecuted, CanChangeHabitCommandExecute);
             ChangeDailyHabitCommand = new BaseCommand(OnChangeDailyHabitCommandExecuted, CanChangeDailyHabitCommandExecute);
             ChangeTaskCommand = new BaseCommand(OnChangeTaskCommandExecuted, CanChangeTaskCommandExecute);
+
+            User currentUser;
+            var app = Application.Current;
+            if (app is App currentApp)
+            {
+                currentUser = currentApp.CurrentUser;
+            }
+            else
+            {
+                throw new Exception("Неверный класс приложения, не обнаружено свойство CurrentUser");
+            }
+
+            Habits = _allHabitService.GetAllHabitsByUser(currentUser.Id);
+            DailyHabits = _allHabitService.GetAllDailyHabitsByUser(currentUser.Id);
+            Tasks = _allHabitService.GetAllTasksByUser(currentUser.Id);
         }
 
         #region Habits : List<Habit> - Список привычек пользователя
