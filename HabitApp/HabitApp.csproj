@@ -216,6 +216,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CustomControls\HintTextBox.xaml.cs">
+      <DependentUpon>HintTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Data\DailyHabit.cs" />
     <Compile Include="Data\Habit.cs" />
     <Compile Include="Data\Task.cs" />
@@ -238,6 +241,10 @@
     <Compile Include="VM\LoginVM.cs" />
     <Compile Include="VM\MainWindowVM.cs" />
     <Compile Include="VM\VMLocator.cs" />
+    <Page Include="CustomControls\HintTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
