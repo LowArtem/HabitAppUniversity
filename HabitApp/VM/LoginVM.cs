@@ -60,10 +60,6 @@ namespace HabitApp.VM
 
         private void OnLoginCommandExecuted(object p)
         {
-            // TODO: подумать, как это можно улучшить, видимо, в этом и проблема активности кнопок
-
-            Password = ((CustomControls.HintTextBox)p).password.Password;
-
             bool result = _loginService.Login(Username, Password);
 
             if (result)

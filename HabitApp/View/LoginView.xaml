@@ -73,8 +73,7 @@
                     Height="50"
                     Grid.Column="0"
                     Content="Login"
-                    Command="{Binding LoginCommand}"
-                    CommandParameter="{Binding ElementName=PasswordTextBox}"/>
+                    Command="{Binding LoginCommand}"/>
             
                 <Button 
                     Margin="90, 50, 90, 50"
