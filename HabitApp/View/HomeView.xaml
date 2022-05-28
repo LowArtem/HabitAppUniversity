@@ -6,10 +6,147 @@
         xmlns:local="clr-namespace:HabitApp"
         DataContext="{Binding Path=HomeVM, Source={StaticResource VMLocator}}"
         mc:Ignorable="d"
-        d:Background="White"
+        d:Background="#f0ecec"
         Height="700" Width="1200">
     <Grid>
-        <TextBlock Text="{Binding Text}" FontSize="40" VerticalAlignment="Top"/>
-        <Button Content="To login" VerticalAlignment="Top" HorizontalAlignment="Left" Width="140" Height="40" Margin="0, 70, 0, 0" Command="{Binding LoginPageOpenCommand}"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!--Title-->
+        <TextBlock
+            Grid.Row="0"
+            FontFamily="Comic Sans MS"
+            Foreground="#3270f3"
+            Margin="20, 0, 0, 0"
+            FontSize="30"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top">
+            <Run
+                Text="Habit"/><Run FontWeight="Bold"
+                Text="App"/>
+        </TextBlock>
+
+        <!--Content-->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Grid
+                Grid.Row="0"
+                Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock 
+                    Text="Habits"
+                    FontSize="25"
+                    FontFamily="Tahoma"
+                    TextAlignment="Center"/>
+
+                <ScrollViewer Grid.Row="1">
+                    <ListBox 
+                        HorizontalContentAlignment="Stretch"
+                        ItemsSource="{Binding Habits, Mode=TwoWay}">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="100" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid>
+                                        <TextBlock Text="{Binding Name}" />
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
+            </Grid>
+
+            <Grid
+                Grid.Row="0"
+                Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock 
+                    Text="Daily Habits"
+                    FontSize="25"
+                    FontFamily="Tahoma"
+                    TextAlignment="Center"/>
+
+                <ScrollViewer Grid.Row="1">
+                    <ListBox 
+                        HorizontalContentAlignment="Stretch"
+                        ItemsSource="{Binding DailyHabits, Mode=TwoWay}">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="100" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid>
+                                        <TextBlock Text="{Binding Name}" />
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
+            </Grid>
+
+            <Grid
+                Grid.Row="0"
+                Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock 
+                    Text="Tasks"
+                    FontSize="25"
+                    FontFamily="Tahoma"
+                    TextAlignment="Center"/>
+
+                <ScrollViewer Grid.Row="1">
+                    <ListBox 
+                        HorizontalContentAlignment="Stretch"
+                        ItemsSource="{Binding Tasks, Mode=TwoWay}">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="100" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid>
+                                        <TextBlock Text="{Binding Name}" />
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>

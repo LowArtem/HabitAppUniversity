@@ -7,7 +7,7 @@
         xmlns:customControls="clr-namespace:HabitApp.CustomControls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        d:Background="WhiteSmoke"             
+        d:Background="#f0ecec"             
         DataContext="{Binding Path=LoginVM, Source={StaticResource VMLocator}}"
         Height="700" Width="1200">
     <Grid>
@@ -42,7 +42,7 @@
             <TextBlock 
                 Grid.Row="0"
                 Text="Login/Registration" 
-                FontFamily="Tahoma" 
+                FontFamily="Cascadia Mono" 
                 FontSize="60" 
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Top"
