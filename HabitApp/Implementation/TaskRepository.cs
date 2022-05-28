@@ -4,6 +4,7 @@ using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using HabitApp.Model;
 
 namespace HabitApp.Implementation
 {
@@ -22,7 +23,21 @@ namespace HabitApp.Implementation
 
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
-            command.CommandText = $"insert into tasks (name, description, priority, status, difficulty, groupeventid, usereventid, deadline) values ({entity.Name}, {entity.Description}, {entity.Priority}, {entity.Status}, {entity.Difficulty}, {entity.GroupEventId}, {entity.UserEventId}, {entity.Deadline}) returning id";
+
+            string userEventId;
+            string groupdEventId;
+
+            if (entity.UserEventId == null)
+                userEventId = "null";
+            else
+                userEventId = entity.UserEventId.ToString();
+
+            if (entity.GroupEventId == null)
+                groupdEventId = "null";
+            else
+                groupdEventId = entity.GroupEventId.ToString();
+
+            command.CommandText = $"insert into tasks (name, description, priority, status, difficulty, groupeventid, usereventid, deadline) values ('{entity.Name}', '{entity.Description}', {entity.Priority}, {entity.Status}, {entity.Difficulty}, {groupdEventId}, {userEventId}, {entity.Deadline}) returning id";
             var reader = command.ExecuteReader();
             if (reader.HasRows)
             {
@@ -78,9 +93,9 @@ namespace HabitApp.Implementation
                          difficulty: Convert.ToInt32(reader["difficulty"].ToString()),
                          priority: Convert.ToInt32(reader["priority"].ToString()),
                          status: Convert.ToBoolean(reader["status"].ToString()),
-                         groupEventId: Convert.ToInt32(reader["groupeventid"].ToString()),
+                         groupEventId: Extensions.ToNullableInt(reader["groupeventid"].ToString()),
                          deadline: Convert.ToDateTime(reader["deadline"].ToString()),
-                         userEventId: Convert.ToInt32(reader["usereventid"].ToString()));
+                         userEventId: Extensions.ToNullableInt(reader["usereventid"].ToString()));
 
                     tasks.Add(task);
                 }
@@ -118,9 +133,9 @@ namespace HabitApp.Implementation
                          difficulty: Convert.ToInt32(reader["difficulty"].ToString()),
                          priority: Convert.ToInt32(reader["priority"].ToString()),
                          status: Convert.ToBoolean(reader["status"].ToString()),
-                         groupEventId: Convert.ToInt32(reader["groupeventid"].ToString()),
+                         groupEventId: Extensions.ToNullableInt(reader["groupeventid"].ToString()),
                          deadline: Convert.ToDateTime(reader["deadline"].ToString()),
-                         userEventId: Convert.ToInt32(reader["usereventid"].ToString()));
+                         userEventId: Extensions.ToNullableInt(reader["usereventid"].ToString()));
                 }
                 reader.Close();
             }
@@ -140,7 +155,21 @@ namespace HabitApp.Implementation
 
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
-            command.CommandText = $"update tasks set name={entity.Name} set description={entity.Description} set priority={entity.Priority} set status={entity.Status} set difficulty={entity.Difficulty} set groupeventid={entity.GroupEventId} set usereventid={entity.UserEventId} set deadline={entity.Deadline} where id={entity.Id}";
+
+            string userEventId;
+            string groupdEventId;
+
+            if (entity.UserEventId == null)
+                userEventId = "null";
+            else
+                userEventId = entity.UserEventId.ToString();
+
+            if (entity.GroupEventId == null)
+                groupdEventId = "null";
+            else
+                groupdEventId = entity.GroupEventId.ToString();
+
+            command.CommandText = $"update tasks set name='{entity.Name}' set description='{entity.Description}' set priority={entity.Priority} set status={entity.Status} set difficulty={entity.Difficulty} set groupeventid='{groupdEventId}' set usereventid='{userEventId}' set deadline={entity.Deadline} where id={entity.Id}";
             command.ExecuteNonQuery();
 
             con.Close();
@@ -176,9 +205,9 @@ namespace HabitApp.Implementation
                          difficulty: Convert.ToInt32(reader["difficulty"].ToString()),
                          priority: Convert.ToInt32(reader["priority"].ToString()),
                          status: Convert.ToBoolean(reader["status"].ToString()),
-                         groupEventId: Convert.ToInt32(reader["groupeventid"].ToString()),
+                         groupEventId: Extensions.ToNullableInt(reader["groupeventid"].ToString()),
                          deadline: Convert.ToDateTime(reader["deadline"].ToString()),
-                         userEventId: Convert.ToInt32(reader["usereventid"].ToString()));
+                         userEventId: Extensions.ToNullableInt(reader["usereventid"].ToString()));
 
                     tasks.Add(task);
                 }

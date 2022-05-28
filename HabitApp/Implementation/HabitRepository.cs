@@ -22,7 +22,7 @@ namespace HabitApp.Implementation
 
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
-            command.CommandText = $"insert into habits (name, description, category, type, difficulty, userid) values ({entity.Name}, {entity.Description}, {entity.Category}, {entity.Type}, {entity.Difficulty}, {entity.UserId}) returning id";
+            command.CommandText = $"insert into habits (name, description, category, type, difficulty, userid) values ('{entity.Name}', '{entity.Description}', '{entity.Category}', {entity.Type}, {entity.Difficulty}, {entity.UserId}) returning id";
             var reader = command.ExecuteReader();
             if (reader.HasRows)
             {
@@ -136,7 +136,7 @@ namespace HabitApp.Implementation
 
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
-            command.CommandText = $"update habits set name={entity.Name} set description={entity.Description} set category={entity.Category} set type={entity.Type} set difficulty={entity.Difficulty} set userid={entity.UserId} where id={entity.Id}";
+            command.CommandText = $"update habits set name='{entity.Name}' set description='{entity.Description}' set category='{entity.Category}' set type={entity.Type} set difficulty={entity.Difficulty} set userid={entity.UserId} where id={entity.Id}";
             command.ExecuteNonQuery();
 
             con.Close();

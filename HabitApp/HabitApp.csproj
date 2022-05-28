@@ -230,6 +230,7 @@
     <Compile Include="Implementation\TaskRepository.cs" />
     <Compile Include="Model\BaseCommand.cs" />
     <Compile Include="Model\Command.cs" />
+    <Compile Include="Model\Extensions.cs" />
     <Compile Include="Model\PageNavigationManager.cs" />
     <Compile Include="Model\ViewModel.cs" />
     <Compile Include="Implementation\UserRepository.cs" />

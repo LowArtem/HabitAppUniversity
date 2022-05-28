@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using HabitApp.Data;
 using Npgsql;
 using System.Data;
+using HabitApp.Model;
 
 namespace HabitApp.Implementation
 {
@@ -79,17 +80,13 @@ namespace HabitApp.Implementation
             {
                 while(reader.Read())
                 {
-                    int? groupid = null;
-                    if (reader["groupid"] != null)
-                        groupid = Convert.ToInt32(reader["groupid"].ToString());
-
                     User user = new User
                         (id: Convert.ToInt32(reader["id"].ToString()),
                          username: reader["username"].ToString(),
                          password: reader["password"].ToString(),
                          experience: Convert.ToInt64(reader["experience"].ToString()),
                          money: Convert.ToInt64(reader["money"].ToString()),
-                         groupId: groupid);
+                         groupId: Extensions.ToNullableInt(reader["groupid"].ToString()));
 
                     users.Add(user);
                 }
@@ -120,17 +117,13 @@ namespace HabitApp.Implementation
             {
                 while (reader.Read())
                 {
-                    int? groupid = null;
-                    if (reader["groupid"] != null)
-                        groupid = Convert.ToInt32(reader["groupid"].ToString());
-
                     user = new User
                         (id: Convert.ToInt32(reader["id"].ToString()),
                          username: reader["username"].ToString(),
                          password: reader["password"].ToString(),
                          experience: Convert.ToInt64(reader["experience"].ToString()),
                          money: Convert.ToInt64(reader["money"].ToString()),
-                         groupId: groupid);
+                         groupId: Extensions.ToNullableInt(reader["groupid"].ToString()));
                 }
                 reader.Close();
             }
@@ -150,7 +143,10 @@ namespace HabitApp.Implementation
 
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
-            command.CommandText = $"update users set username='{entity.Username}' set experience={entity.Experience} set password='{entity.Password}' set money={entity.Money} set groupid={entity.GroupId} where id={entity.Id}";
+
+            string groupid = entity.GroupId == null ? "null" : entity.GroupId.ToString();
+
+            command.CommandText = $"update users set username='{entity.Username}' set experience={entity.Experience} set password='{entity.Password}' set money={entity.Money} set groupid={groupid} where id={entity.Id}";
             command.ExecuteNonQuery();
 
             con.Close();
@@ -177,17 +173,13 @@ namespace HabitApp.Implementation
             {
                 while (reader.Read())
                 {
-                    int? groupid = null;
-                    if (!String.IsNullOrEmpty(reader["groupid"].ToString()))
-                        groupid = Convert.ToInt32(reader["groupid"].ToString());
-
                     user = new User
                         (id: Convert.ToInt32(reader["id"].ToString()),
                          username: reader["username"].ToString(),
                          password: reader["password"].ToString(),
                          experience: Convert.ToInt64(reader["experience"].ToString()),
                          money: Convert.ToInt64(reader["money"].ToString()),
-                         groupId: groupid);
+                         groupId: Extensions.ToNullableInt(reader["groupid"].ToString()));
                 }
                 reader.Close();
             }
