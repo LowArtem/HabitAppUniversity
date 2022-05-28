@@ -12,47 +12,77 @@
         Height="700" Width="1200">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="70"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            FontFamily="Comic Sans MS"
+            Foreground="#3270f3"
+            Margin="30, 0, 0, 0"
+            FontSize="40"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center">
+            <Run
+                Text="Habit"/><Run FontWeight="Bold"
+                Text="App"/>
+        </TextBlock>
+
+
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="200"/>
+            </Grid.RowDefinitions>
         
-        <TextBlock Grid.Row="0" Text="Login/Registration" FontFamily="Tahoma" FontSize="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <customControls:HintTextBox 
-            Grid.Row="1"
-            Width="800"
-            Placeholder="Username"
-            Text="{Binding Username, Mode=TwoWay}"/>
-
-        <customControls:HintTextBox 
-            x:Name="PasswordTextBox"
-            Grid.Row="2"
-            Width="800"
-            Placeholder="Password"
-            IsPassword="True"/>
-
-        <Grid Grid.Row="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Button
-                Margin="90"
-                FontSize="28"
-                Height="50"
-                Grid.Column="0"
-                Content="Login"
-                Command="{Binding LoginCommand}"
-                CommandParameter="{Binding ElementName=PasswordTextBox}"/>
+            <TextBlock 
+                Grid.Row="0"
+                Text="Login/Registration" 
+                FontFamily="Tahoma" 
+                FontSize="60" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Top"
+                Margin="0, 30, 0, 0"/>
             
-            <Button 
-                Margin="90"
-                FontSize="28"
-                Height="50"
-                Grid.Column="1"
-                Content="Register" 
-                Command="{Binding RegisterCommand}"/>
+            <customControls:HintTextBox 
+                Grid.Row="1"
+                Width="800"
+                Placeholder="Username"
+                Text="{Binding Username, Mode=TwoWay}"/>
+
+            <customControls:HintTextBox 
+                x:Name="PasswordTextBox"
+                Grid.Row="2"
+                Width="800"
+                Placeholder="Password"
+                IsPassword="True"/>
+
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button
+                    Margin="90, 50, 90, 50"
+                    FontSize="28"
+                    Height="50"
+                    Grid.Column="0"
+                    Content="Login"
+                    Command="{Binding LoginCommand}"
+                    CommandParameter="{Binding ElementName=PasswordTextBox}"/>
+            
+                <Button 
+                    Margin="90, 50, 90, 50"
+                    FontSize="28"
+                    Height="50"
+                    Grid.Column="1"
+                    Content="Register" 
+                    Command="{Binding RegisterCommand}" Cursor="Hand"/>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>
