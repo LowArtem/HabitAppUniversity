@@ -1,7 +1,9 @@
 ﻿using HabitApp.Model;
 using HabitApp.Services;
 using HabitApp.View;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Windows;
 using System.Windows.Input;
 
@@ -19,7 +21,24 @@ namespace HabitApp.VM
 
             _loginService = loginService;
             _pageNavigationManager = pageNavigationManager;
+
+            MessageQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(5000));
         }
+
+        #region MessageQueue : SnackbarMessageQueue - Сообщение об ошибке
+
+        /// <summary>Сообщение об ошибке</summary>
+        private SnackbarMessageQueue  _MessageQueue;
+
+        /// <summary>Сообщение об ошибке</summary>
+        public SnackbarMessageQueue  MessageQueue
+        {
+            get => _MessageQueue;
+            set => Set(ref _MessageQueue, value);
+        }
+
+        #endregion
+
 
         #region Username : string - Имя пользователя
 
@@ -68,7 +87,7 @@ namespace HabitApp.VM
             }
             else
             {
-                MessageBox.Show("Операция входа не удалась. Возможно вы ввели неверные данные");
+                MessageQueue.Enqueue("Login is unsuccessful. Maybe you entered wrong credentials.");
             }
         }
 
@@ -92,7 +111,7 @@ namespace HabitApp.VM
             }
             else
             {
-                MessageBox.Show("Операция входа не удалась. Возможно вы ввели неверные данные");
+                MessageQueue.Enqueue("Register is unsuccessful. Maybe user with these credentials already exists.");
             }
         }
 

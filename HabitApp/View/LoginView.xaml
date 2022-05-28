@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         d:Background="#f0ecec"             
         DataContext="{Binding Path=LoginVM, Source={StaticResource VMLocator}}"
-        Height="700" Width="1200">
+        d:Height="700" d:Width="1200">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
@@ -84,5 +84,9 @@
                     Command="{Binding RegisterCommand}" Cursor="Hand"/>
             </Grid>
         </Grid>
+
+        <materialDesign:Snackbar
+            MessageQueue="{Binding MessageQueue}"/>
+
     </Grid>
 </UserControl>
