@@ -1,6 +1,6 @@
 ﻿using HabitApp.Data;
 using HabitApp.Implementation;
-using System;
+using HabitApp.Model;
 using System.Collections.Generic;
 
 namespace HabitApp.Services
@@ -10,182 +10,38 @@ namespace HabitApp.Services
         private readonly HabitRepository _habitRepository;
         private readonly DailyHabitRepository _dailyHabitRepository;
         private readonly TaskRepository _taskRepository;
+        private readonly ICurrentDateTimeProvider _currentDateTimeProvider;
 
-        public AllHabitService(HabitRepository habitRepository, DailyHabitRepository dailyHabitRepository, TaskRepository taskRepository)
+        public AllHabitService(HabitRepository habitRepository, DailyHabitRepository dailyHabitRepository, TaskRepository taskRepository, ICurrentDateTimeProvider currentDateTimeProvider)
         {
             _habitRepository = habitRepository;
             _dailyHabitRepository = dailyHabitRepository;
             _taskRepository = taskRepository;
+            _currentDateTimeProvider = currentDateTimeProvider;
         }
 
-        #region GetAll_ByUser
-        public List<Habit> GetAllHabitsByUser(int userid)
-        {
-            return _habitRepository.GetAllByUserId(userid);
-        }
+        public List<HabitCompletion> GetHabitCompletions(int habitId) => _habitRepository.GetAllCompletionsById(habitId);
+        public List<HabitCompletion> GetDailyHabitCompletions(int dailyHabitId) => _dailyHabitRepository.GetAllCompletionsById(dailyHabitId);
 
-        public List<DailyHabit> GetAllDailyHabitsByUser(int userid)
-        {
-            return _dailyHabitRepository.GetAllByUserId(userid);
-        }
-
-        public List<Data.Task> GetAllTasksByUser(int userid)
-        {
-            return _taskRepository.GetAllTasksByUser(userid);
-        }
-        #endregion
-
-        #region AddNew_
-        public Habit AddNewHabit(Habit habit)
-        {
-            return _habitRepository.Add(habit);
-        }
-
-        public DailyHabit AddNewDailyHabit(DailyHabit dailyHabit)
-        {
-            return _dailyHabitRepository.Add(dailyHabit);
-        }
-
-        public Data.Task AddNewTask(Data.Task task)
-        {
-            return _taskRepository.Add(task);
-        }
-        #endregion
-
-        #region Change_
-
-        #region ChangeHabit
-        public Habit ChangeHabitName(string name, int habitid)
-        {
-            var habit = _habitRepository.GetById(habitid);
-            habit.Name = name;
-            return _habitRepository.Update(habit);
-        }
-
-        public Habit ChangeHabitDescription(string description, int habitid)
-        {
-            var habit = _habitRepository.GetById(habitid);
-            habit.Description = description;
-            return _habitRepository.Update(habit);
-        }
-
-        public Habit ChangeHabitDifficulty(int difficulty, int habitid)
-        {
-            var habit = _habitRepository.GetById(habitid);
-            habit.Difficulty = difficulty;
-            return _habitRepository.Update(habit);
-        }
-
-        public Habit ChangeHabit(Habit habit)
-        {
-            return _habitRepository.Update(habit);
-        }
-        #endregion
-
-        #region ChangeDailyHabit
-        public DailyHabit ChangeDailyHabitName(string name, int dailyHabitId)
-        {
-            var dailyHabit = _dailyHabitRepository.GetById(dailyHabitId);
-            dailyHabit.Name = name;
-            return _dailyHabitRepository.Update(dailyHabit);
-        }
-
-        public DailyHabit ChangeDailyHabitDescription(string description, int dailyHabitId)
-        {
-            var dailyHabit = _dailyHabitRepository.GetById(dailyHabitId);
-            dailyHabit.Description = description;
-            return _dailyHabitRepository.Update(dailyHabit);
-        }
-
-        public DailyHabit ChangeDailyHabitStatus(bool status, int dailyHabitId)
-        {
-            var dailyHabit = _dailyHabitRepository.GetById(dailyHabitId);
-            dailyHabit.Status = status;
-            return _dailyHabitRepository.Update(dailyHabit);
-        }
-
-        public DailyHabit ChangeDailyHabitDifficulty(int difficulty, int dailyHabitId)
-        {
-            var dailyHabit = _dailyHabitRepository.GetById(dailyHabitId);
-            dailyHabit.Difficulty = difficulty;
-            return _dailyHabitRepository.Update(dailyHabit);
-        }
-
-        public DailyHabit ChangeDailyHabitDeadline(DateTime deadline, int dailyHabitId)
-        {
-            var dailyHabit = _dailyHabitRepository.GetById(dailyHabitId);
-            dailyHabit.Deadline = deadline;
-            return _dailyHabitRepository.Update(dailyHabit);
-        }
-
-        public DailyHabit ChangeDailyHabit(DailyHabit dailyHabit)
-        {
-            return _dailyHabitRepository.Update(dailyHabit);
-        }
-        #endregion
-
-        #region ChangeTask
-        public Data.Task ChangeTaskName(string name, int taskId)
+        public void ChangeTaskCompletedStatus(int taskId)
         {
             var task = _taskRepository.GetById(taskId);
-            task.Name = name;
-            return _taskRepository.Update(task);
+            task.Status = !task.Status;
+            _taskRepository.Update(task);
         }
 
-        public Data.Task ChangeTaskDescription(string description, int taskId)
-        {
-            var task = _taskRepository.GetById(taskId);
-            task.Description = description;
-            return _taskRepository.Update(task);
-        }
-
-        public Data.Task ChangeTaskPriority(int priority, int taskId)
-        {
-            var task = _taskRepository.GetById(taskId);
-            task.Priority = priority;
-            return _taskRepository.Update(task);
-        }
-
-        public Data.Task ChangeTaskStatus(bool status, int taskId)
-        {
-            var task = _taskRepository.GetById(taskId);
-            task.Status = status;
-            return _taskRepository.Update(task);
-        }
-
-        public Data.Task ChangeTaskDeadline(DateTime deadline, int taskId)
-        {
-            var task = _taskRepository.GetById(taskId);
-            task.Deadline = deadline;
-            return _taskRepository.Update(task);
-        }
-
-        public Data.Task ChangeTask(Data.Task task)
-        {
-            return _taskRepository.Update(task);
-        }
-        #endregion
-
-        #endregion
-
-        #region Delete_
-        public void DeleteHabit(int habitId)
-        {
-            var habit = _habitRepository.GetById(habitId);
-            _habitRepository.Delete(habit);
-        }
-
-        public void DeleteDailyHabit(int dailyHabitId)
+        public void AddDailyHabitCompletion(int dailyHabitId, int rating)
         {
             var dailyHabit = _dailyHabitRepository.GetById(dailyHabitId);
-            _dailyHabitRepository.Delete(dailyHabit);
+            dailyHabit.Status = !dailyHabit.Status;
+            _dailyHabitRepository.Update(dailyHabit);
+
+            _dailyHabitRepository.AddHabitCompletion(dailyHabitId, _currentDateTimeProvider.GetCurrentDateTime(), rating);
         }
 
-        public void DeleteTask(int taskId)
+        public void AddHabitCompletion(int habitId, int rating)
         {
-            var task = _taskRepository.GetById(taskId);
-            _taskRepository.Delete(task);
+            _habitRepository.AddHabitCompletion(habitId, _currentDateTimeProvider.GetCurrentDateTime(), rating);
         }
-        #endregion
     }
 }
