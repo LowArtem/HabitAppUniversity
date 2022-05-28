@@ -22,11 +22,19 @@ namespace HabitApp.Implementation
 
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
-            command.CommandText = $"insert into users (username, experience, password, money, groupid) values ('{entity.Username}', {entity.Experience}, '{entity.Password}', {entity.Money}, {entity.GroupId}) returning id";
+
+            if (entity.GroupId != null)
+                command.CommandText = $"insert into users (username, experience, password, money, groupid) values ('{entity.Username}', {entity.Experience}, '{entity.Password}', {entity.Money}, {entity.GroupId}) returning id";
+            else
+                command.CommandText = $"insert into users (username, experience, password, money, groupid) values ('{entity.Username}', {entity.Experience}, '{entity.Password}', {entity.Money}, null) returning id";
+            
             var reader = command.ExecuteReader();
             if (reader.HasRows)
             {
-                entity.Id = reader.GetInt32(0);
+                while (reader.Read())
+                {
+                    entity.Id = Convert.ToInt32(reader["id"].ToString());
+                }
                 reader.Close();
             }
 
