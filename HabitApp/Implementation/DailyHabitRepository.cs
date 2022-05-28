@@ -183,5 +183,61 @@ namespace HabitApp.Implementation
             con.Close();
             return daily_habits;
         }
+
+        public List<HabitCompletion> GetAllCompletionsById(int habitId)
+        {
+            NpgsqlConnection con = new NpgsqlConnection(connectionString);
+            con.Open();
+            if (con.FullState == ConnectionState.Broken || con.FullState == ConnectionState.Closed)
+            {
+                throw new Exception("Не работает соединение с бд");
+            }
+
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            command.CommandText = $@"select * from daily_completions
+                                     where dailyid={habitId}";
+
+            var reader = command.ExecuteReader();
+
+            List<HabitCompletion> completions = new List<HabitCompletion>();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    HabitCompletion habit = new HabitCompletion
+                        (id: Convert.ToInt32(reader["id"].ToString()),
+                         date: Convert.ToDateTime(reader["date"].ToString()),
+                         rating: Convert.ToInt32(reader["rating"].ToString()),
+                         habitId: Convert.ToInt32(reader["dailyid"].ToString()));
+
+                    completions.Add(habit);
+                }
+                reader.Close();
+            }
+
+            con.Close();
+            return completions;
+        }
+
+        public void AddHabitCompletion(int habitId, DateTime date, int rating)
+        {
+            NpgsqlConnection con = new NpgsqlConnection(connectionString);
+            con.Open();
+            if (con.FullState == ConnectionState.Broken || con.FullState == ConnectionState.Closed)
+            {
+                throw new Exception("Не работает соединение с бд");
+            }
+
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            command.CommandText = $@"insert into daily_completions 
+                                    (date, rating, dailyid) values
+                                    ('{date}', {rating}, {habitId});";
+            command.ExecuteNonQuery();
+
+            con.Close();
+        }
     }
 }
