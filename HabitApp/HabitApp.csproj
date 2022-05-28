@@ -224,18 +224,24 @@
     </Compile>
     <Compile Include="Data\DailyHabit.cs" />
     <Compile Include="Data\Habit.cs" />
+    <Compile Include="Data\HabitCompletion.cs" />
     <Compile Include="Data\Task.cs" />
+    <Compile Include="Data\Type.cs" />
     <Compile Include="Implementation\DailyHabitRepository.cs" />
     <Compile Include="Implementation\HabitRepository.cs" />
     <Compile Include="Implementation\TaskRepository.cs" />
     <Compile Include="Model\BaseCommand.cs" />
+    <Compile Include="Data\Categories.cs" />
     <Compile Include="Model\Command.cs" />
+    <Compile Include="Model\CurrentDateTimeProvider.cs" />
     <Compile Include="Model\Extensions.cs" />
+    <Compile Include="Model\ICurrentDateTimeProvider.cs" />
     <Compile Include="Model\PageNavigationManager.cs" />
     <Compile Include="Model\ViewModel.cs" />
     <Compile Include="Implementation\UserRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Services\AllHabitCRUDService.cs" />
     <Compile Include="Services\AllHabitService.cs" />
     <Compile Include="Services\LoginService.cs" />
     <Compile Include="View\LoginView.xaml.cs">
