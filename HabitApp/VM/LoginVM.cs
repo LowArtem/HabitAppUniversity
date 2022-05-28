@@ -55,8 +55,7 @@ namespace HabitApp.VM
         public ICommand LoginCommand { get; }
         private bool CanLoginCommandExecute(object p)
         {
-            //return !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password);
-            return true;
+            return !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password);
         }
 
         private void OnLoginCommandExecuted(object p)

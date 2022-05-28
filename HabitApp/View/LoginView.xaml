@@ -58,6 +58,7 @@
                 x:Name="PasswordTextBox"
                 Grid.Row="2"
                 Width="800"
+                PasswordBox.PasswordChanged="PasswordTextBox_PasswordChanged"
                 Placeholder="Password"
                 IsPassword="True"/>
 

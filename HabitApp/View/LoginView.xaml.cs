@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using HabitApp.CustomControls;
+using System.Windows.Controls;
 
 namespace HabitApp.View
 {
@@ -10,6 +11,15 @@ namespace HabitApp.View
         public LoginView()
         {
             InitializeComponent();
+        }
+
+        private void PasswordTextBox_PasswordChanged(object sender, System.Windows.RoutedEventArgs e)
+        {
+            // Динамическое изменения поля Password в VM
+            if (this.DataContext != null)
+            {
+                ((dynamic)this.DataContext).Password = ((HintTextBox)sender).password.Password;
+            }
         }
     }
 }
