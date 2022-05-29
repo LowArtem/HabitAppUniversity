@@ -16,7 +16,10 @@ namespace HabitApp
     /// </summary>
     public partial class App : Application
     {
-        public User CurrentUser { get; set; } = null;
+        //public User CurrentUser { get; set; } = null;
+
+        // Для тестов:
+        public User CurrentUser { get; set; } = new User(7, "TrialBot", "TrialBot", 0, 0, null);
 
         private static IHost _Host;
         public static IHost Host
@@ -57,6 +60,7 @@ namespace HabitApp
             services.AddSingleton<DailyHabitRepository>();
 
             services.AddTransient<LoginService>();
+            services.AddTransient<AllHabitCRUDService>();
             services.AddTransient<AllHabitService>();
 
             services.AddSingleton<MainWindowVM>();
@@ -67,6 +71,7 @@ namespace HabitApp
             services.AddTransient<LoginView>();
 
             services.AddSingleton<PageNavigationManager>();
+            services.AddSingleton<ICurrentDateTimeProvider, CurrentDateTimeProvider>();
         }
     }
 }

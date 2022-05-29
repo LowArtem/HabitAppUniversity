@@ -5,6 +5,9 @@ using HabitApp.View;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 
@@ -13,16 +16,21 @@ namespace HabitApp.VM
     public class HomeVM : ViewModel
     {
         private readonly PageNavigationManager _pageNavigationManager;
-        private readonly AllHabitService _allHabitService;
+        private readonly AllHabitCRUDService _allHabitCRUDService;
 
-        public HomeVM(PageNavigationManager pageNavigationManager, AllHabitService allHabitService)
+        public HomeVM(PageNavigationManager pageNavigationManager, AllHabitCRUDService allHabitService)
         {
             _pageNavigationManager = pageNavigationManager;
-            _allHabitService = allHabitService;
+            _allHabitCRUDService = allHabitService;
 
             ChangeHabitCommand = new BaseCommand(OnChangeHabitCommandExecuted, CanChangeHabitCommandExecute);
+            CancelHabitChangingCommand = new BaseCommand(OnCancelHabitChangingCommandExecuted, CanCancelHabitChangingCommandExecute);
+
             ChangeDailyHabitCommand = new BaseCommand(OnChangeDailyHabitCommandExecuted, CanChangeDailyHabitCommandExecute);
+            CancelDailyHabitChangingCommand = new BaseCommand(OnCancelDailyHabitChangingCommandExecuted, CanCancelDailyHabitChangingCommandExecute);
+
             ChangeTaskCommand = new BaseCommand(OnChangeTaskCommandExecuted, CanChangeTaskCommandExecute);
+            CancelTaskChangingCommand = new BaseCommand(OnCancelTaskChangingCommandExecuted, CanCancelTaskChangingCommandExecute);
 
             User currentUser;
             var app = Application.Current;
@@ -35,9 +43,20 @@ namespace HabitApp.VM
                 throw new Exception("Неверный класс приложения, не обнаружено свойство CurrentUser");
             }
 
-            Habits = _allHabitService.GetAllHabitsByUser(currentUser.Id);
-            DailyHabits = _allHabitService.GetAllDailyHabitsByUser(currentUser.Id);
-            Tasks = _allHabitService.GetAllTasksByUser(currentUser.Id);
+            // TODO: написать сложный сравниватель, учитывающий приоритет, дедлайн и т д
+
+            Habits = _allHabitCRUDService.GetAllHabitsByUser(currentUser.Id);
+            Habits.Sort((x, y) => x.Id.CompareTo(y.Id));
+
+            //Habits = new ObservableCollection<Habit>(list);
+
+            DailyHabits = _allHabitCRUDService.GetAllDailyHabitsByUser(currentUser.Id);
+            DailyHabits.Sort((x, y) => x.Id.CompareTo(y.Id));
+
+            Tasks = _allHabitCRUDService.GetAllTasksByUser(currentUser.Id);
+            Tasks.Sort((x, y) => x.Id.CompareTo(y.Id));
+
+            CategoriesList = Categories.GetAll();
         }
 
         #region Habits : List<Habit> - Список привычек пользователя
@@ -50,6 +69,35 @@ namespace HabitApp.VM
         {
             get => _Habits;
             set => Set(ref _Habits, value);
+        }
+
+        //private ObservableCollection<Habit> _Habits;
+        //public ObservableCollection<Habit> Habits
+        //{
+        //    get => _Habits;
+        //    set 
+        //    {
+        //        if (!Equals(_Habits, value))
+        //        {
+        //            _Habits = value;
+        //            OnPropertyChanged(nameof(Habits));
+        //        }
+        //    }
+        //}
+
+
+        #endregion
+
+        #region IsHabitsEmpty : bool - Пустой ли список привычек
+
+        /// <summary>Пустой ли список привычек</summary>
+        private bool _IsHabitsEmpty = true;
+
+        /// <summary>Пустой ли список привычек</summary>
+        public bool IsHabitsEmpty
+        {
+            get => _IsHabitsEmpty;
+            set => Set(ref _IsHabitsEmpty, value);
         }
 
         #endregion
@@ -68,6 +116,20 @@ namespace HabitApp.VM
 
         #endregion
 
+        #region IsDailyHabitsEmpty : bool - Пустой ли список ежедневных привычек
+
+        /// <summary>Пустой ли список ежедневных привычек</summary>
+        private bool _IsDailyHabitsEmpty = true;
+
+        /// <summary>Пустой ли список ежедневных привычек</summary>
+        public bool IsDailyHabitsEmpty
+        {
+            get => _IsDailyHabitsEmpty;
+            set => Set(ref _IsDailyHabitsEmpty, value);
+        }
+
+        #endregion
+
         #region Tasks : List<Task> - Список задач пользователя
 
         /// <summary>Список задач пользователя</summary>
@@ -78,6 +140,20 @@ namespace HabitApp.VM
         {
             get => _Tasks;
             set => Set(ref _Tasks, value);
+        }
+
+        #endregion
+
+        #region IsTasksEmpty : bool - Пустой ли список задач
+
+        /// <summary>Пустой ли список задач</summary>
+        private bool _IsTasksEmpty = true;
+
+        /// <summary>Пустой ли список задач</summary>
+        public bool IsTasksEmpty
+        {
+            get => _IsTasksEmpty;
+            set => Set(ref _IsTasksEmpty, value);
         }
 
         #endregion
@@ -97,6 +173,37 @@ namespace HabitApp.VM
 
         #endregion
 
+        #region SelectedHabit : Habit - Выбранная привычка
+
+        /// <summary>Выбранная привычка</summary>
+        private Habit _SelectedHabit;
+
+        /// <summary>Выбранная привычка</summary>
+        public Habit SelectedHabit
+        {
+            get => _SelectedHabit;
+            set => Set(ref _SelectedHabit, value);
+        }
+
+        #endregion
+
+
+        #region CategoriesList : List<string> - Список всех возможных категорий
+
+        /// <summary>Список всех возможных категорий</summary>
+        private List<string> _CategoriesList;
+
+        /// <summary>Список всех возможных категорий</summary>
+        public List<string> CategoriesList
+        {
+            get => _CategoriesList;
+            set => Set(ref _CategoriesList, value);
+        }
+
+        #endregion
+
+
+
         #region SelectedDailyHabitIndex : int? - Индекс выбранной ежедневной привычки в списке
 
         /// <summary>Индекс выбранной ежедневной привычки в списке</summary>
@@ -110,6 +217,21 @@ namespace HabitApp.VM
         }
 
         #endregion
+
+        #region SelectedDailyHabit : DailyHabit - Выбранная ежедневная привычка
+
+        /// <summary>Выбранная ежедневная привычка</summary>
+        private DailyHabit _SelectedDailyHabit;
+
+        /// <summary>Выбранная ежедневная привычка</summary>
+        public DailyHabit SelectedDailyHabit
+        {
+            get => _SelectedDailyHabit;
+            set => Set(ref _SelectedDailyHabit, value);
+        }
+
+        #endregion
+
 
         #region SelectedTaskIndex : int? - Индекс выбранной задачи в списке
 
@@ -125,7 +247,79 @@ namespace HabitApp.VM
 
         #endregion
 
-        // TODO: в привязке учесть, что эти значения могут быть null, нужно для обработки подобного установить TargetNullValue = ''
+        #region SelectedTask : Task - Выбранная задача
+
+        /// <summary>Выбранная задача</summary>
+        private Task _SelectedTask;
+
+        /// <summary>Выбранная задача</summary>
+        public Task SelectedTask
+        {
+            get => _SelectedTask;
+            set => Set(ref _SelectedTask, value);
+        }
+
+        #endregion
+
+
+
+        #region SelectedTabIndex : int - Выбранный набор данных (1-habits, 2-daily, 3-tasks)
+
+        /// <summary>Выбранный набор данных (1-habits, 2-daily, 3-tasks)</summary>
+        private int _SelectedTabIndex;
+
+        /// <summary>Выбранный набор данных (1-habits, 2-daily, 3-tasks)</summary>
+        public int SelectedTabIndex
+        {
+            get => _SelectedTabIndex;
+            set => Set(ref _SelectedTabIndex, value);
+        }
+
+        #endregion
+
+        #region IsHabitDetailedShowed : bool - Показывать детали привычки
+
+        /// <summary>Показывать детали привычки</summary>
+        private bool _IsHabitDetailedShowed = true;
+
+        /// <summary>Показывать детали привычки</summary>
+        public bool IsHabitDetailedShowed
+        {
+            get => _IsHabitDetailedShowed;
+            set => Set(ref _IsHabitDetailedShowed, value);
+        }
+
+        #endregion
+
+        #region IsDailyHabitDetailedShowed : bool - Показывать детали ежедневной привычки
+
+        /// <summary>Показывать детали ежедневной привычки</summary>
+        private bool _IsDailyHabitDetailedShowed = false;
+
+        /// <summary>Показывать детали ежедневной привычки</summary>
+        public bool IsDailyHabitDetailedShowed
+        {
+            get => _IsDailyHabitDetailedShowed;
+            set => Set(ref _IsDailyHabitDetailedShowed, value);
+        }
+
+        #endregion
+
+        #region IsTaskDetailedShowed : bool - Показывать детали задачи
+
+        /// <summary>Показывать детали задачи</summary>
+        private bool _IsTaskDetailedShowed = false;
+
+        /// <summary>Показывать детали задачи</summary>
+        public bool IsTaskDetailedShowed
+        {
+            get => _IsTaskDetailedShowed;
+            set => Set(ref _IsTaskDetailedShowed, value);
+        }
+
+        #endregion
+
+
 
         #region ChangeHabitCommand
 
@@ -133,11 +327,33 @@ namespace HabitApp.VM
         private bool CanChangeHabitCommandExecute(object p) => SelectedHabitIndex != null;
 
         private void OnChangeHabitCommandExecuted(object p)
-        {
-            Habits[SelectedHabitIndex.Value] = _allHabitService.ChangeHabit(Habits[SelectedHabitIndex.Value]);
+        {            
+            Habits[SelectedHabitIndex.Value].Name = SelectedHabit.Name;
+            Habits[SelectedHabitIndex.Value].Description = SelectedHabit.Description;
+            Habits[SelectedHabitIndex.Value].Category = SelectedHabit.Category;
+            Habits[SelectedHabitIndex.Value].Difficulty = SelectedHabit.Difficulty;
+            Habits[SelectedHabitIndex.Value].Type = SelectedHabit.Type;
+            Habits[SelectedHabitIndex.Value] = _allHabitCRUDService.ChangeHabit(Habits[SelectedHabitIndex.Value]);
+
+            OnPropertyChanged(nameof(Habits));
         }
 
         #endregion
+
+        #region CancelHabitChangingCommand
+
+        public ICommand CancelHabitChangingCommand { get; }
+        private bool CanCancelHabitChangingCommandExecute(object p) => SelectedHabitIndex != null;
+
+        private void OnCancelHabitChangingCommandExecuted(object p)
+        {
+            var temp = SelectedHabitIndex;
+            SelectedHabitIndex = null;
+            SelectedHabitIndex = temp;
+        }
+
+        #endregion
+
 
         #region ChangeDailyHabitCommand
 
@@ -146,10 +362,25 @@ namespace HabitApp.VM
 
         private void OnChangeDailyHabitCommandExecuted(object p)
         {
-            DailyHabits[SelectedDailyHabitIndex.Value] = _allHabitService.ChangeDailyHabit(DailyHabits[SelectedDailyHabitIndex.Value]);
+            DailyHabits[SelectedDailyHabitIndex.Value] = _allHabitCRUDService.ChangeDailyHabit(DailyHabits[SelectedDailyHabitIndex.Value]);
         }
 
         #endregion
+
+        #region CancelDailyHabitChangingCommand
+
+        public ICommand CancelDailyHabitChangingCommand { get; }
+        private bool CanCancelDailyHabitChangingCommandExecute(object p) => SelectedDailyHabitIndex != null;
+
+        private void OnCancelDailyHabitChangingCommandExecuted(object p)
+        {
+            var temp = SelectedDailyHabitIndex;
+            SelectedDailyHabitIndex = null;
+            SelectedDailyHabitIndex = temp;
+        }
+
+        #endregion
+
 
         #region ChangeTaskCommand
 
@@ -158,9 +389,77 @@ namespace HabitApp.VM
 
         private void OnChangeTaskCommandExecuted(object p)
         {
-            Tasks[SelectedTaskIndex.Value] = _allHabitService.ChangeTask(Tasks[SelectedTaskIndex.Value]);
+            Tasks[SelectedTaskIndex.Value] = _allHabitCRUDService.ChangeTask(Tasks[SelectedTaskIndex.Value]);
         }
 
         #endregion
+
+        #region CancelTaskChangingCommand
+
+        public ICommand CancelTaskChangingCommand { get; }
+        private bool CanCancelTaskChangingCommandExecute(object p) => SelectedTaskIndex != null;
+
+        private void OnCancelTaskChangingCommandExecuted(object p)
+        {
+            var temp = SelectedTaskIndex;
+            SelectedTaskIndex = null;
+            SelectedTaskIndex = temp;
+        }
+
+        #endregion
+
+
+
+
+        protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            if (propertyName == "Habits")
+                IsHabitsEmpty = Habits.Count == 0;
+            else if (propertyName == "DailyHabits")
+                IsDailyHabitsEmpty = DailyHabits.Count == 0;
+            else if (propertyName == "Tasks")
+                IsTasksEmpty = Tasks.Count == 0;
+            else if (propertyName == "SelectedTabIndex")
+            {
+                IsHabitDetailedShowed = SelectedTabIndex == 0;
+                IsDailyHabitDetailedShowed = SelectedTabIndex == 1;
+                IsTaskDetailedShowed = SelectedTabIndex == 2;
+            }
+            else if (propertyName == "SelectedHabitIndex")
+            {
+                if (SelectedHabitIndex.HasValue && SelectedHabitIndex.Value >= 0)
+                {
+                    SelectedHabit = (Habit)Habits[SelectedHabitIndex.Value].Clone();
+                }
+                else
+                {
+                    SelectedHabit = null;
+                }
+            }
+            else if (propertyName == "SelectedDailyHabitIndex")
+            {
+                if (SelectedDailyHabitIndex.HasValue)
+                {
+                    SelectedDailyHabit = (DailyHabit)DailyHabits[SelectedDailyHabitIndex.Value].Clone();
+                }
+                else
+                {
+                    SelectedDailyHabit = null;
+                }
+            }
+            else if (propertyName == "SelectedTaskIndex")
+            {
+                if (SelectedTaskIndex.HasValue)
+                {
+                    SelectedTask = (Task)Tasks[SelectedTaskIndex.Value].Clone();
+                }
+                else
+                {
+                    SelectedTask = null;
+                }
+            }
+
+            base.OnPropertyChanged(propertyName);
+        }
     }
 }

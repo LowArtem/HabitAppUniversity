@@ -14,7 +14,7 @@ namespace HabitApp.VM
             _pageNavigationManager = pageNavigationManager;
 
             _pageNavigationManager.OnPageChanged += (page) => CurrentView = page;
-            _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<LoginView>());
+            _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<HomeView>());
         }
 
         #region Title : string - Заголовок окна
