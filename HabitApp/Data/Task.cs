@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HabitApp.Data
 {
-    public class Task
+    public class Task : ICloneable
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -29,6 +25,11 @@ namespace HabitApp.Data
             Status = status;
             GroupEventId = groupEventId;
             UserEventId = userEventId;
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
     }
 }

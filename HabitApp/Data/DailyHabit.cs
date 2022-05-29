@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HabitApp.Data
+namespace HabitApp.Data 
 {
-    public class DailyHabit
+    public class DailyHabit : ICloneable
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -27,6 +23,11 @@ namespace HabitApp.Data
             Status = status;
             Deadline = deadline;
             UserId = userId;
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
     }
 }

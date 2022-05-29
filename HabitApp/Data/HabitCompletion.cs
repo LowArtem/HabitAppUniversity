@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HabitApp.Data
 {
-    public class HabitCompletion
+    public class HabitCompletion : ICloneable
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
@@ -19,6 +15,11 @@ namespace HabitApp.Data
             Date = date;
             Rating = rating;
             HabitId = habitId;
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
     }
 }
