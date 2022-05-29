@@ -66,9 +66,11 @@ namespace HabitApp
             services.AddSingleton<MainWindowVM>();
             services.AddSingleton<HomeVM>();
             services.AddSingleton<LoginVM>();
+            services.AddSingleton<CompletionRatingDialogVM>();
 
             services.AddTransient<HomeView>();
             services.AddTransient<LoginView>();
+            services.AddTransient<CompletionRatingDialog>();
 
             services.AddSingleton<PageNavigationManager>();
             services.AddSingleton<ICurrentDateTimeProvider, CurrentDateTimeProvider>();
