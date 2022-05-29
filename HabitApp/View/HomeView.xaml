@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:HabitApp"
     xmlns:model="clr-namespace:HabitApp.Model"
+    xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
     xmlns:data="clr-namespace:HabitApp.Data"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     DataContext="{Binding Path=HomeVM, Source={StaticResource VMLocator}}"
@@ -22,7 +23,11 @@
         <model:IntTypeToBooleanConverter x:Key="intTypeToBooleanConverter" />
         <data:CategoryConverter x:Key="CategoryStringToIntIndexConverter"/>
     </UserControl.Resources>
-    
+
+    <materialDesign:DialogHost
+        Identifier="Root Dialog"
+        CloseOnClickAway="True"
+        CloseOnClickAwayParameter="0">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="45"/>
@@ -163,7 +168,9 @@
                                                             Text="{Binding Name}" />
                                                     
                                                         <CheckBox
-                                                            IsChecked="{Binding Status}"
+                                                            IsChecked="{Binding Status, Mode=TwoWay}"
+                                                            Command="{Binding DataContext.ChangeDailyHabitStatusCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=1}}"
+                                                            CommandParameter="{Binding Id}"
                                                             HorizontalAlignment="Right"
                                                             materialDesign:CheckBoxAssist.CheckBoxSize="22"/>
                                                     </Grid>
@@ -390,7 +397,130 @@
             <Grid 
                 Grid.Column="1"
                 Visibility="{Binding IsDailyHabitDetailedShowed, Converter={StaticResource booleanToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                
+                <!--Daily fields editors-->
+                <materialDesign:Card
+                    UniformCornerRadius="10"
+                    Margin="5"
+                    Grid.Column="0">
+                    <StackPanel>
+                        <!--Name-->
+                        <TextBox
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Margin="10, 10, 10, 10"
+                            materialDesign:HintAssist.Hint="Name"
+                            FontSize="14"
+                            MaxLength="30"
+                            Text="{Binding SelectedDailyHabit.Name, Mode=TwoWay}"/>
 
+                        <!--Description-->
+                        <TextBox
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            Margin="10"
+                            VerticalAlignment="Top"
+                            Height="100"
+                            FontSize="14"
+                            TextWrapping="Wrap"
+                            MaxLength="200"
+                            VerticalScrollBarVisibility="Auto"
+                            materialDesign:HintAssist.Hint="Description"
+                            Text="{Binding SelectedDailyHabit.Description, Mode=TwoWay}"/>
+
+                        <!--Difficulty-->
+                        <DockPanel 
+                            HorizontalAlignment="Stretch"
+                            Margin="10">
+                            <TextBlock 
+                                FontSize="14"
+                                FontFamily="Tahoma"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Text="Difficulty:"/>
+
+                            <materialDesign:RatingBar
+                                Max="5"
+                                Value="{Binding SelectedDailyHabit.Difficulty, Mode=TwoWay}"
+                                Orientation="Horizontal"
+                                Margin="40, 0, 0, 0"
+                                HorizontalAlignment="Left">
+                                <materialDesign:RatingBar.ValueItemTemplate>
+                                    <DataTemplate
+                                      DataType="system:Int32">
+                                        <Grid>
+                                            <materialDesign:PackIcon
+                                                Kind="Circle"
+                                                Height="30"
+                                                Width="30" />
+                                            <TextBlock
+                                                Text="{Binding}"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                FontSize="10"
+                                                Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </materialDesign:RatingBar.ValueItemTemplate>
+                            </materialDesign:RatingBar>
+                        </DockPanel>                        
+
+                        <!--Category-->
+                        <ComboBox 
+                            Margin="10"
+                            SelectedIndex="{Binding SelectedDailyHabit.Category, Converter={StaticResource CategoryStringToIntIndexConverter}, Mode=TwoWay}"
+                            materialDesign:HintAssist.Hint="Category"
+                            FontSize="14"
+                            ItemsSource="{Binding CategoriesList}"
+                            Style="{StaticResource MaterialDesignOutlinedComboBox}"/>
+                        
+                        <!--Deadline-->
+                        <materialDesign:TimePicker 
+                            Margin="10"
+                            FontSize="14"
+                            Is24Hours="True"
+                            Style="{StaticResource MaterialDesignOutlinedTimePicker}"
+                            materialDesign:HintAssist.Hint="Deadline">
+                            <materialDesign:TimePicker.Text>
+                                <Binding
+                                    StringFormat="t"
+                                    ConverterCulture="{x:Static gl:CultureInfo.CurrentCulture}"
+                                    Path="SelectedDailyHabit.Deadline"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <model:DateValidating
+                                            ValidatesOnTargetUpdated="True" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </materialDesign:TimePicker.Text>
+                        </materialDesign:TimePicker>
+
+                        <!--Control Buttons-->
+                        <Grid
+                            Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button 
+                                Grid.Column="0"
+                                Height="45"
+                                Command="{Binding CancelDailyHabitChangingCommand}"
+                                Content="Cancel"/>
+
+                            <Button 
+                                Grid.Column="2"
+                                Height="45"
+                                Command="{Binding ChangeDailyHabitCommand}"
+                                Content="Save changes"/>
+                        </Grid>
+
+                    </StackPanel>
+                </materialDesign:Card>
             </Grid>
             
             <!--Task Grid-->
@@ -401,4 +531,5 @@
             </Grid>
         </Grid>
     </Grid>
+    </materialDesign:DialogHost>
 </UserControl>

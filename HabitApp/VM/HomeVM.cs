@@ -2,6 +2,7 @@
 using HabitApp.Model;
 using HabitApp.Services;
 using HabitApp.View;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -17,16 +18,18 @@ namespace HabitApp.VM
     {
         private readonly PageNavigationManager _pageNavigationManager;
         private readonly AllHabitCRUDService _allHabitCRUDService;
+        private readonly AllHabitService _allHabitService;
 
-        public HomeVM(PageNavigationManager pageNavigationManager, AllHabitCRUDService allHabitService)
+        public HomeVM(PageNavigationManager pageNavigationManager, AllHabitCRUDService allHabitCRUDService, AllHabitService allHabitService)
         {
             _pageNavigationManager = pageNavigationManager;
-            _allHabitCRUDService = allHabitService;
+            _allHabitCRUDService = allHabitCRUDService;
 
             ChangeHabitCommand = new BaseCommand(OnChangeHabitCommandExecuted, CanChangeHabitCommandExecute);
             CancelHabitChangingCommand = new BaseCommand(OnCancelHabitChangingCommandExecuted, CanCancelHabitChangingCommandExecute);
 
             ChangeDailyHabitCommand = new BaseCommand(OnChangeDailyHabitCommandExecuted, CanChangeDailyHabitCommandExecute);
+            ChangeDailyHabitStatusCommand = new BaseCommand(OnChangeDailyHabitStatusCommandExecuted, CanChangeDailyHabitStatusCommandExecute);
             CancelDailyHabitChangingCommand = new BaseCommand(OnCancelDailyHabitChangingCommandExecuted, CanCancelDailyHabitChangingCommandExecute);
 
             ChangeTaskCommand = new BaseCommand(OnChangeTaskCommandExecuted, CanChangeTaskCommandExecute);
@@ -57,6 +60,7 @@ namespace HabitApp.VM
             Tasks.Sort((x, y) => x.Id.CompareTo(y.Id));
 
             CategoriesList = Categories.GetAll();
+            _allHabitService = allHabitService;
         }
 
         #region Habits : List<Habit> - Список привычек пользователя
@@ -362,10 +366,53 @@ namespace HabitApp.VM
 
         private void OnChangeDailyHabitCommandExecuted(object p)
         {
+            DailyHabits[SelectedDailyHabitIndex.Value] = SelectedDailyHabit;
             DailyHabits[SelectedDailyHabitIndex.Value] = _allHabitCRUDService.ChangeDailyHabit(DailyHabits[SelectedDailyHabitIndex.Value]);
+
+            OnPropertyChanged(nameof(DailyHabits));
         }
 
         #endregion
+
+        #region ChangeDailyHabitStatusCommand
+
+        public ICommand ChangeDailyHabitStatusCommand { get; }
+        private bool CanChangeDailyHabitStatusCommandExecute(object p) => true;
+
+        private async void OnChangeDailyHabitStatusCommandExecuted(object p)
+        {
+            int index = DailyHabits.FindIndex(x => x.Id == int.Parse(p.ToString()));
+
+            // Dialog games
+            // Пока вижу баг - не убирает галочку в случае отмены, логика вся работает вроде верно
+            if (DailyHabits[index].Status == true)
+            {
+                var view = App.Host.Services.GetRequiredService<CompletionRatingDialog>();
+                var result = await DialogHost.Show(view, "Root Dialog", ClosingEventHandler);
+
+                var rating = int.Parse((result ?? null).ToString());
+                if (rating > 0)
+                {
+                    _allHabitService.AddDailyHabitCompletion(DailyHabits[index].Id, rating);
+                    DailyHabits[index].Status = true;
+                }
+                else
+                {
+                    DailyHabits[index].Status = false;
+                }    
+            }
+
+            DailyHabits[index] = _allHabitCRUDService.ChangeDailyHabit(DailyHabits[index]);
+            OnPropertyChanged(nameof(DailyHabits));
+        }
+
+        private void ClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
+        {
+            return;
+        }
+
+        #endregion
+
 
         #region CancelDailyHabitChangingCommand
 
