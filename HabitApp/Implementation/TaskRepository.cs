@@ -37,7 +37,7 @@ namespace HabitApp.Implementation
             else
                 groupdEventId = entity.GroupEventId.ToString();
 
-            command.CommandText = $"insert into tasks (name, description, priority, status, difficulty, groupeventid, usereventid, deadline) values ('{entity.Name}', '{entity.Description}', {entity.Priority}, {entity.Status}, {entity.Difficulty}, {groupdEventId}, {userEventId}, {entity.Deadline}) returning id";
+            command.CommandText = $"insert into tasks (name, description, priority, status, difficulty, groupeventid, usereventid, deadline) values ('{entity.Name}', '{entity.Description}', {entity.Priority}, {entity.Status}, {entity.Difficulty}, {groupdEventId}, {userEventId}, '{entity.Deadline}') returning id";
             var reader = command.ExecuteReader();
             if (reader.HasRows)
             {
@@ -169,7 +169,7 @@ namespace HabitApp.Implementation
             else
                 groupdEventId = entity.GroupEventId.ToString();
 
-            command.CommandText = $"update tasks set name='{entity.Name}', description='{entity.Description}', priority={entity.Priority}, status={entity.Status}, difficulty={entity.Difficulty}, groupeventid='{groupdEventId}', usereventid='{userEventId}', deadline={entity.Deadline} where id={entity.Id}";
+            command.CommandText = $"update tasks set name='{entity.Name}', description='{entity.Description}', priority={entity.Priority}, status={entity.Status}, difficulty={entity.Difficulty}, groupeventid='{groupdEventId}', usereventid='{userEventId}', deadline='{entity.Deadline}' where id={entity.Id}";
             command.ExecuteNonQuery();
 
             con.Close();

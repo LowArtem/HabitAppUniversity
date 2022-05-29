@@ -22,7 +22,7 @@ namespace HabitApp.Implementation
 
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
-            command.CommandText = $"insert into daily_habits (name, description, status, difficulty, category, deadline, userid) values ('{entity.Name}', '{entity.Description}', {entity.Status}, {entity.Difficulty}, '{entity.Category}', {entity.Deadline}, {entity.UserId}) returning id";
+            command.CommandText = $"insert into daily_habits (name, description, status, difficulty, category, deadline, userid) values ('{entity.Name}', '{entity.Description}', {entity.Status}, {entity.Difficulty}, '{entity.Category}', '{entity.Deadline}', {entity.UserId}) returning id";
             var reader = command.ExecuteReader();
             if (reader.HasRows)
             {
@@ -138,7 +138,7 @@ namespace HabitApp.Implementation
 
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
-            command.CommandText = $"update daily_habits set name='{entity.Name}', description='{entity.Description}', category='{entity.Category}', status={entity.Status}, difficulty={entity.Difficulty}, userid={entity.UserId}, deadline={entity.Deadline} where id={entity.Id}";
+            command.CommandText = $"update daily_habits set name='{entity.Name}', description='{entity.Description}', category='{entity.Category}', status={entity.Status}, difficulty={entity.Difficulty}, userid={entity.UserId}, deadline='{entity.Deadline}' where id={entity.Id}";
             command.ExecuteNonQuery();
 
             con.Close();

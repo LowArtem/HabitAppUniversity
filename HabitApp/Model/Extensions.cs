@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace HabitApp.Model
@@ -37,6 +38,19 @@ namespace HabitApp.Model
                 return int.Parse(parameter.ToString());
             }
             return 1;
+        }
+    }
+
+    public class DateValidating : ValidationRule
+    {
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        {
+            return DateTime.TryParse((value ?? "").ToString(),
+                CultureInfo.CurrentCulture,
+                DateTimeStyles.AssumeLocal | DateTimeStyles.AllowWhiteSpaces,
+                out _)
+                ? ValidationResult.ValidResult
+                : new ValidationResult(false, "Invalid date");
         }
     }
 }
