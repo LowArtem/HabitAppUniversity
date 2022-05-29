@@ -146,7 +146,7 @@ namespace HabitApp.Implementation
 
             string groupid = entity.GroupId == null ? "null" : entity.GroupId.ToString();
 
-            command.CommandText = $"update users set username='{entity.Username}' set experience={entity.Experience} set password='{entity.Password}' set money={entity.Money} set groupid={groupid} where id={entity.Id}";
+            command.CommandText = $"update users set username='{entity.Username}', experience={entity.Experience}, password='{entity.Password}', money={entity.Money}, groupid={groupid} where id={entity.Id}";
             command.ExecuteNonQuery();
 
             con.Close();

@@ -169,7 +169,7 @@ namespace HabitApp.Implementation
             else
                 groupdEventId = entity.GroupEventId.ToString();
 
-            command.CommandText = $"update tasks set name='{entity.Name}' set description='{entity.Description}' set priority={entity.Priority} set status={entity.Status} set difficulty={entity.Difficulty} set groupeventid='{groupdEventId}' set usereventid='{userEventId}' set deadline={entity.Deadline} where id={entity.Id}";
+            command.CommandText = $"update tasks set name='{entity.Name}', description='{entity.Description}', priority={entity.Priority}, status={entity.Status}, difficulty={entity.Difficulty}, groupeventid='{groupdEventId}', usereventid='{userEventId}', deadline={entity.Deadline} where id={entity.Id}";
             command.ExecuteNonQuery();
 
             con.Close();

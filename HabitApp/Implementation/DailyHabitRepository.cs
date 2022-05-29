@@ -138,7 +138,7 @@ namespace HabitApp.Implementation
 
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
-            command.CommandText = $"update daily_habits set name='{entity.Name}' set description='{entity.Description}' set category='{entity.Category}' set status={entity.Status} set difficulty={entity.Difficulty} set userid={entity.UserId} set deadline={entity.Deadline} where id={entity.Id}";
+            command.CommandText = $"update daily_habits set name='{entity.Name}', description='{entity.Description}', category='{entity.Category}', status={entity.Status}, difficulty={entity.Difficulty}, userid={entity.UserId}, deadline={entity.Deadline} where id={entity.Id}";
             command.ExecuteNonQuery();
 
             con.Close();
