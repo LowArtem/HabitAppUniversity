@@ -396,6 +396,104 @@
 
                     </StackPanel>
                 </materialDesign:Card>
+                
+                <!--Habit completions-->
+                <Grid                    
+                    Grid.Column="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        
+                        <!--Create completion fields-->
+                        <materialDesign:Card
+                            Grid.Row="0"
+                            UniformCornerRadius="10"
+                            Margin="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                
+                                <TextBlock 
+                                    Grid.Row="0"
+                                    FontFamily="Tahoma"
+                                    FontSize="20"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Text="Complete this habit"/>
+                                
+                                <Grid
+                                    Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="100"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <Button 
+                                        Margin="5"
+                                        Height="50"
+                                        Width="50"    
+                                        Style="{StaticResource MaterialDesignFloatingActionButton}"
+                                        Background="#ba1b1b"
+                                        Grid.Column="0">
+                                        <materialDesign:PackIcon
+                                            Kind="MinusThick"
+                                            Height="30"
+                                            Width="30" />
+                                    </Button>
+                                    
+                                    <materialDesign:Badged
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        BadgeColorZoneMode="PrimaryDark"
+                                        Badge="{Binding HabitCompletions.Count, Mode=OneWay}"
+                                        Margin="5">
+                                        <Button 
+                                            Height="50"
+                                            Width="50"    
+                                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                                            Background="#1bbaba">
+                                            <materialDesign:PackIcon
+                                                Kind="PlusThick"
+                                                Height="30"
+                                                Width="30" />
+                                        </Button>
+                                    </materialDesign:Badged>
+                                    
+                                </Grid>                            
+                            </Grid>                            
+                        </materialDesign:Card>
+                        
+                        <!--Completions list-->
+                        <materialDesign:Card
+                            Grid.Row="1"
+                            UniformCornerRadius="10"
+                            Margin="5">
+                            <ScrollViewer>
+                                <ItemsControl>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid
+                                                Margin="0,0,0,5">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>                                    
+                                </ItemsControl>
+                            </ScrollViewer>
+                            
+                        </materialDesign:Card>
+                    </Grid>                    
+                </Grid>
             </Grid>
             
             <!--DailyHabit Grid-->

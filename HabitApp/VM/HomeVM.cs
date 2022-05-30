@@ -89,6 +89,22 @@ namespace HabitApp.VM
 
         #endregion
 
+        #region HabitCompletions : List<HabitCompletion> - Список выполнений выбранной привычки
+
+        /// <summary>Список выполнений выбранной привычки</summary>
+        private List<HabitCompletion> _HabitCompletions = new List<HabitCompletion>();
+
+        /// <summary>Список выполнений выбранной привычки</summary>
+        public List<HabitCompletion> HabitCompletions
+        {
+            get => _HabitCompletions;
+            set => Set(ref _HabitCompletions, value);
+        }
+
+        #endregion
+
+
+
         #region DailyHabits : List<DailyHabit> - Список ежедневных привычек
 
         /// <summary>Список ежедневных привычек</summary>
@@ -475,6 +491,9 @@ namespace HabitApp.VM
                 if (SelectedHabitIndex.HasValue && SelectedHabitIndex.Value >= 0)
                 {
                     SelectedHabit = (Habit)Habits[SelectedHabitIndex.Value].Clone();
+                    HabitCompletions.Clear();
+                    HabitCompletions.AddRange(_allHabitService.GetHabitCompletions(SelectedHabit.Id));
+                    OnPropertyChanged(nameof(HabitCompletions));
                 }
                 else
                 {
