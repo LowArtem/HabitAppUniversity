@@ -95,9 +95,10 @@
                                 <ScrollViewer 
                                     Grid.Row="1">
                                     <ListBox 
+                                        x:Name="HabitListBox"
                                         SelectedIndex="{Binding SelectedHabitIndex, Mode=TwoWay}"
                                         HorizontalContentAlignment="Stretch"
-                                        ItemsSource="{Binding Habits}">
+                                        ItemsSource="{Binding Habits, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                                         <ListBox.Template>
                                             <ControlTemplate>
@@ -110,7 +111,7 @@
                                                 <Grid Margin="0,2">
                                                     <TextBlock 
                                                         Style="{StaticResource HabitNameTextBlock}" 
-                                                        Text="{Binding Path=Name}" />
+                                                        Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                 </Grid>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
@@ -148,6 +149,7 @@
 
                                 <ScrollViewer Grid.Row="1">
                                     <ListBox
+                                        x:Name="DailyHabitListBox"
                                         SelectedIndex="{Binding SelectedDailyHabitIndex, Mode=TwoWay}"
                                         HorizontalContentAlignment="Stretch"
                                         ItemsSource="{Binding DailyHabits, Mode=TwoWay}">
@@ -217,6 +219,7 @@
 
                                 <ScrollViewer Grid.Row="1">
                                     <ListBox
+                                        x:Name="TaskListBox"
                                         SelectedIndex="{Binding SelectedTaskIndex, Mode=TwoWay}"
                                         HorizontalContentAlignment="Stretch"
                                         ItemsSource="{Binding Tasks, Mode=TwoWay}">
