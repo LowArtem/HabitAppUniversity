@@ -7,7 +7,9 @@ using HabitApp.VM;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Globalization;
 using System.Windows;
+using System.Windows.Markup;
 
 namespace HabitApp
 {
@@ -40,6 +42,10 @@ namespace HabitApp
             base.OnStartup(e);
 
             await host.StartAsync().ConfigureAwait(false);
+
+            FrameworkElement.LanguageProperty.OverrideMetadata(
+                typeof(FrameworkElement), 
+                new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
         }
 
         protected override async void OnExit(ExitEventArgs e)

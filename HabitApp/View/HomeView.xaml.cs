@@ -1,6 +1,5 @@
 ﻿using HabitApp.VM;
 using System.Windows.Controls;
-using System.Windows.Markup;
 
 namespace HabitApp.View
 {
@@ -12,9 +11,6 @@ namespace HabitApp.View
         public HomeView()
         {
             InitializeComponent();
-
-            TaskDeadlineDatePicker.Language = XmlLanguage.GetLanguage(System.Globalization.CultureInfo.CurrentCulture.IetfLanguageTag);
-
 
             if (this.DataContext != null)
             {
