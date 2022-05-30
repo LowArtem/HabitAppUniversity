@@ -39,9 +39,9 @@ namespace HabitApp.Services
             _dailyHabitRepository.AddHabitCompletion(dailyHabitId, _currentDateTimeProvider.GetCurrentDateTime(), rating);
         }
 
-        public void AddHabitCompletion(int habitId, int rating)
+        public void AddHabitCompletion(int habitId, int rating, bool isPositive = true)
         {
-            _habitRepository.AddHabitCompletion(habitId, _currentDateTimeProvider.GetCurrentDateTime(), rating);
+            _habitRepository.AddHabitCompletion(habitId, _currentDateTimeProvider.GetCurrentDateTime(), rating, isPositive);
         }
     }
 }

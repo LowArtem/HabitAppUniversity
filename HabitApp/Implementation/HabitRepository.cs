@@ -207,6 +207,7 @@ namespace HabitApp.Implementation
                         (id: Convert.ToInt32(reader["id"].ToString()),
                          date: Convert.ToDateTime(reader["date"].ToString()),
                          rating: Convert.ToInt32(reader["rating"].ToString()),
+                         isPositive: Convert.ToBoolean(reader["ispositive"].ToString()),
                          habitId: Convert.ToInt32(reader["habitid"].ToString()));
 
                     completions.Add(habit);
@@ -218,7 +219,7 @@ namespace HabitApp.Implementation
             return completions;
         }
 
-        public void AddHabitCompletion(int habitId, DateTime date, int rating)
+        public void AddHabitCompletion(int habitId, DateTime date, int rating, bool isPositive = true)
         {
             NpgsqlConnection con = new NpgsqlConnection(connectionString);
             con.Open();
@@ -230,8 +231,8 @@ namespace HabitApp.Implementation
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
             command.CommandText = $@"insert into habit_completions 
-                                    (date, rating, habitid) values
-                                    ('{date}', {rating}, {habitId});";
+                                    (date, rating, habitid, ispositive) values
+                                    ('{date}', {rating}, {habitId}, {isPositive});";
             command.ExecuteNonQuery();
 
             con.Close();
