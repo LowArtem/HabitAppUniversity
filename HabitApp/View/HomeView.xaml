@@ -270,7 +270,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <!--Fields editors-->
+                <!--Habit fields editors-->
                 <materialDesign:Card
                     UniformCornerRadius="10"
                     Margin="5"
@@ -321,8 +321,8 @@
                                         <Grid>
                                             <materialDesign:PackIcon
                                                 Kind="Circle"
-                                                Height="30"
-                                                Width="30" />
+                                                Height="35"
+                                                Width="35" />
                                             <TextBlock
                                                 Text="{Binding}"
                                                 HorizontalAlignment="Center"
@@ -456,8 +456,8 @@
                                         <Grid>
                                             <materialDesign:PackIcon
                                                 Kind="Circle"
-                                                Height="30"
-                                                Width="30" />
+                                                Height="35"
+                                                Width="35" />
                                             <TextBlock
                                                 Text="{Binding}"
                                                 HorizontalAlignment="Center"
@@ -530,7 +530,164 @@
             <Grid 
                 Grid.Column="1"
                 Visibility="{Binding IsTaskDetailedShowed, Converter={StaticResource booleanToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                
+                <!--Task fields editors-->
+                <materialDesign:Card
+                    UniformCornerRadius="10"
+                    Margin="5"
+                    Grid.Column="0">
+                    <StackPanel>
+                        <!--Name-->
+                        <TextBox
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Margin="10, 10, 10, 20"
+                            materialDesign:HintAssist.Hint="Name"
+                            FontSize="14"
+                            MaxLength="30"
+                            Text="{Binding SelectedTask.Name, Mode=TwoWay}"/>
 
+                        <!--Description-->
+                        <TextBox
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            Margin="10, 20, 10, 20"
+                            VerticalAlignment="Top"
+                            Height="100"
+                            FontSize="14"
+                            TextWrapping="Wrap"
+                            MaxLength="200"
+                            VerticalScrollBarVisibility="Auto"
+                            materialDesign:HintAssist.Hint="Description"
+                            Text="{Binding SelectedTask.Description, Mode=TwoWay}"/>
+
+                        <!--Difficulty-->
+                        <Grid 
+                            HorizontalAlignment="Stretch"
+                            Margin="10, 20, 10, 20">
+                            <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock 
+                                Grid.Column="0"
+                                FontSize="14"
+                                FontFamily="Tahoma"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Text="Difficulty:"/>
+
+                            <materialDesign:RatingBar
+                                Grid.Column="1"
+                                Max="5"
+                                Value="{Binding SelectedTask.Difficulty, Mode=TwoWay}"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Left">
+                                <materialDesign:RatingBar.ValueItemTemplate>
+                                    <DataTemplate
+                                      DataType="system:Int32">
+                                        <Grid>
+                                            <materialDesign:PackIcon
+                                                Kind="Circle"
+                                                Height="35"
+                                                Width="35" />
+                                            <TextBlock
+                                                Text="{Binding}"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                FontSize="10"
+                                                Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </materialDesign:RatingBar.ValueItemTemplate>
+                            </materialDesign:RatingBar>
+                        </Grid>
+
+                        <!--Priority-->
+                        <Grid 
+                            HorizontalAlignment="Stretch"
+                            Margin="10, 20, 10, 20">
+                            
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock 
+                                Grid.Column="0"
+                                FontSize="14"
+                                FontFamily="Tahoma"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Text="Priority:"/>
+
+                            <materialDesign:RatingBar
+                                Grid.Column="1"
+                                Max="3"
+                                Value="{Binding SelectedTask.Priority, Mode=TwoWay}"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Left">
+                                <materialDesign:RatingBar.ValueItemTemplate>
+                                    <DataTemplate
+                                        DataType="system:Int32">
+                                        <Grid>
+                                            <materialDesign:PackIcon
+                                                Kind="Fire"
+                                                Height="40"
+                                                Width="40" />                                           
+                                        </Grid>
+                                    </DataTemplate>
+                                </materialDesign:RatingBar.ValueItemTemplate>
+                            </materialDesign:RatingBar>
+                        </Grid>                        
+                        
+                        <!--Deadline-->
+                        <DatePicker
+                            x:Name="TaskDeadlineDatePicker"
+                            Margin="10, 20, 10, 20"
+                            FontSize="14"
+                            Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                            materialDesign:HintAssist.Hint="Deadline">
+                            <DatePicker.Text>
+                                <Binding
+                                    Path="SelectedTask.Deadline"
+                                    Mode="TwoWay"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <model:DateValidating
+                                            ValidatesOnTargetUpdated="True" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </DatePicker.Text>
+                        </DatePicker>
+
+                        <!--Control Buttons-->
+                        <Grid
+                            Margin="10, 20, 10, 20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button 
+                                Grid.Column="0"
+                                Height="45"
+                                Command="{Binding CancelTaskChangingCommand}"
+                                Content="Cancel"/>
+
+                            <Button 
+                                Grid.Column="2"
+                                Height="45"
+                                Command="{Binding ChangeTaskCommand}"
+                                Content="Save changes"/>
+                        </Grid>
+
+                    </StackPanel>
+                </materialDesign:Card>
             </Grid>
         </Grid>
     </Grid>

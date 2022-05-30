@@ -28,12 +28,12 @@ namespace HabitApp.Implementation
             string groupdEventId;
 
             if (entity.UserEventId == null)
-                userEventId = "null";
+                userEventId = "NULL";
             else
                 userEventId = entity.UserEventId.ToString();
 
             if (entity.GroupEventId == null)
-                groupdEventId = "null";
+                groupdEventId = "NULL";
             else
                 groupdEventId = entity.GroupEventId.ToString();
 
@@ -160,16 +160,16 @@ namespace HabitApp.Implementation
             string groupdEventId;
 
             if (entity.UserEventId == null)
-                userEventId = "null";
+                userEventId = "NULL";
             else
                 userEventId = entity.UserEventId.ToString();
 
             if (entity.GroupEventId == null)
-                groupdEventId = "null";
+                groupdEventId = "NULL";
             else
                 groupdEventId = entity.GroupEventId.ToString();
 
-            command.CommandText = $"update tasks set name='{entity.Name}', description='{entity.Description}', priority={entity.Priority}, status={entity.Status}, difficulty={entity.Difficulty}, groupeventid='{groupdEventId}', usereventid='{userEventId}', deadline='{entity.Deadline}' where id={entity.Id}";
+            command.CommandText = $"update tasks set name='{entity.Name}', description='{entity.Description}', priority={entity.Priority}, status={entity.Status}, difficulty={entity.Difficulty}, groupeventid={groupdEventId}, usereventid={userEventId}, deadline='{entity.Deadline}' where id={entity.Id}";
             command.ExecuteNonQuery();
 
             con.Close();

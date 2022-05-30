@@ -418,6 +418,7 @@ namespace HabitApp.VM
         private void OnChangeTaskCommandExecuted(object p)
         {
             Tasks[SelectedTaskIndex.Value] = SelectedTask;
+            Tasks[SelectedTaskIndex.Value].Deadline = SelectedTask.Deadline;
             Tasks[SelectedTaskIndex.Value] = _allHabitCRUDService.ChangeTask(Tasks[SelectedTaskIndex.Value]);
             OnPropertyChanged(nameof(Tasks));
         }
