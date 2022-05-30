@@ -6,6 +6,7 @@ using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -33,6 +34,9 @@ namespace HabitApp.VM
             ChangeTaskCommand = new BaseCommand(OnChangeTaskCommandExecuted, CanChangeTaskCommandExecute);
             ChangeTaskStatusCommand = new BaseCommand(OnChangeTaskStatusCommandExecuted, CanChangeTaskStatusCommandExecute);
             CancelTaskChangingCommand = new BaseCommand(OnCancelTaskChangingCommandExecuted, CanCancelTaskChangingCommandExecute);
+
+            AddHabitCompletionPositiveCommand = new BaseCommand(OnAddHabitCompletionPositiveCommandExecutedAsync, CanAddHabitCompletionPositiveCommandExecute);
+            AddHabitCompletionNegativeCommand = new BaseCommand(OnAddHabitCompletionNegativeCommandExecutedAsync, CanAddHabitCompletionNegativeCommandExecute);
 
             User currentUser;
             var app = Application.Current;
@@ -89,12 +93,14 @@ namespace HabitApp.VM
 
         #endregion
 
-        #region HabitCompletions : List<HabitCompletion> - Список выполнений выбранной привычки
 
-        /// <summary>Список выполнений выбранной привычки</summary>
+
+        #region HabitCompletions : List<HabitCompletion> - список всех выполнений выбранной привычки
+
+        /// <summary>список всех выполнений выбранной привычки</summary>
         private List<HabitCompletion> _HabitCompletions = new List<HabitCompletion>();
 
-        /// <summary>Список выполнений выбранной привычки</summary>
+        /// <summary>список всех выполнений выбранной привычки</summary>
         public List<HabitCompletion> HabitCompletions
         {
             get => _HabitCompletions;
@@ -102,6 +108,35 @@ namespace HabitApp.VM
         }
 
         #endregion
+
+        #region HabitCompletionsPositive : List<HabitCompletion> - список положительных выполнений выбранной привычки
+
+        /// <summary>список положительных выполнений выбранной привычки</summary>
+        private List<HabitCompletion> _HabitCompletionsPositive = new List<HabitCompletion>();
+
+        /// <summary>список положительных выполнений выбранной привычки</summary>
+        public List<HabitCompletion> HabitCompletionsPositive
+        {
+            get => _HabitCompletionsPositive;
+            set => Set(ref _HabitCompletionsPositive, value);
+        }
+
+        #endregion
+
+        #region HabitCompletionsNegative : List<HabitCompletion> - список отрицательных выполнений выбранной привычки
+
+        /// <summary>список отрицательных выполнений выбранной привычки</summary>
+        private List<HabitCompletion> _HabitCompletionsNegative = new List<HabitCompletion>();
+
+        /// <summary>список отрицательных выполнений выбранной привычки</summary>
+        public List<HabitCompletion> HabitCompletionsNegative
+        {
+            get => _HabitCompletionsNegative;
+            set => Set(ref _HabitCompletionsNegative, value);
+        }
+
+        #endregion
+
 
 
 
@@ -472,6 +507,60 @@ namespace HabitApp.VM
         #endregion
 
 
+        #region AddHabitCompletionPositiveCommand
+
+        public ICommand AddHabitCompletionPositiveCommand { get; }
+        private bool CanAddHabitCompletionPositiveCommandExecute(object p) 
+            => SelectedHabit != null && (SelectedHabit.Type == 1 || SelectedHabit.Type == 3);
+
+        private async void OnAddHabitCompletionPositiveCommandExecutedAsync(object p)
+        {
+            // Dialog games            
+            var view = App.Host.Services.GetRequiredService<CompletionRatingDialog>();
+            var result = await DialogHost.Show(view, "Root Dialog", ClosingEventHandler);
+
+            var rating = int.Parse((result ?? null).ToString());
+            if (rating > 0)
+            {
+                _allHabitService.AddHabitCompletion(SelectedHabit.Id, rating, true);
+                OnPropertyChanged(nameof(SelectedHabitIndex));
+            }
+            else
+            {
+                return;
+            }            
+        }
+
+        #endregion
+
+        #region AddHabitCompletionNegativeCommand
+
+        public ICommand AddHabitCompletionNegativeCommand { get; }
+        private bool CanAddHabitCompletionNegativeCommandExecute(object p) 
+            => SelectedHabit != null && (SelectedHabit.Type == 2 || SelectedHabit.Type == 3);
+
+        private async void OnAddHabitCompletionNegativeCommandExecutedAsync(object p)
+        {
+            // Dialog games            
+            var view = App.Host.Services.GetRequiredService<CompletionRatingDialog>();
+            var result = await DialogHost.Show(view, "Root Dialog", ClosingEventHandler);
+
+            var rating = int.Parse((result ?? null).ToString());
+            if (rating > 0)
+            {
+                _allHabitService.AddHabitCompletion(SelectedHabit.Id, rating, false);
+                OnPropertyChanged(nameof(SelectedHabitIndex));
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        #endregion
+
+
+
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             if (propertyName == "Habits")
@@ -491,9 +580,16 @@ namespace HabitApp.VM
                 if (SelectedHabitIndex.HasValue && SelectedHabitIndex.Value >= 0)
                 {
                     SelectedHabit = (Habit)Habits[SelectedHabitIndex.Value].Clone();
-                    HabitCompletions.Clear();
-                    HabitCompletions.AddRange(_allHabitService.GetHabitCompletions(SelectedHabit.Id));
-                    OnPropertyChanged(nameof(HabitCompletions));
+                    HabitCompletions = _allHabitService.GetHabitCompletions(SelectedHabit.Id);
+
+                    HabitCompletionsPositive.Clear();
+                    HabitCompletionsNegative.Clear();
+
+                    HabitCompletionsPositive.AddRange(HabitCompletions.FindAll(x => x.IsPositive));
+                    HabitCompletionsNegative.AddRange(HabitCompletions.FindAll(x => !x.IsPositive));
+
+                    OnPropertyChanged(nameof(HabitCompletionsPositive));
+                    OnPropertyChanged(nameof(HabitCompletionsNegative));
                 }
                 else
                 {
