@@ -31,6 +31,7 @@ namespace HabitApp.VM
             CancelDailyHabitChangingCommand = new BaseCommand(OnCancelDailyHabitChangingCommandExecuted, CanCancelDailyHabitChangingCommandExecute);
 
             ChangeTaskCommand = new BaseCommand(OnChangeTaskCommandExecuted, CanChangeTaskCommandExecute);
+            ChangeTaskStatusCommand = new BaseCommand(OnChangeTaskStatusCommandExecuted, CanChangeTaskStatusCommandExecute);
             CancelTaskChangingCommand = new BaseCommand(OnCancelTaskChangingCommandExecuted, CanCancelTaskChangingCommandExecute);
 
             User currentUser;
@@ -424,6 +425,21 @@ namespace HabitApp.VM
         }
 
         #endregion
+
+        #region ChangeTaskStatusCommand
+
+        public ICommand ChangeTaskStatusCommand { get; }
+        private bool CanChangeTaskStatusCommandExecute(object p) => true;
+
+        private void OnChangeTaskStatusCommandExecuted(object p)
+        {
+            int index = Tasks.FindIndex(x => x.Id == int.Parse(p.ToString()));
+            Tasks[index] = _allHabitCRUDService.ChangeTask(Tasks[index]);
+            OnPropertyChanged(nameof(Tasks));
+        }
+
+        #endregion
+
 
         #region CancelTaskChangingCommand
 

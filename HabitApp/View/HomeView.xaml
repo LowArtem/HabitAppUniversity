@@ -241,6 +241,8 @@
 
                                                         <CheckBox
                                                             IsChecked="{Binding Status}" 
+                                                            Command="{Binding DataContext.ChangeTaskStatusCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=1}}"
+                                                            CommandParameter="{Binding Id}"
                                                             HorizontalAlignment="Right"
                                                             materialDesign:CheckBoxAssist.CheckBoxSize="22"/>
                                                     </Grid>
