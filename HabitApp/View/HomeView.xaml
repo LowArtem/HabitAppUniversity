@@ -279,7 +279,7 @@
                         <!--Name-->
                         <TextBox
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Margin="10, 10, 10, 10"
+                            Margin="10, 10, 10, 20"
                             materialDesign:HintAssist.Hint="Name"
                             FontSize="14"
                             MaxLength="30"
@@ -288,7 +288,7 @@
                         <!--Description-->
                         <TextBox
                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                            Margin="10"
+                            Margin="10, 20, 10, 20"
                             VerticalAlignment="Top"
                             Height="100"
                             FontSize="14"
@@ -301,7 +301,7 @@
                         <!--Difficulty-->
                         <DockPanel 
                             HorizontalAlignment="Stretch"
-                            Margin="10">
+                            Margin="10, 20, 10, 20">
                             <TextBlock 
                                 FontSize="14"
                                 FontFamily="Tahoma"
@@ -338,7 +338,7 @@
                         <!--Type-->
                         <DockPanel 
                             HorizontalAlignment="Stretch"
-                            Margin="10">
+                            Margin="10, 20, 10, 20">
                             <TextBlock 
                                 FontSize="14"
                                 FontFamily="Tahoma"
@@ -363,7 +363,7 @@
 
                         <!--Category-->
                         <ComboBox 
-                            Margin="10"
+                            Margin="10, 20, 10, 20"
                             SelectedIndex="{Binding SelectedHabit.Category, Converter={StaticResource CategoryStringToIntIndexConverter}, Mode=TwoWay}"
                             materialDesign:HintAssist.Hint="Category"
                             FontSize="14"
@@ -372,7 +372,7 @@
 
                         <!--Control Buttons-->
                         <Grid
-                            Margin="10">
+                            Margin="10, 20, 10, 20">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="50"/>
@@ -414,7 +414,7 @@
                         <!--Name-->
                         <TextBox
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Margin="10, 10, 10, 10"
+                            Margin="10, 10, 10, 20"
                             materialDesign:HintAssist.Hint="Name"
                             FontSize="14"
                             MaxLength="30"
@@ -423,7 +423,7 @@
                         <!--Description-->
                         <TextBox
                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                            Margin="10"
+                            Margin="10, 20, 10, 20"
                             VerticalAlignment="Top"
                             Height="100"
                             FontSize="14"
@@ -436,7 +436,7 @@
                         <!--Difficulty-->
                         <DockPanel 
                             HorizontalAlignment="Stretch"
-                            Margin="10">
+                            Margin="10, 20, 10, 20">
                             <TextBlock 
                                 FontSize="14"
                                 FontFamily="Tahoma"
@@ -472,7 +472,7 @@
 
                         <!--Category-->
                         <ComboBox 
-                            Margin="10"
+                            Margin="10, 20, 10, 20"
                             SelectedIndex="{Binding SelectedDailyHabit.Category, Converter={StaticResource CategoryStringToIntIndexConverter}, Mode=TwoWay}"
                             materialDesign:HintAssist.Hint="Category"
                             FontSize="14"
@@ -481,7 +481,7 @@
                         
                         <!--Deadline-->
                         <materialDesign:TimePicker 
-                            Margin="10"
+                            Margin="10, 20, 10, 20"
                             FontSize="14"
                             Is24Hours="True"
                             Style="{StaticResource MaterialDesignOutlinedTimePicker}"
@@ -502,7 +502,7 @@
 
                         <!--Control Buttons-->
                         <Grid
-                            Margin="10">
+                            Margin="10, 20, 10, 20">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="50"/>

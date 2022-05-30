@@ -9,39 +9,51 @@
              DataContext="{Binding Path=CompletionRatingDialogVM, Source={StaticResource VMLocator}}"
              d:Background="White"
              d:DesignHeight="200" d:DesignWidth="400">
-    <Grid
-        Margin="15">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Grid>
+        <Button
+            VerticalAlignment="Top"
+            HorizontalAlignment="Right"
+            Style="{StaticResource MaterialDesignOutlinedDarkButton}"
+            ToolTip="Cancel"
+            Content="X"
+            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+            CommandParameter="0"/>
+            
+        <Grid
+            Margin="25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <TextBlock 
-            Grid.Row="0"
-            FontSize="24"
-            Text="Rate your performance this time"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"/>
+            <TextBlock 
+                Grid.Row="0"
+                FontSize="24"
+                FontFamily="Tahoma"
+                Text="Rate your performance"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
 
-        <materialDesign:RatingBar
-            Grid.Row="1"
-            Max="5"
-            Margin="20"
-            Value="{Binding Rating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            Orientation="Horizontal"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center">
-            <materialDesign:RatingBar.ValueItemTemplate>
-                <DataTemplate
-                        DataType="system:Int32">
-                    <Grid>
-                        <materialDesign:PackIcon
-                            Kind="Heart"
-                            Height="50"
-                            Width="50" />
-                    </Grid>
-                </DataTemplate>
-            </materialDesign:RatingBar.ValueItemTemplate>
-        </materialDesign:RatingBar>
+            <materialDesign:RatingBar
+                Grid.Row="1"
+                Max="5"
+                Margin="20"
+                Value="{Binding Rating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Orientation="Horizontal"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+                <materialDesign:RatingBar.ValueItemTemplate>
+                    <DataTemplate
+                            DataType="system:Int32">
+                        <Grid>
+                            <materialDesign:PackIcon
+                                Kind="Heart"
+                                Height="50"
+                                Width="50" />
+                        </Grid>
+                    </DataTemplate>
+                </materialDesign:RatingBar.ValueItemTemplate>
+            </materialDesign:RatingBar>
+        </Grid>
     </Grid>
 </UserControl>

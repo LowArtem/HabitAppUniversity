@@ -6,8 +6,6 @@ using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -51,8 +49,6 @@ namespace HabitApp.VM
             Habits = _allHabitCRUDService.GetAllHabitsByUser(currentUser.Id);
             Habits.Sort((x, y) => x.Id.CompareTo(y.Id));
 
-            //Habits = new ObservableCollection<Habit>(list);
-
             DailyHabits = _allHabitCRUDService.GetAllDailyHabitsByUser(currentUser.Id);
             DailyHabits.Sort((x, y) => x.Id.CompareTo(y.Id));
 
@@ -74,20 +70,6 @@ namespace HabitApp.VM
             get => _Habits;
             set => Set(ref _Habits, value);
         }
-
-        //private ObservableCollection<Habit> _Habits;
-        //public ObservableCollection<Habit> Habits
-        //{
-        //    get => _Habits;
-        //    set 
-        //    {
-        //        if (!Equals(_Habits, value))
-        //        {
-        //            _Habits = value;
-        //            OnPropertyChanged(nameof(Habits));
-        //        }
-        //    }
-        //}
 
 
         #endregion
@@ -384,7 +366,6 @@ namespace HabitApp.VM
             int index = DailyHabits.FindIndex(x => x.Id == int.Parse(p.ToString()));
 
             // Dialog games
-            // Пока вижу баг - не убирает галочку в случае отмены, логика вся работает вроде верно
             if (DailyHabits[index].Status == true)
             {
                 var view = App.Host.Services.GetRequiredService<CompletionRatingDialog>();
@@ -436,7 +417,9 @@ namespace HabitApp.VM
 
         private void OnChangeTaskCommandExecuted(object p)
         {
+            Tasks[SelectedTaskIndex.Value] = SelectedTask;
             Tasks[SelectedTaskIndex.Value] = _allHabitCRUDService.ChangeTask(Tasks[SelectedTaskIndex.Value]);
+            OnPropertyChanged(nameof(Tasks));
         }
 
         #endregion
@@ -454,8 +437,6 @@ namespace HabitApp.VM
         }
 
         #endregion
-
-
 
 
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -485,7 +466,7 @@ namespace HabitApp.VM
             }
             else if (propertyName == "SelectedDailyHabitIndex")
             {
-                if (SelectedDailyHabitIndex.HasValue)
+                if (SelectedDailyHabitIndex.HasValue && SelectedDailyHabitIndex.Value >= 0)
                 {
                     SelectedDailyHabit = (DailyHabit)DailyHabits[SelectedDailyHabitIndex.Value].Clone();
                 }
@@ -496,7 +477,7 @@ namespace HabitApp.VM
             }
             else if (propertyName == "SelectedTaskIndex")
             {
-                if (SelectedTaskIndex.HasValue)
+                if (SelectedTaskIndex.HasValue && SelectedTaskIndex.Value >= 0)
                 {
                     SelectedTask = (Task)Tasks[SelectedTaskIndex.Value].Clone();
                 }

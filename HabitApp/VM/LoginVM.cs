@@ -87,7 +87,7 @@ namespace HabitApp.VM
             }
             else
             {
-                MessageQueue.Enqueue("Login is unsuccessful. Maybe you entered wrong credentials.");
+                MessageQueue.Enqueue("Login is unsuccessful. Maybe you have entered wrong credentials.");
             }
         }
 
