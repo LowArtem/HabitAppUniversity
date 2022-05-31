@@ -6,6 +6,7 @@ using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -481,6 +482,16 @@ namespace HabitApp.VM
                     DailyHabits[index].Status = false;
                 }
             }
+            else
+            {
+                SelectedDailyHabitIndex = index;
+
+                var lastCompletion = DailyHabitCompletions
+                    .FindAll(x => x.Date.Date == _currentDateTimeProvider.GetCurrentDateTime().Date)
+                    .Aggregate((curMin, x) => x.Date > curMin.Date ? x : curMin);
+
+                DeleteDailyHabitCompletionCommand.Execute(lastCompletion.Id);
+            }
 
             DailyHabits[index] = _allHabitCRUDService.ChangeDailyHabit(DailyHabits[index]);
             OnPropertyChanged(nameof(DailyHabits));
@@ -689,8 +700,6 @@ namespace HabitApp.VM
                 {
                     SelectedDailyHabit = (DailyHabit)DailyHabits[SelectedDailyHabitIndex.Value].Clone();
                     DailyHabitCompletions = _allHabitService.GetDailyHabitCompletions(SelectedDailyHabit.Id);
-
-                    OnPropertyChanged(nameof(DailyHabitCompletions));
                 }
                 else
                 {
