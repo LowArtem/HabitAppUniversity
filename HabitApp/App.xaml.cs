@@ -44,7 +44,7 @@ namespace HabitApp
             await host.StartAsync().ConfigureAwait(false);
 
             FrameworkElement.LanguageProperty.OverrideMetadata(
-                typeof(FrameworkElement), 
+                typeof(FrameworkElement),
                 new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
         }
 

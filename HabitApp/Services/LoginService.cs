@@ -55,7 +55,7 @@ namespace HabitApp.Services
 
                     return true;
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     // Произошла ошибка при добавлении пользователя в БД
                     var app = Application.Current;

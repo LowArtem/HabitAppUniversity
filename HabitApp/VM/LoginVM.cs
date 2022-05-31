@@ -4,7 +4,6 @@ using HabitApp.View;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Windows;
 using System.Windows.Input;
 
 namespace HabitApp.VM
@@ -28,10 +27,10 @@ namespace HabitApp.VM
         #region MessageQueue : SnackbarMessageQueue - Сообщение об ошибке
 
         /// <summary>Сообщение об ошибке</summary>
-        private SnackbarMessageQueue  _MessageQueue;
+        private SnackbarMessageQueue _MessageQueue;
 
         /// <summary>Сообщение об ошибке</summary>
-        public SnackbarMessageQueue  MessageQueue
+        public SnackbarMessageQueue MessageQueue
         {
             get => _MessageQueue;
             set => Set(ref _MessageQueue, value);

@@ -108,7 +108,7 @@ namespace HabitApp.Implementation
             if (reader.HasRows)
             {
                 while (reader.Read())
-                {                    
+                {
                     habit = new Habit
                         (id: Convert.ToInt32(reader["id"].ToString()),
                          name: reader["name"].ToString(),

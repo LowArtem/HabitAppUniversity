@@ -6,7 +6,6 @@ using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -382,7 +381,7 @@ namespace HabitApp.VM
         private bool CanChangeHabitCommandExecute(object p) => SelectedHabitIndex != null;
 
         private void OnChangeHabitCommandExecuted(object p)
-        {            
+        {
             Habits[SelectedHabitIndex.Value].Name = SelectedHabit.Name;
             Habits[SelectedHabitIndex.Value].Description = SelectedHabit.Description;
             Habits[SelectedHabitIndex.Value].Category = SelectedHabit.Category;
@@ -449,7 +448,7 @@ namespace HabitApp.VM
                 else
                 {
                     DailyHabits[index].Status = false;
-                }    
+                }
             }
 
             DailyHabits[index] = _allHabitCRUDService.ChangeDailyHabit(DailyHabits[index]);
@@ -527,7 +526,7 @@ namespace HabitApp.VM
         #region AddHabitCompletionPositiveCommand
 
         public ICommand AddHabitCompletionPositiveCommand { get; }
-        private bool CanAddHabitCompletionPositiveCommandExecute(object p) 
+        private bool CanAddHabitCompletionPositiveCommandExecute(object p)
             => SelectedHabit != null && (SelectedHabit.Type == 1 || SelectedHabit.Type == 3);
 
         private async void OnAddHabitCompletionPositiveCommandExecutedAsync(object p)
@@ -545,7 +544,7 @@ namespace HabitApp.VM
             else
             {
                 return;
-            }            
+            }
         }
 
         #endregion
@@ -553,7 +552,7 @@ namespace HabitApp.VM
         #region AddHabitCompletionNegativeCommand
 
         public ICommand AddHabitCompletionNegativeCommand { get; }
-        private bool CanAddHabitCompletionNegativeCommandExecute(object p) 
+        private bool CanAddHabitCompletionNegativeCommandExecute(object p)
             => SelectedHabit != null && (SelectedHabit.Type == 2 || SelectedHabit.Type == 3);
 
         private async void OnAddHabitCompletionNegativeCommandExecutedAsync(object p)

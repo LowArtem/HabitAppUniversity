@@ -9,7 +9,7 @@ namespace HabitApp.Data
         public int Rating { get; set; }
         public int HabitId { get; set; }
         public bool IsPositive { get; set; }
-        public bool IsNegative { get => !IsPositive; } 
+        public bool IsNegative { get => !IsPositive; }
 
         public HabitCompletion(int rating, int habitId, DateTime date, bool isPositive = true, int id = 0)
         {

@@ -1,10 +1,10 @@
-﻿using HabitApp.Repositories;
+﻿using HabitApp.Data;
+using HabitApp.Model;
+using HabitApp.Repositories;
+using Npgsql;
 using System;
 using System.Collections.Generic;
-using HabitApp.Data;
-using Npgsql;
 using System.Data;
-using HabitApp.Model;
 
 namespace HabitApp.Implementation
 {
@@ -28,7 +28,7 @@ namespace HabitApp.Implementation
                 command.CommandText = $"insert into users (username, experience, password, money, groupid) values ('{entity.Username}', {entity.Experience}, '{entity.Password}', {entity.Money}, {entity.GroupId}) returning id";
             else
                 command.CommandText = $"insert into users (username, experience, password, money, groupid) values ('{entity.Username}', {entity.Experience}, '{entity.Password}', {entity.Money}, null) returning id";
-            
+
             var reader = command.ExecuteReader();
             if (reader.HasRows)
             {
@@ -78,7 +78,7 @@ namespace HabitApp.Implementation
 
             if (reader.HasRows)
             {
-                while(reader.Read())
+                while (reader.Read())
                 {
                     User user = new User
                         (id: Convert.ToInt32(reader["id"].ToString()),

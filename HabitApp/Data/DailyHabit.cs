@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HabitApp.Data 
+namespace HabitApp.Data
 {
     public class DailyHabit : ICloneable
     {

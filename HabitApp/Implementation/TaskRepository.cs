@@ -1,10 +1,10 @@
 ﻿using HabitApp.Data;
+using HabitApp.Model;
 using HabitApp.Repositories;
 using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using HabitApp.Model;
 
 namespace HabitApp.Implementation
 {
