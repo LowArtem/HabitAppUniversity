@@ -10,7 +10,7 @@ namespace HabitApp.Implementation
 {
     public class UserRepository : IRepository<User>
     {
-        private const string connectionString = "User Id=postgres;Password=root;Host=localhost;Port=5432;Database=habit_db;";
+        private readonly string connectionString = Properties.Settings.Default.connectionString;
 
         public User Add(User entity)
         {
