@@ -49,8 +49,6 @@ namespace HabitApp.VM
                 throw new Exception("Неверный класс приложения, не обнаружено свойство CurrentUser");
             }
 
-            // TODO: написать сложный сравниватель, учитывающий приоритет, дедлайн и т д
-
             Habits = _allHabitCRUDService.GetAllHabitsByUser(currentUser.Id);
             Habits.Sort((x, y) => x.Id.CompareTo(y.Id));
 
@@ -582,19 +580,25 @@ namespace HabitApp.VM
 
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == "Habits")
+            if (propertyName == nameof(Habits))
+            {
                 IsHabitsEmpty = Habits.Count == 0;
-            else if (propertyName == "DailyHabits")
+            }
+            else if (propertyName == nameof(DailyHabits))
+            {
                 IsDailyHabitsEmpty = DailyHabits.Count == 0;
-            else if (propertyName == "Tasks")
+            }
+            else if (propertyName == nameof(Tasks))
+            {
                 IsTasksEmpty = Tasks.Count == 0;
-            else if (propertyName == "SelectedTabIndex")
+            }
+            else if (propertyName == nameof(SelectedTabIndex))
             {
                 IsHabitDetailedShowed = SelectedTabIndex == 0;
                 IsDailyHabitDetailedShowed = SelectedTabIndex == 1;
                 IsTaskDetailedShowed = SelectedTabIndex == 2;
             }
-            else if (propertyName == "SelectedHabitIndex")
+            else if (propertyName == nameof(SelectedHabitIndex))
             {
                 if (SelectedHabitIndex.HasValue && SelectedHabitIndex.Value >= 0)
                 {
@@ -607,9 +611,6 @@ namespace HabitApp.VM
                     HabitCompletionsPositive.AddRange(HabitCompletions.FindAll(x => x.IsPositive));
                     HabitCompletionsNegative.AddRange(HabitCompletions.FindAll(x => !x.IsPositive));
 
-                    HabitCompletionsPositive.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
-                    HabitCompletionsNegative.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
-
                     OnPropertyChanged(nameof(HabitCompletionsPositive));
                     OnPropertyChanged(nameof(HabitCompletionsNegative));
                 }
@@ -618,14 +619,13 @@ namespace HabitApp.VM
                     SelectedHabit = null;
                 }
             }
-            else if (propertyName == "SelectedDailyHabitIndex")
+            else if (propertyName == nameof(SelectedDailyHabitIndex))
             {
                 if (SelectedDailyHabitIndex.HasValue && SelectedDailyHabitIndex.Value >= 0)
                 {
                     SelectedDailyHabit = (DailyHabit)DailyHabits[SelectedDailyHabitIndex.Value].Clone();
                     DailyHabitCompletions = _allHabitService.GetDailyHabitCompletions(SelectedDailyHabit.Id);
 
-                    DailyHabitCompletions.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
                     OnPropertyChanged(nameof(DailyHabitCompletions));
                 }
                 else
@@ -633,7 +633,7 @@ namespace HabitApp.VM
                     SelectedDailyHabit = null;
                 }
             }
-            else if (propertyName == "SelectedTaskIndex")
+            else if (propertyName == nameof(SelectedTaskIndex))
             {
                 if (SelectedTaskIndex.HasValue && SelectedTaskIndex.Value >= 0)
                 {
