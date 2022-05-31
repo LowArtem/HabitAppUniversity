@@ -217,5 +217,26 @@ namespace HabitApp.Implementation
             con.Close();
             return tasks;
         }
+
+        public void UpdateTaskStatus(int taskId, int userId, bool status, DateTime date)
+        {
+            NpgsqlConnection con = new NpgsqlConnection(connectionString);
+            con.Open();
+            if (con.FullState == ConnectionState.Broken || con.FullState == ConnectionState.Closed)
+            {
+                throw new Exception("Не работает соединение с бд");
+            }
+
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            command.CommandText = $@"update tasks
+                                     set status={status}
+                                     where tasks.id={taskId};
+                                     update task_to_user
+                                     set date = '{date}'
+                                     where taskid={taskId} and userid={userId};";
+
+            command.ExecuteNonQuery();
+        }
     }
 }

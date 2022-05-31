@@ -561,7 +561,11 @@ namespace HabitApp.VM
         private void OnChangeTaskStatusCommandExecuted(object p)
         {
             int index = Tasks.FindIndex(x => x.Id == int.Parse(p.ToString()));
-            Tasks[index] = _allHabitCRUDService.ChangeTask(Tasks[index]);
+
+            _allHabitService.ChangeTaskCompletedStatus(
+                Tasks[index].Id, (Application.Current as App).CurrentUser.Id, 
+                Tasks[index].Status, _currentDateTimeProvider.GetCurrentDateTime());
+
             OnPropertyChanged(nameof(Tasks));
         }
 

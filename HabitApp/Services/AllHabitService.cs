@@ -1,6 +1,7 @@
 ﻿using HabitApp.Data;
 using HabitApp.Implementation;
 using HabitApp.Model;
+using System;
 using System.Collections.Generic;
 
 namespace HabitApp.Services
@@ -23,11 +24,9 @@ namespace HabitApp.Services
         public List<HabitCompletion> GetHabitCompletions(int habitId) => _habitRepository.GetAllCompletionsById(habitId);
         public List<HabitCompletion> GetDailyHabitCompletions(int dailyHabitId) => _dailyHabitRepository.GetAllCompletionsById(dailyHabitId);
 
-        public void ChangeTaskCompletedStatus(int taskId)
+        public void ChangeTaskCompletedStatus(int taskId, int userId, bool status, DateTime date)
         {
-            var task = _taskRepository.GetById(taskId);
-            task.Status = !task.Status;
-            _taskRepository.Update(task);
+            _taskRepository.UpdateTaskStatus(taskId, userId, status, date);
         }
 
         public void AddDailyHabitCompletion(int dailyHabitId, int rating)
