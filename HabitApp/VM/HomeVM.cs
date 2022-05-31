@@ -17,11 +17,13 @@ namespace HabitApp.VM
         private readonly PageNavigationManager _pageNavigationManager;
         private readonly AllHabitCRUDService _allHabitCRUDService;
         private readonly AllHabitService _allHabitService;
+        private readonly ICurrentDateTimeProvider _currentDateTimeProvider;
 
-        public HomeVM(PageNavigationManager pageNavigationManager, AllHabitCRUDService allHabitCRUDService, AllHabitService allHabitService)
+        public HomeVM(PageNavigationManager pageNavigationManager, AllHabitCRUDService allHabitCRUDService, AllHabitService allHabitService, ICurrentDateTimeProvider currentDateTimeProvider)
         {
             _pageNavigationManager = pageNavigationManager;
             _allHabitCRUDService = allHabitCRUDService;
+            _currentDateTimeProvider = currentDateTimeProvider;
 
             ChangeHabitCommand = new BaseCommand(OnChangeHabitCommandExecuted, CanChangeHabitCommandExecute);
             CancelHabitChangingCommand = new BaseCommand(OnCancelHabitChangingCommandExecuted, CanCancelHabitChangingCommandExecute);
@@ -59,6 +61,31 @@ namespace HabitApp.VM
 
             CategoriesList = Categories.GetAll();
             _allHabitService = allHabitService;
+
+            UpdateDailyHabitsStatus();
+        }
+
+
+        /// <summary>
+        /// Обновление DailyHabits.Status если произошла смена дня
+        /// </summary>
+        private void UpdateDailyHabitsStatus()
+        {
+            var currentDateTime = _currentDateTimeProvider.GetCurrentDateTime();
+            var savedDateTime = Properties.Settings.Default.lastLoginTime;
+
+            Properties.Settings.Default.lastLoginTime = currentDateTime;
+
+            // сменилась дата, значит нужно обновлять статус ежедневных привычек
+            if (savedDateTime.Date < currentDateTime.Date)
+            {
+                foreach (var dailyHabit in DailyHabits)
+                {
+                    _allHabitCRUDService.ChangeDailyHabitStatus(false, dailyHabit.Id);
+                }
+
+                OnPropertyChanged(nameof(DailyHabits));
+            }
         }
 
         #region Habits : List<Habit> - Список привычек пользователя
