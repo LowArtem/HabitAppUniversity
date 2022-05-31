@@ -7,6 +7,7 @@
     xmlns:local="clr-namespace:HabitApp"
     xmlns:model="clr-namespace:HabitApp.Model"
     xmlns:data="clr-namespace:HabitApp.Data"
+    xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     DataContext="{Binding Path=DashboardVM, Source={StaticResource VMLocator}}"
     mc:Ignorable="d"
