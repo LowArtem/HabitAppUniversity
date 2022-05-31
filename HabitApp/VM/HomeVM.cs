@@ -39,6 +39,10 @@ namespace HabitApp.VM
             AddHabitCompletionPositiveCommand = new BaseCommand(OnAddHabitCompletionPositiveCommandExecutedAsync, CanAddHabitCompletionPositiveCommandExecute);
             AddHabitCompletionNegativeCommand = new BaseCommand(OnAddHabitCompletionNegativeCommandExecutedAsync, CanAddHabitCompletionNegativeCommandExecute);
 
+            DeleteHabitCompletionCommand = new BaseCommand(OnDeleteHabitCompletionCommandExecuted, CanDeleteHabitCompletionCommandExecute);
+            DeleteDailyHabitCompletionCommand = new BaseCommand(OnDeleteDailyHabitCompletionCommandExecuted, CanDeleteDailyHabitCompletionCommandExecute);
+
+
             User currentUser;
             var app = Application.Current;
             if (app is App currentApp)
@@ -598,6 +602,40 @@ namespace HabitApp.VM
             {
                 return;
             }
+        }
+
+        #endregion
+
+
+
+        #region DeleteHabitCompletionCommand
+
+        public ICommand DeleteHabitCompletionCommand { get; }
+        private bool CanDeleteHabitCompletionCommandExecute(object p) => true;
+
+        private void OnDeleteHabitCompletionCommandExecuted(object p)
+        {
+            int index = HabitCompletions.FindIndex(x => x.Id == int.Parse(p.ToString()));
+            HabitCompletions.Remove(HabitCompletions[index]);
+            _allHabitService.DeleteHabitCompletion(int.Parse(p.ToString()));
+
+            OnPropertyChanged(nameof(HabitCompletions));
+        }
+
+        #endregion
+
+        #region DeleteDailyHabitCompletionCommand
+
+        public ICommand DeleteDailyHabitCompletionCommand { get; }
+        private bool CanDeleteDailyHabitCompletionCommandExecute(object p) => true;
+
+        private void OnDeleteDailyHabitCompletionCommandExecuted(object p)
+        {
+            int index = DailyHabitCompletions.FindIndex(x => x.Id == int.Parse(p.ToString()));
+            DailyHabitCompletions.Remove(DailyHabitCompletions[index]);
+            _allHabitService.DeleteDailyHabitCompletion(int.Parse(p.ToString()));
+
+            OnPropertyChanged(nameof(DailyHabitCompletions));
         }
 
         #endregion

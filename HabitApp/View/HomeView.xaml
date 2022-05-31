@@ -484,6 +484,7 @@
                             Margin="5">
                             <ScrollViewer>
                                 <ItemsControl
+                                    x:Name="HabitCompletionListBox"
                                     ItemsSource="{Binding HabitCompletions}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
@@ -494,6 +495,7 @@
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="80"/>
                                                     <ColumnDefinition Width="80"/>
                                                 </Grid.ColumnDefinitions>
                                                 
@@ -551,6 +553,19 @@
                                                     Height="30"
                                                     Width="30"
                                                     Grid.Column="1" />
+                                                
+                                                <Button 
+                                                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                    Command="{Binding DataContext.DeleteHabitCompletionCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=1}}"
+                                                    CommandParameter="{Binding Id}"
+                                                    Grid.Column="2">
+                                                    <materialDesign:PackIcon
+                                                        HorizontalAlignment="Stretch"
+                                                        VerticalAlignment="Stretch"
+                                                        Kind="TrashCanOutline"
+                                                        Height="20"
+                                                        Width="20" />
+                                                </Button>
                                             </Grid>
                                             </Border>
                                         </DataTemplate>
@@ -699,6 +714,7 @@
                      Margin="5">
                     <ScrollViewer>
                         <ItemsControl
+                            x:Name="DailyHabitCompletionListBox"
                             ItemsSource="{Binding DailyHabitCompletions}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
@@ -710,30 +726,31 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="80"/>
+                                                <ColumnDefinition Width="80"/>
                                             </Grid.ColumnDefinitions>
 
                                                 <Grid
-                                                Grid.Column="0">
+                                                    Grid.Column="0">
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition />
                                                         <RowDefinition />
                                                     </Grid.RowDefinitions>
 
                                                     <TextBlock 
-                                                    HorizontalAlignment="Left"
-                                                    VerticalAlignment="Center"
-                                                    Text="{Binding Date, StringFormat=G}"
-                                                    FontFamily="Tahoma"
-                                                    FontSize="16"
-                                                    Grid.Row="0"/>
+                                                        HorizontalAlignment="Left"
+                                                        VerticalAlignment="Center"
+                                                        Text="{Binding Date, StringFormat=G}"
+                                                        FontFamily="Tahoma"
+                                                        FontSize="16"
+                                                        Grid.Row="0"/>
 
                                                     <materialDesign:RatingBar
-                                                    Grid.Row="1"
-                                                    Max="5"
-                                                    Value="{Binding Rating, Mode=OneWay}"
-                                                    Orientation="Horizontal"
-                                                    VerticalAlignment="Center"
-                                                    HorizontalAlignment="Left">
+                                                        Grid.Row="1"
+                                                        Max="5"
+                                                        Value="{Binding Rating, Mode=OneWay}"
+                                                        Orientation="Horizontal"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Left">
                                                         <materialDesign:RatingBar.ValueItemTemplate>
                                                             <DataTemplate
                                                                 DataType="system:Int32">
@@ -747,6 +764,19 @@
                                                         </materialDesign:RatingBar.ValueItemTemplate>
                                                     </materialDesign:RatingBar>
                                                 </Grid>
+
+                                                <Button 
+                                                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                    Command="{Binding DataContext.DeleteDailyHabitCompletionCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=1}}"
+                                                    CommandParameter="{Binding Id}"
+                                                    Grid.Column="2">
+                                                    <materialDesign:PackIcon
+                                                        HorizontalAlignment="Stretch"
+                                                        VerticalAlignment="Stretch"
+                                                        Kind="TrashCanOutline"
+                                                        Height="20"
+                                                        Width="20" />
+                                                </Button>
                                             </Grid>
                                     </Border>
                                 </DataTemplate>

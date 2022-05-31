@@ -38,6 +38,14 @@ namespace HabitApp.View
 
                 this.TaskListBox.Items.Refresh();
             }
+            else if (e.PropertyName == nameof(HomeVM.HabitCompletions))
+            {
+                this.HabitCompletionListBox.Items.Refresh();
+            }
+            else if (e.PropertyName == nameof(HomeVM.DailyHabitCompletions))
+            {
+                this.DailyHabitCompletionListBox.Items.Refresh();
+            }
         }
 
         private void TaskListBoxSort()
