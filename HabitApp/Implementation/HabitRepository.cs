@@ -193,7 +193,8 @@ namespace HabitApp.Implementation
             NpgsqlCommand command = new NpgsqlCommand();
             command.Connection = con;
             command.CommandText = $@"select * from habit_completions
-                                     where habitid={habitId}";
+                                     where habitid={habitId}
+                                     order by date desc";
 
             var reader = command.ExecuteReader();
 

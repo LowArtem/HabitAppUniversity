@@ -168,6 +168,25 @@ namespace HabitApp.VM
 
         #endregion
 
+
+        #region DailyHabitCompletions : List<HabitCompletion> - список всех выполнений выбранной ежедневной привычки
+
+        /// <summary>список всех выполнений выбранной ежедневной привычки</summary>
+        private List<HabitCompletion> _DailyHabitCompletions = new List<HabitCompletion>();
+
+        /// <summary>список всех выполнений выбранной ежедневной привычки</summary>
+        public List<HabitCompletion> DailyHabitCompletions
+        {
+            get => _DailyHabitCompletions;
+            set => Set(ref _DailyHabitCompletions, value);
+        }
+
+        #endregion
+
+
+
+
+
         #region Tasks : List<Task> - Список задач пользователя
 
         /// <summary>Список задач пользователя</summary>
@@ -588,6 +607,9 @@ namespace HabitApp.VM
                     HabitCompletionsPositive.AddRange(HabitCompletions.FindAll(x => x.IsPositive));
                     HabitCompletionsNegative.AddRange(HabitCompletions.FindAll(x => !x.IsPositive));
 
+                    HabitCompletionsPositive.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
+                    HabitCompletionsNegative.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
+
                     OnPropertyChanged(nameof(HabitCompletionsPositive));
                     OnPropertyChanged(nameof(HabitCompletionsNegative));
                 }
@@ -601,6 +623,10 @@ namespace HabitApp.VM
                 if (SelectedDailyHabitIndex.HasValue && SelectedDailyHabitIndex.Value >= 0)
                 {
                     SelectedDailyHabit = (DailyHabit)DailyHabits[SelectedDailyHabitIndex.Value].Clone();
+                    DailyHabitCompletions = _allHabitService.GetDailyHabitCompletions(SelectedDailyHabit.Id);
+
+                    DailyHabitCompletions.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
+                    OnPropertyChanged(nameof(DailyHabitCompletions));
                 }
                 else
                 {

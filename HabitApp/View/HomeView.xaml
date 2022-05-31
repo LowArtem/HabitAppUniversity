@@ -691,7 +691,71 @@
 
                     </StackPanel>
                 </materialDesign:Card>
-            </Grid>
+
+                <!--Daily completions list-->
+                <materialDesign:Card
+                     Grid.Column="1"
+                     UniformCornerRadius="10"
+                     Margin="5">
+                    <ScrollViewer>
+                        <ItemsControl
+                            ItemsSource="{Binding DailyHabitCompletions}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Padding="10"
+                                        BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                        BorderThickness="0 0 0 1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="80"/>
+                                            </Grid.ColumnDefinitions>
+
+                                                <Grid
+                                                Grid.Column="0">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                        <RowDefinition />
+                                                    </Grid.RowDefinitions>
+
+                                                    <TextBlock 
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Text="{Binding Date, StringFormat=G}"
+                                                    FontFamily="Tahoma"
+                                                    FontSize="16"
+                                                    Grid.Row="0"/>
+
+                                                    <materialDesign:RatingBar
+                                                    Grid.Row="1"
+                                                    Max="5"
+                                                    Value="{Binding Rating, Mode=OneWay}"
+                                                    Orientation="Horizontal"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Left">
+                                                        <materialDesign:RatingBar.ValueItemTemplate>
+                                                            <DataTemplate
+                                                                DataType="system:Int32">
+                                                                <Grid>
+                                                                    <materialDesign:PackIcon
+                                                                    Kind="Heart"
+                                                                    Height="20"
+                                                                    Width="20" />
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </materialDesign:RatingBar.ValueItemTemplate>
+                                                    </materialDesign:RatingBar>
+                                                </Grid>
+                                            </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    </materialDesign:Card>
+                </Grid>
             
             <!--Task Grid-->
             <Grid 
