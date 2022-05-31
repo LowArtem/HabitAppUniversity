@@ -248,10 +248,14 @@
     <Compile Include="View\CompletionRatingDialog.xaml.cs">
       <DependentUpon>CompletionRatingDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\DashboardView.xaml.cs">
+      <DependentUpon>DashboardView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Include="VM\CompletionRatingDialogVM.cs" />
+    <Compile Include="VM\DashboardVM.cs" />
     <Compile Include="VM\HomeVM.cs" />
     <Compile Include="VM\LoginVM.cs" />
     <Compile Include="VM\MainWindowVM.cs" />
@@ -261,6 +265,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\CompletionRatingDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DashboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

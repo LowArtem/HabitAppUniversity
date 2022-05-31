@@ -72,10 +72,12 @@ namespace HabitApp
             services.AddSingleton<MainWindowVM>();
             services.AddSingleton<HomeVM>();
             services.AddSingleton<LoginVM>();
+            services.AddSingleton<DashboardVM>();
             services.AddSingleton<CompletionRatingDialogVM>();
 
             services.AddTransient<HomeView>();
             services.AddScoped<LoginView>();
+            services.AddScoped<DashboardView>();
             services.AddTransient<CompletionRatingDialog>();
 
             services.AddSingleton<PageNavigationManager>();

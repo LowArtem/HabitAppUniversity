@@ -98,7 +98,7 @@ namespace HabitApp.VM
                 var user = (Application.Current as App).CurrentUser;
                 SaveCredentials(user.Id, user.Username, user.Password, user.Money, user.Experience, user.GroupId ?? -1);
 
-                _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<HomeView>());
+                _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<DashboardView>());
             }
             else
             {
@@ -125,7 +125,7 @@ namespace HabitApp.VM
                 var user = (Application.Current as App).CurrentUser;
                 SaveCredentials(user.Id, user.Username, user.Password, user.Money, user.Experience, user.GroupId ?? -1);
 
-                _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<HomeView>());
+                _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<DashboardView>());
             }
             else
             {

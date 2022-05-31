@@ -83,6 +83,11 @@
                         Header="{materialDesign:PackIcon Kind=AccountCircleOutline, Size=42}">
 
                         <MenuItem
+                            Header="Open dashboard"
+                            Command="{Binding NavigateToDashboardCommand}"
+                            Icon="{materialDesign:PackIcon Kind=ViewDashboardOutline}" />
+
+                            <MenuItem
                             Header="Log out"
                             Command="{Binding LogoutCommand}"
                             Icon="{materialDesign:PackIcon Kind=Logout}" />

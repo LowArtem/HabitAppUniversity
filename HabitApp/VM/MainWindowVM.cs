@@ -42,7 +42,8 @@ namespace HabitApp.VM
 
             (Application.Current as App).CurrentUser = user;
 
-            _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<HomeView>());
+            // TODO: тестовый вариант пока, на странице Login другой переход
+            _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<DashboardView>());
         }
 
         #region Title : string - Заголовок окна

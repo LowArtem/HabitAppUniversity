@@ -45,6 +45,7 @@ namespace HabitApp.VM
 
             ExitFromApplicationCommand = new BaseCommand(OnExitFromApplicationCommandExecuted, CanExitFromApplicationCommandExecute);
             LogoutCommand = new BaseCommand(OnLogoutCommandExecuted, CanLogoutCommandExecute);
+            NavigateToDashboardCommand = new BaseCommand(OnNavigateToDashboardCommandExecuted, CanNavigateToDashboardCommandExecute);
 
             User currentUser;
             var app = Application.Current;
@@ -693,6 +694,18 @@ namespace HabitApp.VM
             Properties.Settings.Default.Save();
 
             _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<LoginView>());
+        }
+
+        #endregion
+
+        #region NavigateToDashboardCommand
+
+        public ICommand NavigateToDashboardCommand { get; }
+        private bool CanNavigateToDashboardCommandExecute(object p) => true;
+
+        private void OnNavigateToDashboardCommandExecuted(object p)
+        {
+            _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<DashboardView>());
         }
 
         #endregion
