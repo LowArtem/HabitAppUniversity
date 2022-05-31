@@ -95,6 +95,21 @@ namespace HabitApp.VM
             }
         }
 
+        #region Username : string - Имя текущего пользователя
+
+        /// <summary>Имя текущего пользователя</summary>
+        private string _Username = (Application.Current as App).CurrentUser.Username;
+
+        /// <summary>Имя текущего пользователя</summary>
+        public string Username
+        {
+            get => _Username;
+        }
+
+        #endregion
+
+
+
         #region Habits : List<Habit> - Список привычек пользователя
 
         /// <summary>Список привычек пользователя</summary>

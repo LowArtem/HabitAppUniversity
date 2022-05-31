@@ -39,7 +39,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2.5*"/>
                 <ColumnDefinition Width="12*"/>
-                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="3.2*"/>
             </Grid.ColumnDefinitions>
             
             <!--Title-->
@@ -56,29 +56,46 @@
                     Text="App"/>
             </TextBlock>
             
-            <Menu
-                Grid.Column="2"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center">
-                <MenuItem 
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Header="{materialDesign:PackIcon Kind=AccountCircleOutline, Size=42}">
-                    
-                    <MenuItem
-                        Header="Log out"
-                        Command="{Binding LogoutCommand}"
-                        Icon="{materialDesign:PackIcon Kind=Logout}" />
-
-                    <MenuItem
-                        Header="Exit"
-                        InputGestureText="Alt + F4"
-                        Command="{Binding ExitFromApplicationCommand}"
-                        Icon="{materialDesign:PackIcon Kind=ExitToApp}" />
-
-                    </MenuItem>
+            <!--Menu-->
+            <Grid
+                Grid.Column="2">
                 
-            </Menu>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock 
+                    FontFamily="Tahoma"
+                    FontSize="18"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Text="{Binding Username}"
+                    />
+                
+                <Menu
+                    Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                    <MenuItem 
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Header="{materialDesign:PackIcon Kind=AccountCircleOutline, Size=42}">
+
+                        <MenuItem
+                            Header="Log out"
+                            Command="{Binding LogoutCommand}"
+                            Icon="{materialDesign:PackIcon Kind=Logout}" />
+
+                        <MenuItem
+                            Header="Exit"
+                            InputGestureText="Alt + F4"
+                            Command="{Binding ExitFromApplicationCommand}"
+                            Icon="{materialDesign:PackIcon Kind=ExitToApp}" />
+
+                        </MenuItem>
+                    </Menu>
+                </Grid>
         </Grid>        
         
 
