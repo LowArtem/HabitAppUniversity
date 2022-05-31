@@ -4,6 +4,7 @@ using HabitApp.View;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Windows;
 using System.Windows.Input;
 
 namespace HabitApp.VM
@@ -22,6 +23,18 @@ namespace HabitApp.VM
             _pageNavigationManager = pageNavigationManager;
 
             MessageQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(5000));
+        }
+
+        private void SaveCredentials(int id, string username, string password, long money, long experience, int groupid = -1)
+        {
+            Properties.Settings.Default.userId = id;
+            Properties.Settings.Default.userUsername = username;
+            Properties.Settings.Default.userPassword = password;
+            Properties.Settings.Default.userMoney = money;
+            Properties.Settings.Default.userExperience = experience;
+            Properties.Settings.Default.userGroupId = groupid;
+
+            Properties.Settings.Default.Save();
         }
 
         #region MessageQueue : SnackbarMessageQueue - Сообщение об ошибке
@@ -82,6 +95,9 @@ namespace HabitApp.VM
 
             if (result)
             {
+                var user = (Application.Current as App).CurrentUser;
+                SaveCredentials(user.Id, user.Username, user.Password, user.Money, user.Experience, user.GroupId ?? -1);
+
                 _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<HomeView>());
             }
             else
@@ -106,6 +122,9 @@ namespace HabitApp.VM
 
             if (result)
             {
+                var user = (Application.Current as App).CurrentUser;
+                SaveCredentials(user.Id, user.Username, user.Password, user.Money, user.Experience, user.GroupId ?? -1);
+
                 _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<HomeView>());
             }
             else

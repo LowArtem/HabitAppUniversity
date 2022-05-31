@@ -674,6 +674,9 @@ namespace HabitApp.VM
 
         private void OnLogoutCommandExecuted(object p)
         {
+            Properties.Settings.Default.userId = -1;
+            Properties.Settings.Default.Save();
+
             _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<LoginView>());
         }
 

@@ -75,7 +75,7 @@ namespace HabitApp
             services.AddSingleton<CompletionRatingDialogVM>();
 
             services.AddTransient<HomeView>();
-            services.AddTransient<LoginView>();
+            services.AddScoped<LoginView>();
             services.AddTransient<CompletionRatingDialog>();
 
             services.AddSingleton<PageNavigationManager>();

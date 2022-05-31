@@ -1,6 +1,8 @@
-﻿using HabitApp.Model;
+﻿using HabitApp.Data;
+using HabitApp.Model;
 using HabitApp.View;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace HabitApp.VM
@@ -14,7 +16,33 @@ namespace HabitApp.VM
             _pageNavigationManager = pageNavigationManager;
 
             _pageNavigationManager.OnPageChanged += (page) => CurrentView = page;
-            _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<LoginView>());
+
+            OpenFirstPage();
+        }
+
+        private void OpenFirstPage()
+        {
+            if (Properties.Settings.Default.userId == -1) // нет данных или данные были очищены
+            {
+                _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<LoginView>());
+                return;
+            }
+
+            int? groupId = null;
+            if (Properties.Settings.Default.userGroupId != -1) groupId = Properties.Settings.Default.userGroupId;
+
+            User user = new User(
+                    id: Properties.Settings.Default.userId,
+                    username: Properties.Settings.Default.userUsername,
+                    password: Properties.Settings.Default.userPassword,
+                    experience: Properties.Settings.Default.userExperience,
+                    money: Properties.Settings.Default.userMoney,
+                    groupId: groupId
+                );
+
+            (Application.Current as App).CurrentUser = user;
+
+            _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<HomeView>());
         }
 
         #region Title : string - Заголовок окна

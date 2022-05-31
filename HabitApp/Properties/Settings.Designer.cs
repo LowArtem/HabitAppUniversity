@@ -66,5 +66,53 @@ namespace HabitApp.Properties {
                 this["lastLoginTime"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int userId {
+            get {
+                return ((int)(this["userId"]));
+            }
+            set {
+                this["userId"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long userExperience {
+            get {
+                return ((long)(this["userExperience"]));
+            }
+            set {
+                this["userExperience"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long userMoney {
+            get {
+                return ((long)(this["userMoney"]));
+            }
+            set {
+                this["userMoney"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int userGroupId {
+            get {
+                return ((int)(this["userGroupId"]));
+            }
+            set {
+                this["userGroupId"] = value;
+            }
+        }
     }
 }
