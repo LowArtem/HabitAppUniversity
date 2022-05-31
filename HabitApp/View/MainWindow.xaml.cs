@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 
 namespace HabitApp.View
 {
@@ -10,6 +11,12 @@ namespace HabitApp.View
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            Properties.Settings.Default.Save();
+            base.OnClosing(e);
         }
     }
 }
