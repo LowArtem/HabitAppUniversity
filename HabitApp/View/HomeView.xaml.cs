@@ -12,8 +12,8 @@ namespace HabitApp.View
         {
             InitializeComponent();
 
-            DailyHabitListBoxSort();
-            TaskListBoxSort();
+            //DailyHabitListBoxSort();
+            //TaskListBoxSort();
 
             if (this.DataContext != null)
             {
@@ -28,13 +28,13 @@ namespace HabitApp.View
             }
             else if (e.PropertyName == nameof(HomeVM.DailyHabits))
             {
-                DailyHabitListBoxSort();
+                //DailyHabitListBoxSort();
 
                 this.DailyHabitListBox.Items.Refresh();
             }
             else if (e.PropertyName == nameof(HomeVM.Tasks))
             {
-                TaskListBoxSort();
+                //TaskListBoxSort();
 
                 this.TaskListBox.Items.Refresh();
             }
