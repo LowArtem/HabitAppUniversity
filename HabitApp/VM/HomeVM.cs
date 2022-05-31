@@ -43,6 +43,8 @@ namespace HabitApp.VM
             DeleteHabitCompletionCommand = new BaseCommand(OnDeleteHabitCompletionCommandExecuted, CanDeleteHabitCompletionCommandExecute);
             DeleteDailyHabitCompletionCommand = new BaseCommand(OnDeleteDailyHabitCompletionCommandExecuted, CanDeleteDailyHabitCompletionCommandExecute);
 
+            ExitFromApplicationCommand = new BaseCommand(OnExitFromApplicationCommandExecuted, CanExitFromApplicationCommandExecute);
+            LogoutCommand = new BaseCommand(OnLogoutCommandExecuted, CanLogoutCommandExecute);
 
             User currentUser;
             var app = Application.Current;
@@ -647,6 +649,32 @@ namespace HabitApp.VM
             _allHabitService.DeleteDailyHabitCompletion(int.Parse(p.ToString()));
 
             OnPropertyChanged(nameof(DailyHabitCompletions));
+        }
+
+        #endregion
+
+
+
+        #region ExitFromApplicationCommand
+
+        public ICommand ExitFromApplicationCommand { get; }
+        private bool CanExitFromApplicationCommandExecute(object p) => true;
+
+        private void OnExitFromApplicationCommandExecuted(object p)
+        {
+            App.Current.Shutdown();
+        }
+
+        #endregion
+
+        #region LogoutCommand
+
+        public ICommand LogoutCommand { get; }
+        private bool CanLogoutCommandExecute(object p) => true;
+
+        private void OnLogoutCommandExecuted(object p)
+        {
+            _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<LoginView>());
         }
 
         #endregion

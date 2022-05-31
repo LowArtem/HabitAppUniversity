@@ -34,19 +34,53 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <!--Title-->
-        <TextBlock
-            Grid.Row="0"
-            FontFamily="Comic Sans MS"
-            Foreground="#3270f3"
-            Margin="20, 0, 0, 0"
-            FontSize="30"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top">
-            <Run
-                Text="Habit"/><Run FontWeight="Bold"
-                Text="App"/>
-        </TextBlock>
+        <Grid
+            Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2.5*"/>
+                <ColumnDefinition Width="12*"/>
+                <ColumnDefinition Width="1.5*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!--Title-->
+            <TextBlock
+                Grid.Column="0"
+                FontFamily="Comic Sans MS"
+                Foreground="#3270f3"
+                Margin="20, 0, 0, 0"
+                FontSize="30"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top">
+                <Run
+                    Text="Habit"/><Run FontWeight="Bold"
+                    Text="App"/>
+            </TextBlock>
+            
+            <Menu
+                Grid.Column="2"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center">
+                <MenuItem 
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Header="{materialDesign:PackIcon Kind=AccountCircleOutline, Size=42}">
+                    
+                    <MenuItem
+                        Header="Log out"
+                        Command="{Binding LogoutCommand}"
+                        Icon="{materialDesign:PackIcon Kind=Logout}" />
+
+                    <MenuItem
+                        Header="Exit"
+                        InputGestureText="Alt + F4"
+                        Command="{Binding ExitFromApplicationCommand}"
+                        Icon="{materialDesign:PackIcon Kind=ExitToApp}" />
+
+                    </MenuItem>
+                
+            </Menu>
+        </Grid>        
+        
 
         <!--Content-->
         <Grid Grid.Row="1">
@@ -441,15 +475,15 @@
                                         Margin="5"
                                         Grid.Column="0">
                                         <Button 
-                                            Height="50"
-                                            Width="50"    
+                                            Height="45"
+                                            Width="45"    
                                             Command="{Binding AddHabitCompletionNegativeCommand}"
                                             Style="{StaticResource MaterialDesignFloatingActionButton}"
                                             Background="#ba1b1b">
                                             <materialDesign:PackIcon
                                                 Kind="MinusThick"
-                                                Height="30"
-                                                Width="30" />
+                                                Height="25"
+                                                Width="25" />
                                         </Button>
                                     </materialDesign:Badged>
                                     
@@ -461,15 +495,15 @@
                                         Badge="{Binding HabitCompletionsPositive.Count, Mode=OneWay}"
                                         Margin="5">
                                         <Button 
-                                            Height="50"
-                                            Width="50"    
+                                            Height="45"
+                                            Width="45"    
                                             Command="{Binding AddHabitCompletionPositiveCommand}"
                                             Style="{StaticResource MaterialDesignFloatingActionButton}"
                                             Background="#1bbaba">
                                             <materialDesign:PackIcon
                                                 Kind="PlusThick"
-                                                Height="30"
-                                                Width="30" />
+                                                Height="25"
+                                                Width="25" />
                                         </Button>
                                     </materialDesign:Badged>
                                     
