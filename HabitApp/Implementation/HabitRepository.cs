@@ -238,5 +238,22 @@ namespace HabitApp.Implementation
 
             con.Close();
         }
+
+        public void DeleteHabitCompletionById(int habitCompletionId)
+        {
+            NpgsqlConnection con = new NpgsqlConnection(connectionString);
+            con.Open();
+            if (con.FullState == ConnectionState.Broken || con.FullState == ConnectionState.Closed)
+            {
+                throw new Exception("Не работает соединение с бд");
+            }
+
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            command.CommandText = $"delete from habit_completions where id = {habitCompletionId}";
+            command.ExecuteNonQuery();
+
+            con.Close();
+        }
     }
 }

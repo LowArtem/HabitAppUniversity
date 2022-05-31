@@ -240,5 +240,22 @@ namespace HabitApp.Implementation
 
             con.Close();
         }
+
+        public void DeleteDailyHabitCompletionById(int dailyHabitCompletionId)
+        {
+            NpgsqlConnection con = new NpgsqlConnection(connectionString);
+            con.Open();
+            if (con.FullState == ConnectionState.Broken || con.FullState == ConnectionState.Closed)
+            {
+                throw new Exception("Не работает соединение с бд");
+            }
+
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            command.CommandText = $"delete from daily_completions where id = {dailyHabitCompletionId}";
+            command.ExecuteNonQuery();
+
+            con.Close();
+        }
     }
 }

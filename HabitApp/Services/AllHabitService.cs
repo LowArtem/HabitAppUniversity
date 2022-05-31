@@ -43,5 +43,15 @@ namespace HabitApp.Services
         {
             _habitRepository.AddHabitCompletion(habitId, _currentDateTimeProvider.GetCurrentDateTime(), rating, isPositive);
         }
+
+        public void DeleteHabitCompletion(int habitCompletionId)
+        {
+            _habitRepository.DeleteHabitCompletionById(habitCompletionId);
+        }
+
+        public void DeleteDailyHabitCompletion(int dailyHabitCompletionId)
+        {
+            _dailyHabitRepository.DeleteDailyHabitCompletionById(dailyHabitCompletionId);
+        }
     }
 }
