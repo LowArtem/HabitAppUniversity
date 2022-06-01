@@ -64,10 +64,12 @@ namespace HabitApp
             services.AddSingleton<HabitRepository>();
             services.AddSingleton<TaskRepository>();
             services.AddSingleton<DailyHabitRepository>();
+            services.AddSingleton<StatisticsRepository>();
 
             services.AddTransient<LoginService>();
             services.AddTransient<AllHabitCRUDService>();
             services.AddTransient<AllHabitService>();
+            services.AddTransient<StatisticsService>();
 
             services.AddSingleton<MainWindowVM>();
             services.AddSingleton<HomeVM>();

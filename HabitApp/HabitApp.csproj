@@ -235,6 +235,7 @@
     <Compile Include="Data\Type.cs" />
     <Compile Include="Implementation\DailyHabitRepository.cs" />
     <Compile Include="Implementation\HabitRepository.cs" />
+    <Compile Include="Implementation\StatisticsRepository.cs" />
     <Compile Include="Implementation\TaskRepository.cs" />
     <Compile Include="Model\BaseCommand.cs" />
     <Compile Include="Data\Categories.cs" />
@@ -250,6 +251,7 @@
     <Compile Include="Services\AllHabitCRUDService.cs" />
     <Compile Include="Services\AllHabitService.cs" />
     <Compile Include="Services\LoginService.cs" />
+    <Compile Include="Services\StatisticsService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="View\CompletionRatingDialog.xaml.cs">
       <DependentUpon>CompletionRatingDialog.xaml</DependentUpon>
