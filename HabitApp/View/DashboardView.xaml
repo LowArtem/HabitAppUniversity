@@ -104,7 +104,22 @@
                     UniformCornerRadius="10"
                     Margin="5"
                     Grid.Row="0">
-                    
+
+                    <lvc:CartesianChart Series="{Binding ByDaySeries}" LegendLocation="Right" >
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis MinValue="0" Title="Completions count"></lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:DateAxis
+                                Title="Date"
+                                MinValue="{Binding GraphMinValue, Mode=TwoWay}"
+                                MaxValue="{Binding GraphMaxValue, Mode=TwoWay}"
+                                Period="{Binding Period, Mode=TwoWay}"
+                                InitialDateTime="{Binding InitialDateTime}"/>
+
+                        </lvc:CartesianChart.AxisX>
+                    </lvc:CartesianChart>
+
                 </materialDesign:Card>
 
                 <!--Graph 2-->
