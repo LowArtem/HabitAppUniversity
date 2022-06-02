@@ -237,9 +237,17 @@ namespace HabitApp.VM
                     break;
                 case StatisticsService.TypeOfPeriod.Week: firstDay = DateTime.UtcNow.AddDays(-7 * 7);
                     break;
-                case StatisticsService.TypeOfPeriod.Month: firstDay = DateTime.UtcNow.AddMonths(-12);
+                case StatisticsService.TypeOfPeriod.Month:
+                    {
+                        firstDay = DateTime.UtcNow.AddMonths(-12);
+                        firstDay = new DateTime(firstDay.Year, firstDay.Month, 1);
+                    }
                     break;
-                case StatisticsService.TypeOfPeriod.Year: firstDay = DateTime.UtcNow.AddYears(5);
+                case StatisticsService.TypeOfPeriod.Year:
+                    {
+                        firstDay = DateTime.UtcNow.AddYears(-5);
+                        firstDay = new DateTime(firstDay.Year, 1, 1);
+                    }
                     break;
             }
 
