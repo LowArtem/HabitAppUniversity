@@ -2,33 +2,18 @@
 using HabitApp.Services;
 using HabitApp.View;
 using LiveChartsCore;
+using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using Microsoft.Extensions.DependencyInjection;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
 namespace HabitApp.VM
 {
-    public class CountAndDate
-    {
-        public int Count { get; private set; }
-        public DateTime Date { get; private set; }
-
-        public CountAndDate(int count, DateTime date)
-        {
-            Count = count;
-            Date = date;
-        }
-    }
-
-
     public class DashboardVM : ViewModel
     {
         private readonly PageNavigationManager _pageNavigationManager;
@@ -52,34 +37,55 @@ namespace HabitApp.VM
 
             ByDaySeries = new ISeries[]
             {
-                new LineSeries<int>
+                new LineSeries<DateTimePoint>
                 {
                     Name = "Habits",
+                    TooltipLabelFormatter = (chartPoint) => $"Habits at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 3 },
-                    GeometryStroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 3 },
                     GeometrySize = 12,
-                    Values = HabitsCountByDay.Select(x => x.Count)
+                    Values = HabitsCountByDay
                 },
-                new LineSeries<int>
+                new LineSeries<DateTimePoint>
                 {
                     Name = "Daily Habits",
+                    TooltipLabelFormatter = (chartPoint) => $"Daily habits at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 },
-                    GeometryStroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 },
                     GeometrySize = 12,
-                    Values = DailyHabitsCountByDay.Select(x => x.Count)
+                    Values = DailyHabitsCountByDay
                 },
-                new LineSeries<int>
+                new LineSeries<DateTimePoint>
                 {
                     Name = "Tasks",
+                    TooltipLabelFormatter = (chartPoint) => $"Tasks at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.GreenYellow) { StrokeThickness = 3 },
-                    GeometryStroke = new SolidColorPaint(SKColors.GreenYellow) { StrokeThickness = 3 },
                     GeometrySize = 12,
-                    Values = TasksCountByDay.Select(x => x.Count)
+                    Values = TasksCountByDay
                 }
             };
         }
 
-        
+        public Axis[] DayXAxes { get; set; } =
+        {
+            new Axis
+            {
+                Labeler = value => new DateTime((long)value).ToString("dd.MM"),
+                LabelsRotation = 90,
+
+                // when using a date time type, let the library know your unit 
+                UnitWidth = TimeSpan.FromDays(1).Ticks, 
+
+                // if the difference between our points is in hours then we would:
+                // UnitWidth = TimeSpan.FromHours(1).Ticks,
+
+                // since all the months and years have a different number of days
+                // we can use the average, it would not cause any visible error in the user interface
+                // Months: TimeSpan.FromDays(30.4375).Ticks
+                // Years: TimeSpan.FromDays(365.25).Ticks
+
+                // The MinStep property forces the separator to be greater than 1 day.
+                MinStep = TimeSpan.FromDays(1).Ticks
+            }
+        };
 
         private void FillHabitsLists(int userId)
         {
@@ -92,9 +98,9 @@ namespace HabitApp.VM
         private void FillHabitsListsByPeriod(
             int userId, 
             StatisticsService.TypeOfPeriod period,
-            List<CountAndDate> habitsCollection,
-            List<CountAndDate> dailyHabitsCollection,
-            List<CountAndDate> tasksCollection)
+            List<DateTimePoint> habitsCollection,
+            List<DateTimePoint> dailyHabitsCollection,
+            List<DateTimePoint> tasksCollection)
         {
             DateTime firstDay = DateTime.UtcNow;
 
@@ -112,9 +118,9 @@ namespace HabitApp.VM
 
             for (DateTime d = firstDay; d.Date <= DateTime.UtcNow.Date; d = ForCounter(d, period))
             {
-                habitsCollection.Add(new CountAndDate(_statisticsService.GetHabitsCompletionsCountForPeriod(userId, period, d), d));
-                dailyHabitsCollection.Add(new CountAndDate(_statisticsService.GetDailyHabitsCompletionsCountForPeriod(userId, period, d), d));
-                tasksCollection.Add(new CountAndDate(_statisticsService.GetTasksCompletionsCountForPeriod(userId, period, d), d));
+                habitsCollection.Add(new DateTimePoint(d, _statisticsService.GetHabitsCompletionsCountForPeriod(userId, period, d)));
+                dailyHabitsCollection.Add(new DateTimePoint(d, _statisticsService.GetDailyHabitsCompletionsCountForPeriod(userId, period, d)));
+                tasksCollection.Add(new DateTimePoint(d, _statisticsService.GetTasksCompletionsCountForPeriod(userId, period, d)));
             }
 
             DateTime ForCounter(DateTime v, StatisticsService.TypeOfPeriod periodLocal)
@@ -152,13 +158,13 @@ namespace HabitApp.VM
 
         #region Counters
 
-        #region HabitsCountByDay : List<CountAndDate> - Список количества завершённых привычек за день
+        #region HabitsCountByDay : List<DateTimePoint> - Список количества завершённых привычек за день
 
         /// <summary>Список количества завершённых привычек за день</summary>
-        private List<CountAndDate> _HabitsCountByDay = new List<CountAndDate>();
+        private List<DateTimePoint> _HabitsCountByDay = new List<DateTimePoint>();
 
         /// <summary>Список количества завершённых привычек за день</summary>
-        public List<CountAndDate> HabitsCountByDay
+        public List<DateTimePoint> HabitsCountByDay
         {
             get => _HabitsCountByDay;
             set => Set(ref _HabitsCountByDay, value);
@@ -166,13 +172,13 @@ namespace HabitApp.VM
 
         #endregion
 
-        #region DailyHabitsCountByDay : List<CountAndDate> - Список количества завершённых ежедневных привычек за день
+        #region DailyHabitsCountByDay : List<DateTimePoint> - Список количества завершённых ежедневных привычек за день
 
         /// <summary>Список количества завершённых ежедневных привычек за день</summary>
-        private List<CountAndDate> _DailyHabitsCountByDay = new List<CountAndDate>();
+        private List<DateTimePoint> _DailyHabitsCountByDay = new List<DateTimePoint>();
 
         /// <summary>Список количества завершённых ежедневных привычек за день</summary>
-        public List<CountAndDate> DailyHabitsCountByDay
+        public List<DateTimePoint> DailyHabitsCountByDay
         {
             get => _DailyHabitsCountByDay;
             set => Set(ref _DailyHabitsCountByDay, value);
@@ -180,13 +186,13 @@ namespace HabitApp.VM
 
         #endregion
 
-        #region TasksCountByDay : List<CountAndDate> - Список количества завершённых задач за день
+        #region TasksCountByDay : List<DateTimePoint> - Список количества завершённых задач за день
 
         /// <summary>Список количества завершённых задач за день</summary>
-        private List<CountAndDate> _TasksCountByDay = new List<CountAndDate>();
+        private List<DateTimePoint> _TasksCountByDay = new List<DateTimePoint>();
 
         /// <summary>Список количества завершённых задач за день</summary>
-        public List<CountAndDate> TasksCountByDay
+        public List<DateTimePoint> TasksCountByDay
         {
             get => _TasksCountByDay;
             set => Set(ref _TasksCountByDay, value);
@@ -194,13 +200,13 @@ namespace HabitApp.VM
 
         #endregion
 
-        #region HabitsCountByWeek : List<CountAndDate> - Список количества завершённых привычек за неделю
+        #region HabitsCountByWeek : List<DateTimePoint> - Список количества завершённых привычек за неделю
 
         /// <summary>Список количества завершённых привычек за неделю</summary>
-        private List<CountAndDate> _HabitsCountByWeek = new List<CountAndDate>();
+        private List<DateTimePoint> _HabitsCountByWeek = new List<DateTimePoint>();
 
         /// <summary>Список количества завершённых привычек за неделю</summary>
-        public List<CountAndDate> HabitsCountByWeek
+        public List<DateTimePoint> HabitsCountByWeek
         {
             get => _HabitsCountByWeek;
             set => Set(ref _HabitsCountByWeek, value);
@@ -208,13 +214,13 @@ namespace HabitApp.VM
 
         #endregion
 
-        #region DailyHabitsCountByWeek : List<CountAndDate> - Список количества завершённых ежедневных привычек за неделю
+        #region DailyHabitsCountByWeek : List<DateTimePoint> - Список количества завершённых ежедневных привычек за неделю
 
         /// <summary>Список количества завершённых ежедневных привычек за неделю</summary>
-        private List<CountAndDate> _DailyHabitsCountByWeek = new List<CountAndDate>();
+        private List<DateTimePoint> _DailyHabitsCountByWeek = new List<DateTimePoint>();
 
         /// <summary>Список количества завершённых ежедневных привычек за неделю</summary>
-        public List<CountAndDate> DailyHabitsCountByWeek
+        public List<DateTimePoint> DailyHabitsCountByWeek
         {
             get => _DailyHabitsCountByWeek;
             set => Set(ref _DailyHabitsCountByWeek, value);
@@ -222,13 +228,13 @@ namespace HabitApp.VM
 
         #endregion
 
-        #region TasksCountByWeek : List<CountAndDate> - Список количества завершённых задач за неделю
+        #region TasksCountByWeek : List<DateTimePoint> - Список количества завершённых задач за неделю
 
         /// <summary>Список количества завершённых задач за неделю</summary>
-        private List<CountAndDate> _TasksCountByWeek = new List<CountAndDate>();
+        private List<DateTimePoint> _TasksCountByWeek = new List<DateTimePoint>();
 
         /// <summary>Список количества завершённых задач за неделю</summary>
-        public List<CountAndDate> TasksCountByWeek
+        public List<DateTimePoint> TasksCountByWeek
         {
             get => _TasksCountByWeek;
             set => Set(ref _TasksCountByWeek, value);
@@ -236,13 +242,13 @@ namespace HabitApp.VM
 
         #endregion
 
-        #region HabitsCountByMonth : List<CountAndDate> - Список количества завершённых привычек за месяц
+        #region HabitsCountByMonth : List<DateTimePoint> - Список количества завершённых привычек за месяц
 
         /// <summary>Список количества завершённых привычек за месяц</summary>
-        private List<CountAndDate> _HabitsCountByMonth = new List<CountAndDate>();
+        private List<DateTimePoint> _HabitsCountByMonth = new List<DateTimePoint>();
 
         /// <summary>Список количества завершённых привычек за месяц</summary>
-        public List<CountAndDate> HabitsCountByMonth
+        public List<DateTimePoint> HabitsCountByMonth
         {
             get => _HabitsCountByMonth;
             set => Set(ref _HabitsCountByMonth, value);
@@ -250,13 +256,13 @@ namespace HabitApp.VM
 
         #endregion
 
-        #region DailyHabitsCountByMonth : List<CountAndDate> - Список количества завершённых ежедневных привычек за месяц
+        #region DailyHabitsCountByMonth : List<DateTimePoint> - Список количества завершённых ежедневных привычек за месяц
 
         /// <summary>Список количества завершённых ежедневных привычек за месяц</summary>
-        private List<CountAndDate> _DailyHabitsCountByMonth = new List<CountAndDate>();
+        private List<DateTimePoint> _DailyHabitsCountByMonth = new List<DateTimePoint>();
 
         /// <summary>Список количества завершённых ежедневных привычек за месяц</summary>
-        public List<CountAndDate> DailyHabitsCountByMonth
+        public List<DateTimePoint> DailyHabitsCountByMonth
         {
             get => _DailyHabitsCountByMonth;
             set => Set(ref _DailyHabitsCountByMonth, value);
@@ -264,13 +270,13 @@ namespace HabitApp.VM
 
         #endregion
 
-        #region TasksCountByMonth : List<CountAndDate> - Список количества завершённых задач за месяц
+        #region TasksCountByMonth : List<DateTimePoint> - Список количества завершённых задач за месяц
 
         /// <summary>Список количества завершённых задач за месяц</summary>
-        private List<CountAndDate> _TasksCountByMonth = new List<CountAndDate>();
+        private List<DateTimePoint> _TasksCountByMonth = new List<DateTimePoint>();
 
         /// <summary>Список количества завершённых задач за месяц</summary>
-        public List<CountAndDate> TasksCountByMonth
+        public List<DateTimePoint> TasksCountByMonth
         {
             get => _TasksCountByMonth;
             set => Set(ref _TasksCountByMonth, value);
@@ -278,13 +284,13 @@ namespace HabitApp.VM
 
         #endregion
 
-        #region HabitsCountByYear : List<CountAndDate> - Список количества завершённых привычек за год
+        #region HabitsCountByYear : List<DateTimePoint> - Список количества завершённых привычек за год
 
         /// <summary>Список количества завершённых привычек за год</summary>
-        private List<CountAndDate> _HabitsCountByYear = new List<CountAndDate>();
+        private List<DateTimePoint> _HabitsCountByYear = new List<DateTimePoint>();
 
         /// <summary>Список количества завершённых привычек за год</summary>
-        public List<CountAndDate> HabitsCountByYear
+        public List<DateTimePoint> HabitsCountByYear
         {
             get => _HabitsCountByYear;
             set => Set(ref _HabitsCountByYear, value);
@@ -292,13 +298,13 @@ namespace HabitApp.VM
 
         #endregion
 
-        #region DailyHabitsCountByYear : List<CountAndDate> - Список количества завершённых ежедневных задач за год
+        #region DailyHabitsCountByYear : List<DateTimePoint> - Список количества завершённых ежедневных задач за год
 
         /// <summary>Список количества завершённых ежедневных задач за год</summary>
-        private List<CountAndDate> _DailyHabitsCountByYear = new List<CountAndDate>();
+        private List<DateTimePoint> _DailyHabitsCountByYear = new List<DateTimePoint>();
 
         /// <summary>Список количества завершённых ежедневных задач за год</summary>
-        public List<CountAndDate> DailyHabitsCountByYear
+        public List<DateTimePoint> DailyHabitsCountByYear
         {
             get => _DailyHabitsCountByYear;
             set => Set(ref _DailyHabitsCountByYear, value);
@@ -306,13 +312,13 @@ namespace HabitApp.VM
 
         #endregion
 
-        #region TasksCountByYear : List<CountAndDate> - Список количества завершённых задач за год
+        #region TasksCountByYear : List<DateTimePoint> - Список количества завершённых задач за год
 
         /// <summary>Список количества завершённых задач за год</summary>
-        private List<CountAndDate> _TasksCountByYear = new List<CountAndDate>();
+        private List<DateTimePoint> _TasksCountByYear = new List<DateTimePoint>();
 
         /// <summary>Список количества завершённых задач за год</summary>
-        public List<CountAndDate> TasksCountByYear
+        public List<DateTimePoint> TasksCountByYear
         {
             get => _TasksCountByYear;
             set => Set(ref _TasksCountByYear, value);

@@ -107,6 +107,7 @@
 
                     <lvc:CartesianChart 
                         Series="{Binding ByDaySeries}"
+                        XAxes="{Binding DayXAxes}"
                         LegendPosition="Right">
 
                     </lvc:CartesianChart>
