@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 
@@ -34,6 +35,8 @@ namespace HabitApp.VM
         private void DrawDoneHabitsByPeriodsGraph()
         {
             FillHabitsLists((Application.Current as App).CurrentUser.Id);
+
+            #region Setting Series
 
             ByDaySeries = new ISeries[]
             {
@@ -62,20 +65,109 @@ namespace HabitApp.VM
                     Values = TasksCountByDay
                 }
             };
+
+            ByWeekSeries = new ISeries[]
+            {
+                new LineSeries<DateTimePoint>
+                {
+                    Name = "Habits",
+                    TooltipLabelFormatter = (chartPoint) => $"Habits at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
+                    Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 3 },
+                    GeometrySize = 12,
+                    Values = HabitsCountByWeek
+                },
+                new LineSeries<DateTimePoint>
+                {
+                    Name = "Daily Habits",
+                    TooltipLabelFormatter = (chartPoint) => $"Daily habits at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
+                    Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 },
+                    GeometrySize = 12,
+                    Values = DailyHabitsCountByWeek
+                },
+                new LineSeries<DateTimePoint>
+                {
+                    Name = "Tasks",
+                    TooltipLabelFormatter = (chartPoint) => $"Tasks at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
+                    Stroke = new SolidColorPaint(SKColors.GreenYellow) { StrokeThickness = 3 },
+                    GeometrySize = 12,
+                    Values = TasksCountByWeek
+                }
+            };
+
+            ByMonthSeries = new ISeries[]
+            {
+                new LineSeries<DateTimePoint>
+                {
+                    Name = "Habits",
+                    TooltipLabelFormatter = (chartPoint) => $"Habits at {new DateTime((long) chartPoint.SecondaryValue):MM.yy}: {chartPoint.PrimaryValue}",
+                    Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 3 },
+                    GeometrySize = 12,
+                    Values = HabitsCountByMonth
+                },
+                new LineSeries<DateTimePoint>
+                {
+                    Name = "Daily Habits",
+                    TooltipLabelFormatter = (chartPoint) => $"Daily habits at {new DateTime((long) chartPoint.SecondaryValue):MM.yy}: {chartPoint.PrimaryValue}",
+                    Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 },
+                    GeometrySize = 12,
+                    Values = DailyHabitsCountByMonth
+                },
+                new LineSeries<DateTimePoint>
+                {
+                    Name = "Tasks",
+                    TooltipLabelFormatter = (chartPoint) => $"Tasks at {new DateTime((long) chartPoint.SecondaryValue):MM.yy}: {chartPoint.PrimaryValue}",
+                    Stroke = new SolidColorPaint(SKColors.GreenYellow) { StrokeThickness = 3 },
+                    GeometrySize = 12,
+                    Values = TasksCountByMonth
+                }
+            };
+
+            ByYearSeries = new ISeries[]
+            {
+                new LineSeries<DateTimePoint>
+                {
+                    Name = "Habits",
+                    TooltipLabelFormatter = (chartPoint) => $"Habits at {new DateTime((long) chartPoint.SecondaryValue):yyy}: {chartPoint.PrimaryValue}",
+                    Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 3 },
+                    GeometrySize = 12,
+                    Values = HabitsCountByYear
+                },
+                new LineSeries<DateTimePoint>
+                {
+                    Name = "Daily Habits",
+                    TooltipLabelFormatter = (chartPoint) => $"Daily habits at {new DateTime((long) chartPoint.SecondaryValue):yyyy}: {chartPoint.PrimaryValue}",
+                    Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 },
+                    GeometrySize = 12,
+                    Values = DailyHabitsCountByYear
+                },
+                new LineSeries<DateTimePoint>
+                {
+                    Name = "Tasks",
+                    TooltipLabelFormatter = (chartPoint) => $"Tasks at {new DateTime((long) chartPoint.SecondaryValue):yyyy}: {chartPoint.PrimaryValue}",
+                    Stroke = new SolidColorPaint(SKColors.GreenYellow) { StrokeThickness = 3 },
+                    GeometrySize = 12,
+                    Values = TasksCountByYear
+                }
+            };
+
+            #endregion
+
+            Series = ByDaySeries;
+            XAxes = DayXAxes;
         }
+
+        #region Dates XAxes
+
+        public Axis[] XAxes { get; set; }
 
         public Axis[] DayXAxes { get; set; } =
         {
             new Axis
             {
                 Labeler = value => new DateTime((long)value).ToString("dd.MM"),
-                LabelsRotation = 90,
-
+                LabelsRotation = 0,
                 // when using a date time type, let the library know your unit 
-                UnitWidth = TimeSpan.FromDays(1).Ticks, 
-
-                // if the difference between our points is in hours then we would:
-                // UnitWidth = TimeSpan.FromHours(1).Ticks,
+                UnitWidth = TimeSpan.FromDays(1).Ticks,
 
                 // since all the months and years have a different number of days
                 // we can use the average, it would not cause any visible error in the user interface
@@ -86,6 +178,41 @@ namespace HabitApp.VM
                 MinStep = TimeSpan.FromDays(1).Ticks
             }
         };
+
+        public Axis[] WeekXAxes { get; set; } =
+        {
+            new Axis
+            {
+                Labeler = value => new DateTime((long)value).ToString("dd.MM"),
+                LabelsRotation = 0,
+                UnitWidth = TimeSpan.FromDays(7).Ticks,
+                MinStep = TimeSpan.FromDays(7).Ticks
+            }
+        };
+
+        public Axis[] MonthXAxes { get; set; } =
+        {
+            new Axis
+            {
+                Labeler = value => new DateTime((long)value).ToString("MM.yy"),
+                LabelsRotation = 0,
+                UnitWidth = TimeSpan.FromDays(30.4375).Ticks,
+                MinStep = TimeSpan.FromDays(30.4375).Ticks
+            }
+        };
+
+        public Axis[] YearXAxes { get; set; } =
+        {
+            new Axis
+            {
+                Labeler = value => new DateTime((long)value).ToString("yyyy"),
+                LabelsRotation = 0,
+                UnitWidth = TimeSpan.FromDays(365.25).Ticks,
+                MinStep = TimeSpan.FromDays(365.25).Ticks
+            }
+        };
+
+        #endregion
 
         private void FillHabitsLists(int userId)
         {
@@ -343,50 +470,92 @@ namespace HabitApp.VM
 
         #endregion
 
+        #region ByWeekSeries : ISeries[] - Коллекция точек ByWeek
 
-        #region InitialDateTime : DateTime - Начальное время
+        /// <summary>Коллекция точек ByWeek</summary>
+        private ISeries[] _ByWeekSeries;
 
-        /// <summary>Начальное время</summary>
-        private DateTime _InitialDateTime = DateTime.UtcNow.Date.AddDays(-7);
-
-        /// <summary>Начальное время</summary>
-        public DateTime InitialDateTime
+        /// <summary>Коллекция точек ByWeek</summary>
+        public ISeries[] ByWeekSeries
         {
-            get => _InitialDateTime;
-            set => Set(ref _InitialDateTime, value);
+            get => _ByWeekSeries;
+            set => Set(ref _ByWeekSeries, value);
         }
 
         #endregion
 
-        #region GraphMaxValue : int - Максимальное значение даты на графике
+        #region ByMonthSeries : ISeries[] - Коллекция точек ByMonth
 
-        /// <summary>Максимальное значение даты на графике</summary>
-        private int _GraphMaxValue = 8;
+        /// <summary>Коллекция точек ByMonth</summary>
+        private ISeries[] _ByMonthSeries;
 
-        /// <summary>Максимальное значение даты на графике</summary>
-        public int GraphMaxValue
+        /// <summary>Коллекция точек ByMonth</summary>
+        public ISeries[] ByMonthSeries
         {
-            get => _GraphMaxValue;
-            set => Set(ref _GraphMaxValue, value);
+            get => _ByMonthSeries;
+            set => Set(ref _ByMonthSeries, value);
         }
 
         #endregion
 
-        #region GraphMinValue : int - Минимальное значение даты на графике
+        #region ByYearSeries : ISeries[] - Коллекция точек ByYear
 
-        /// <summary>Минимальное значение даты на графике</summary>
-        private int _GraphMinValue = 0;
+        /// <summary>Коллекция точек ByYear</summary>
+        private ISeries[] _ByYearSeries;
 
-        /// <summary>Минимальное значение даты на графике</summary>
-        public int GraphMinValue
+        /// <summary>Коллекция точек ByYear</summary>
+        public ISeries[] ByYearSeries
         {
-            get => _GraphMinValue;
-            set => Set(ref _GraphMinValue, value);
+            get => _ByYearSeries;
+            set => Set(ref _ByYearSeries, value);
         }
 
         #endregion
 
 
+        #region Series : ISeries[] - Показываемая коллекция точек
+
+        /// <summary>Показываемая коллекция точек</summary>
+        private ISeries[] _Series;
+
+        /// <summary>Показываемая коллекция точек</summary>
+        public ISeries[] Series
+        {
+            get => _Series;
+            set => Set(ref _Series, value);
+        }
+
+        #endregion
+
+
+
+        #region Grap1TypeSelectedIndex : int - Выбранный вид первого графика
+
+        /// <summary>Выбранный вид первого графика</summary>
+        private int _Grap1TypeSelectedIndex = 0;
+
+        /// <summary>Выбранный вид первого графика</summary>
+        public int Grap1TypeSelectedIndex
+        {
+            get => _Grap1TypeSelectedIndex;
+            set => Set(ref _Grap1TypeSelectedIndex, value);
+        }
+
+        #endregion
+
+        #region Graph1Types : List<string> - Список типов первого графика
+
+        /// <summary>Список типов первого графика</summary>
+        private List<string> _Graph1Types = new List<string>() { "By days", "By weeks", "By months", "By years" };
+
+        /// <summary>Список типов первого графика</summary>
+        public List<string> Graph1Types
+        {
+            get => _Graph1Types;
+            set => Set(ref _Graph1Types, value);
+        }
+
+        #endregion
 
 
 
@@ -429,5 +598,41 @@ namespace HabitApp.VM
 
         #endregion
 
+        protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            if (propertyName == nameof(Grap1TypeSelectedIndex))
+            {
+                switch (Grap1TypeSelectedIndex)
+                {
+                    case 0:
+                        {
+                            Series = ByDaySeries;
+                            XAxes = DayXAxes;
+                            break;
+                        }
+                    case 1:
+                        {
+                            Series = ByWeekSeries;
+                            XAxes = WeekXAxes;
+                            break;
+                        }
+                    case 2:
+                        {
+                            Series = ByMonthSeries;
+                            XAxes = MonthXAxes;
+                            break;
+                        }
+                    case 3:
+                        {
+                            Series = ByYearSeries;
+                            XAxes = YearXAxes;
+                            break;
+                        }
+                    default: throw new ArgumentOutOfRangeException($"{nameof(propertyName)} - combobox doesn't have this item");
+                }
+            }
+
+            base.OnPropertyChanged(propertyName);
+        }
     }
 }

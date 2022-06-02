@@ -104,13 +104,23 @@
                     UniformCornerRadius="10"
                     Margin="5"
                     Grid.Row="0">
+                    <Grid>
+                        <ComboBox 
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            SelectedIndex="{Binding Grap1TypeSelectedIndex, Mode=TwoWay}"
+                            FontSize="14"
+                            Width="120"
+                            ItemsSource="{Binding Graph1Types}"
+                            Style="{StaticResource MaterialDesignFilledComboBox}"/>
+                        
+                        <lvc:CartesianChart 
+                            Series="{Binding Series}"
+                            XAxes="{Binding XAxes}"
+                            LegendPosition="Right">
 
-                    <lvc:CartesianChart 
-                        Series="{Binding ByDaySeries}"
-                        XAxes="{Binding DayXAxes}"
-                        LegendPosition="Right">
-
-                    </lvc:CartesianChart>
+                        </lvc:CartesianChart>
+                    </Grid>
 
                 </materialDesign:Card>
 
