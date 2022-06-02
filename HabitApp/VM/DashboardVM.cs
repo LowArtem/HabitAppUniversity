@@ -1,11 +1,11 @@
 ﻿using HabitApp.Model;
 using HabitApp.Services;
 using HabitApp.View;
-using LiveCharts;
-using LiveCharts.Defaults;
-using LiveCharts.Helpers;
-using LiveCharts.Wpf;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
 using Microsoft.Extensions.DependencyInjection;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,25 +50,36 @@ namespace HabitApp.VM
         {
             FillHabitsLists((Application.Current as App).CurrentUser.Id);
 
-            ByDaySeries = new SeriesCollection
+            ByDaySeries = new ISeries[]
             {
-                new LineSeries
+                new LineSeries<int>
                 {
-                    Title = "Habits done:",
-                    Values = new ChartValues<int>(HabitsCountByDay.Select(x => x.Count))
+                    Name = "Habits",
+                    Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 3 },
+                    GeometryStroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 3 },
+                    GeometrySize = 12,
+                    Values = HabitsCountByDay.Select(x => x.Count)
                 },
-                new LineSeries
+                new LineSeries<int>
                 {
-                    Title = "Daily habits done:",
-                    Values = new ChartValues<int>(DailyHabitsCountByDay.Select(x => x.Count))
+                    Name = "Daily Habits",
+                    Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 },
+                    GeometryStroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 },
+                    GeometrySize = 12,
+                    Values = DailyHabitsCountByDay.Select(x => x.Count)
                 },
-                new LineSeries
+                new LineSeries<int>
                 {
-                    Title = "Tasks done:",
-                    Values = new ChartValues<int>(TasksCountByDay.Select(x => x.Count))
+                    Name = "Tasks",
+                    Stroke = new SolidColorPaint(SKColors.GreenYellow) { StrokeThickness = 3 },
+                    GeometryStroke = new SolidColorPaint(SKColors.GreenYellow) { StrokeThickness = 3 },
+                    GeometrySize = 12,
+                    Values = TasksCountByDay.Select(x => x.Count)
                 }
             };
         }
+
+        
 
         private void FillHabitsLists(int userId)
         {
@@ -312,13 +323,13 @@ namespace HabitApp.VM
         #endregion
 
 
-        #region ByDaySeries : SeriesCollection - Коллекция точек ByDay
+        #region ByDaySeries : ISeries[] - Коллекция точек ByDay
 
         /// <summary>Коллекция точек ByDay</summary>
-        private SeriesCollection _ByDaySeries;
+        private ISeries[] _ByDaySeries;
 
         /// <summary>Коллекция точек ByDay</summary>
-        public SeriesCollection ByDaySeries
+        public ISeries[] ByDaySeries
         {
             get => _ByDaySeries;
             set => Set(ref _ByDaySeries, value);
@@ -326,20 +337,6 @@ namespace HabitApp.VM
 
         #endregion
 
-
-        #region Period : PeriodUnits - Период на графике
-
-        /// <summary>Период на графике</summary>
-        private PeriodUnits _Period = PeriodUnits.Days;
-
-        /// <summary>Период на графике</summary>
-        public PeriodUnits Period
-        {
-            get => _Period;
-            set => Set(ref _Period, value);
-        }
-
-        #endregion
 
         #region InitialDateTime : DateTime - Начальное время
 

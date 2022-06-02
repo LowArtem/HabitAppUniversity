@@ -10,6 +10,8 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Markup;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 
 namespace HabitApp
 {
@@ -46,6 +48,22 @@ namespace HabitApp
             FrameworkElement.LanguageProperty.OverrideMetadata(
                 typeof(FrameworkElement),
                 new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+
+            LiveCharts.Configure(config =>
+                config
+                    // registers SkiaSharp as the library backend
+                    // REQUIRED unless you build your own
+                    .AddSkiaSharp()
+
+                    // adds the default supported types
+                    // OPTIONAL but highly recommend
+                    .AddDefaultMappers()
+
+                    // select a theme, default is Light
+                    // OPTIONAL
+                    //.AddDarkTheme()
+                    .AddLightTheme()
+                );
         }
 
         protected override async void OnExit(ExitEventArgs e)

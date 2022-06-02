@@ -7,7 +7,7 @@
     xmlns:local="clr-namespace:HabitApp"
     xmlns:model="clr-namespace:HabitApp.Model"
     xmlns:data="clr-namespace:HabitApp.Data"
-    xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     DataContext="{Binding Path=DashboardVM, Source={StaticResource VMLocator}}"
     mc:Ignorable="d"
@@ -105,19 +105,10 @@
                     Margin="5"
                     Grid.Row="0">
 
-                    <lvc:CartesianChart Series="{Binding ByDaySeries}" LegendLocation="Right" >
-                        <lvc:CartesianChart.AxisY>
-                            <lvc:Axis MinValue="0" Title="Completions count"></lvc:Axis>
-                        </lvc:CartesianChart.AxisY>
-                        <lvc:CartesianChart.AxisX>
-                            <lvc:DateAxis
-                                Title="Date"
-                                MinValue="{Binding GraphMinValue, Mode=TwoWay}"
-                                MaxValue="{Binding GraphMaxValue, Mode=TwoWay}"
-                                Period="{Binding Period, Mode=TwoWay}"
-                                InitialDateTime="{Binding InitialDateTime}"/>
+                    <lvc:CartesianChart 
+                        Series="{Binding ByDaySeries}"
+                        LegendPosition="Right">
 
-                        </lvc:CartesianChart.AxisX>
                     </lvc:CartesianChart>
 
                 </materialDesign:Card>
