@@ -1,4 +1,5 @@
 ﻿using HabitApp.Implementation;
+using LiveChartsCore.Defaults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,6 +65,33 @@ namespace HabitApp.Services
                 case TypeOfPeriod.Year: return _statisticsRepository.GetTasksCompletionsCountForYear(userid, firstDayOfPeriod);
                 default: throw new ArgumentException("Wrong period");
             }
+        }
+
+        public List<DateTimePoint> GetAllRatingsWithDates(int userId)
+        {
+            var dataList = _statisticsRepository.GetAllRatingsWithDates(userId);
+            var dataGrouped = dataList.GroupBy(x => x.DateTime.Date);
+
+            var resultList = new List<DateTimePoint>();
+
+            foreach (var date in dataGrouped)
+            {
+                var resultDate = date.Key;
+                double resultRating = 0;
+                int counter = 0;
+
+                foreach (var rating in date)
+                {
+                    resultRating += (double)rating.Value;
+                    counter++;
+                }
+
+                resultRating = resultRating / counter;
+
+                resultList.Add(new DateTimePoint(resultDate, resultRating));
+            }
+
+            return resultList;
         }
     }
 }

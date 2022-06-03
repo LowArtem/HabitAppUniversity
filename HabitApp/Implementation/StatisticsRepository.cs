@@ -1,5 +1,7 @@
-﻿using Npgsql;
+﻿using LiveChartsCore.Defaults;
+using Npgsql;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace HabitApp.Implementation
@@ -398,6 +400,56 @@ namespace HabitApp.Implementation
             con.Close();
             return result;
         }
+        #endregion
+
+
+        #region RatingsReview
+
+        public List<DateTimePoint> GetAllRatingsWithDates(int userId)
+        {
+            NpgsqlConnection con = new NpgsqlConnection(connectionString);
+            con.Open();
+            if (con.FullState == ConnectionState.Broken || con.FullState == ConnectionState.Closed)
+            {
+                throw new Exception("Не работает соединение с бд");
+            }
+
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            command.CommandText = $@"with all_ratings as
+                                    (
+	                                    select rating, date from habit_completions
+	                                    join habits on habitid=habits.id and userid={userId}
+	                                    where Date(date) <= Date(current_date)
+	                                    union all
+	                                    select rating, date from daily_completions
+	                                    join daily_habits on dailyid=daily_habits.id and userid={userId}
+	                                    where Date(date) <= Date(current_date)
+                                    )
+                                    select * from all_ratings
+                                    order by date asc;";
+
+            var reader = command.ExecuteReader();
+
+            List<DateTimePoint> ratings = new List<DateTimePoint>();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    DateTimePoint rating = new DateTimePoint
+                        (dateTime: Convert.ToDateTime(reader["date"].ToString()),
+                         value: Convert.ToInt32(reader["rating"].ToString()));
+
+                    ratings.Add(rating);
+                }
+                reader.Close();
+            }
+
+            con.Close();
+            return ratings;
+        }
+
         #endregion
     }
 }

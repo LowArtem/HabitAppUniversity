@@ -117,6 +117,7 @@
                         <lvc:CartesianChart 
                             Series="{Binding Series}"
                             XAxes="{Binding XAxes}"
+                            ZoomMode="None"
                             LegendPosition="Right">
 
                         </lvc:CartesianChart>
@@ -130,7 +131,14 @@
                     UniformCornerRadius="10"
                     Margin="5"
                     Grid.Row="1">
-                    
+
+                    <lvc:CartesianChart 
+                        Series="{Binding RatingSeries}"
+                        XAxes="{Binding DayXAxes}"
+                        LegendPosition="Right">
+
+                    </lvc:CartesianChart>
+
                 </materialDesign:Card>
             </Grid>
 

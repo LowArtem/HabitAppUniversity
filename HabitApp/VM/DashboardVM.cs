@@ -30,6 +30,7 @@ namespace HabitApp.VM
             NavigateToHomeViewCommand = new BaseCommand(OnNavigateToHomeViewCommandExecuted, CanNavigateToHomeViewCommandExecute);
 
             DrawDoneHabitsByPeriodsGraph();
+            DrawRatingGraph();
         }
 
         private void DrawDoneHabitsByPeriodsGraph()
@@ -42,7 +43,7 @@ namespace HabitApp.VM
             {
                 new LineSeries<DateTimePoint>
                 {
-                    Name = "Habits",
+                    Name = "Habits completions",
                     TooltipLabelFormatter = (chartPoint) => $"Habits at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 3 },
                     GeometrySize = 12,
@@ -50,7 +51,7 @@ namespace HabitApp.VM
                 },
                 new LineSeries<DateTimePoint>
                 {
-                    Name = "Daily Habits",
+                    Name = "Daily Habits completions",
                     TooltipLabelFormatter = (chartPoint) => $"Daily habits at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 },
                     GeometrySize = 12,
@@ -58,7 +59,7 @@ namespace HabitApp.VM
                 },
                 new LineSeries<DateTimePoint>
                 {
-                    Name = "Tasks",
+                    Name = "Tasks completions",
                     TooltipLabelFormatter = (chartPoint) => $"Tasks at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.GreenYellow) { StrokeThickness = 3 },
                     GeometrySize = 12,
@@ -70,7 +71,7 @@ namespace HabitApp.VM
             {
                 new LineSeries<DateTimePoint>
                 {
-                    Name = "Habits",
+                    Name = "Habits completions",
                     TooltipLabelFormatter = (chartPoint) => $"Habits at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 3 },
                     GeometrySize = 12,
@@ -78,7 +79,7 @@ namespace HabitApp.VM
                 },
                 new LineSeries<DateTimePoint>
                 {
-                    Name = "Daily Habits",
+                    Name = "Daily Habits completions",
                     TooltipLabelFormatter = (chartPoint) => $"Daily habits at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 },
                     GeometrySize = 12,
@@ -86,7 +87,7 @@ namespace HabitApp.VM
                 },
                 new LineSeries<DateTimePoint>
                 {
-                    Name = "Tasks",
+                    Name = "Tasks completions",
                     TooltipLabelFormatter = (chartPoint) => $"Tasks at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.GreenYellow) { StrokeThickness = 3 },
                     GeometrySize = 12,
@@ -98,7 +99,7 @@ namespace HabitApp.VM
             {
                 new LineSeries<DateTimePoint>
                 {
-                    Name = "Habits",
+                    Name = "Habits completions",
                     TooltipLabelFormatter = (chartPoint) => $"Habits at {new DateTime((long) chartPoint.SecondaryValue):MM.yy}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 3 },
                     GeometrySize = 12,
@@ -106,7 +107,7 @@ namespace HabitApp.VM
                 },
                 new LineSeries<DateTimePoint>
                 {
-                    Name = "Daily Habits",
+                    Name = "Daily Habits completions",
                     TooltipLabelFormatter = (chartPoint) => $"Daily habits at {new DateTime((long) chartPoint.SecondaryValue):MM.yy}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 },
                     GeometrySize = 12,
@@ -114,7 +115,7 @@ namespace HabitApp.VM
                 },
                 new LineSeries<DateTimePoint>
                 {
-                    Name = "Tasks",
+                    Name = "Tasks completions",
                     TooltipLabelFormatter = (chartPoint) => $"Tasks at {new DateTime((long) chartPoint.SecondaryValue):MM.yy}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.GreenYellow) { StrokeThickness = 3 },
                     GeometrySize = 12,
@@ -126,7 +127,7 @@ namespace HabitApp.VM
             {
                 new LineSeries<DateTimePoint>
                 {
-                    Name = "Habits",
+                    Name = "Habits completions",
                     TooltipLabelFormatter = (chartPoint) => $"Habits at {new DateTime((long) chartPoint.SecondaryValue):yyy}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 3 },
                     GeometrySize = 12,
@@ -134,7 +135,7 @@ namespace HabitApp.VM
                 },
                 new LineSeries<DateTimePoint>
                 {
-                    Name = "Daily Habits",
+                    Name = "Daily Habits completions",
                     TooltipLabelFormatter = (chartPoint) => $"Daily habits at {new DateTime((long) chartPoint.SecondaryValue):yyyy}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 },
                     GeometrySize = 12,
@@ -142,7 +143,7 @@ namespace HabitApp.VM
                 },
                 new LineSeries<DateTimePoint>
                 {
-                    Name = "Tasks",
+                    Name = "Tasks completions",
                     TooltipLabelFormatter = (chartPoint) => $"Tasks at {new DateTime((long) chartPoint.SecondaryValue):yyyy}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.GreenYellow) { StrokeThickness = 3 },
                     GeometrySize = 12,
@@ -154,6 +155,23 @@ namespace HabitApp.VM
 
             Series = ByDaySeries;
             XAxes = DayXAxes;
+        }
+
+        private void DrawRatingGraph()
+        {
+            var dataList = _statisticsService.GetAllRatingsWithDates((Application.Current as App).CurrentUser.Id);
+
+            RatingSeries = new ISeries[]
+            {
+                new LineSeries<DateTimePoint>
+                {
+                    Name = "Rating",
+                    TooltipLabelFormatter = (chartPoint) => $"Rating at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
+                    Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 3 },
+                    GeometrySize = 0,
+                    Values = dataList
+                }
+            };
         }
 
         #region Dates XAxes
@@ -534,6 +552,22 @@ namespace HabitApp.VM
         }
 
         #endregion
+
+
+        #region RatingSeries : ISeries[] - Показываемая коллекция точек графика рейтинга
+
+        /// <summary>Показываемая коллекция точек графика рейтинга</summary>
+        private ISeries[] _RatingSeries;
+
+        /// <summary>Показываемая коллекция точек графика рейтинга</summary>
+        public ISeries[] RatingSeries
+        {
+            get => _RatingSeries;
+            set => Set(ref _RatingSeries, value);
+        }
+
+        #endregion
+
 
 
 
