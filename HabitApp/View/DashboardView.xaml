@@ -94,16 +94,79 @@
             <Grid
                 Grid.Column="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition Height="40*"/>
+                    <RowDefinition Height="60*"/>
                 </Grid.RowDefinitions>
 
-                <!--Graph 1-->
+                <!--Mini stats-->
+                <Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <materialDesign:Card
+                            Background="#edf0f9"
+                            UniformCornerRadius="10"
+                            Margin="5"
+                            Grid.Column="0">
+
+                            <lvc:PieChart
+                                TooltipPosition="Hidden"
+                                LegendPosition="Top"
+                                MaxAngle="360"
+                                Series="{Binding TotalCompletedSeries}"
+                                InitialRotation="-90"                                
+                                Total="{Binding TotalCompletedCount}"/>
+
+
+                        </materialDesign:Card>
+
+                        <materialDesign:Card
+                            Background="#f7f2ec"
+                            UniformCornerRadius="10"
+                            Margin="5"
+                            Grid.Column="1">
+                            
+                            <lvc:PieChart
+                                TooltipPosition="Hidden"
+                                LegendPosition="Top"
+                                MaxAngle="360"
+                                Series="{Binding CurrentInWorkHabitsSeries}"
+                                InitialRotation="-90"
+                                Total="{Binding CurrentInWorkHabitsCount}"/>
+                            
+                        </materialDesign:Card>
+
+                        <materialDesign:Card
+                            Background="#edf7f9"
+                            UniformCornerRadius="10"
+                            Margin="5"
+                            Grid.Column="2">
+                            
+                            <lvc:PieChart
+                                TooltipPosition="Hidden"
+                                LegendPosition="Top"
+                                MaxAngle="360"
+                                Series="{Binding CurrentInWorkTasksSeries}"
+                                InitialRotation="-90"
+                                Total="{Binding CurrentInWorkTasksCount}"/>
+                            
+                        </materialDesign:Card>
+                    </Grid>
+
+                </Grid>
+
+                <!--Graph 2-->
                 <materialDesign:Card
                     Background="White"
                     UniformCornerRadius="10"
                     Margin="5"
-                    Grid.Row="0">
+                    Grid.Row="1">
+
                     <Grid>
                         <ComboBox 
                             HorizontalAlignment="Right"
@@ -113,7 +176,7 @@
                             Width="120"
                             ItemsSource="{Binding Graph1Types}"
                             Style="{StaticResource MaterialDesignFilledComboBox}"/>
-                        
+
                         <lvc:CartesianChart 
                             Series="{Binding Series}"
                             XAxes="{Binding XAxes}"
@@ -122,22 +185,6 @@
 
                         </lvc:CartesianChart>
                     </Grid>
-
-                </materialDesign:Card>
-
-                <!--Graph 2-->
-                <materialDesign:Card
-                    Background="White"
-                    UniformCornerRadius="10"
-                    Margin="5"
-                    Grid.Row="1">
-
-                    <lvc:CartesianChart 
-                        Series="{Binding RatingSeries}"
-                        XAxes="{Binding DayXAxes}"
-                        LegendPosition="Right">
-
-                    </lvc:CartesianChart>
 
                 </materialDesign:Card>
             </Grid>
@@ -169,7 +216,7 @@
 
                         <!--Card 1-->
                         <materialDesign:Card
-                            Background="#4c6ded"
+                            Background="#99f"
                             UniformCornerRadius="10"
                             Margin="15"
                             Grid.Row="1">
@@ -178,7 +225,7 @@
 
                         <!--Card 2-->
                         <materialDesign:Card
-                            Background="#4c6ded"
+                            Background="#99f"
                             UniformCornerRadius="10"
                             Margin="15"
                             Grid.Row="2">

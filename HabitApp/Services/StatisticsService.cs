@@ -93,5 +93,23 @@ namespace HabitApp.Services
 
             return resultList;
         }
+
+        public int GetTotalCompletionsCount(int userId) => _statisticsRepository.GetTotalCompletionsCount(userId);
+
+        public List<int> GetCurrentHabitsAndCompletedTodayHabits(int userId)
+        {
+            int allHabits = _habitRepository.GetAllByUserId(userId).Count();
+            int todayCompleted = _statisticsRepository.GetTodayCompletedHabitsCount(userId);
+
+            return new List<int> { allHabits, todayCompleted };
+        }
+
+        public List<int> GetCurrentTasksAndCompletedTasks(int userId)
+        {
+            int allTasks = _taskRepository.GetAllTasksByUser(userId).Count();
+            int completed = _statisticsRepository.GetCurrentCompletedTasksCount(userId);
+
+            return new List<int> { allTasks, completed };
+        }
     }
 }

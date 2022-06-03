@@ -31,6 +31,7 @@ namespace HabitApp.VM
 
             DrawDoneHabitsByPeriodsGraph();
             DrawRatingGraph();
+            DrawStatCircles();
         }
 
         private void DrawDoneHabitsByPeriodsGraph()
@@ -172,6 +173,46 @@ namespace HabitApp.VM
                     Values = dataList
                 }
             };
+        }
+
+        private void DrawStatCircles()
+        {
+            int userId = (Application.Current as App).CurrentUser.Id;
+
+            TotalCompletedCount = _statisticsService.GetTotalCompletionsCount(userId);
+
+            var habitsList = _statisticsService.GetCurrentHabitsAndCompletedTodayHabits(userId);
+            CurrentInWorkHabitsCount = habitsList[0];
+
+            var tasksList = _statisticsService.GetCurrentTasksAndCompletedTasks(userId);
+            CurrentInWorkTasksCount = tasksList[0];
+
+            TotalCompletedSeries = new GaugeBuilder()
+                .WithLabelFormatter(point => point.PrimaryValue.ToString())
+                .WithLabelsPosition(LiveChartsCore.Measure.PolarLabelsPosition.ChartCenter)
+                .WithLabelsSize(40)
+                .WithInnerRadius(40)
+                .WithMaxColumnWidth(30)
+                .AddValue(TotalCompletedCount, "Total completed")
+                .BuildSeries();
+
+            CurrentInWorkHabitsSeries = new GaugeBuilder()
+                .WithLabelFormatter(point => point.PrimaryValue.ToString() + "/" + CurrentInWorkHabitsCount)
+                .WithLabelsPosition(LiveChartsCore.Measure.PolarLabelsPosition.ChartCenter)
+                .WithLabelsSize(40)
+                .WithInnerRadius(40)
+                .WithMaxColumnWidth(30)
+                .AddValue(habitsList[1], "Today habits completed")
+                .BuildSeries();
+
+            CurrentInWorkTasksSeries = new GaugeBuilder()
+                .WithLabelFormatter(point => point.PrimaryValue.ToString() + "/" + CurrentInWorkTasksCount)
+                .WithLabelsPosition(LiveChartsCore.Measure.PolarLabelsPosition.ChartCenter)
+                .WithLabelsSize(40)
+                .WithInnerRadius(40)
+                .WithMaxColumnWidth(30)
+                .AddValue(tasksList[1], "Tasks completed")
+                .BuildSeries();
         }
 
         #region Dates XAxes
@@ -566,6 +607,97 @@ namespace HabitApp.VM
             set => Set(ref _RatingSeries, value);
         }
 
+        #endregion
+
+
+        #region Mini cards statistic series
+        #region TotalCompletedSeries : IEnumerable<ISeries> - Gauge-серия количества всех завершённых задач и привычек
+
+        /// <summary>Gauge-серия количества всех завершённых задач и привычек</summary>
+        private IEnumerable<ISeries> _TotalCompletedSeries;
+
+        /// <summary>Gauge-серия количества всех завершённых задач и привычек</summary>
+        public IEnumerable<ISeries> TotalCompletedSeries
+        {
+            get => _TotalCompletedSeries;
+            set => Set(ref _TotalCompletedSeries, value);
+        }
+
+        #endregion
+
+        #region TotalCompletedCount : int - Количество всех выполненных задач и привычек
+
+        /// <summary>Количество всех выполненных задач и привычек</summary>
+        private int _TotalCompletedCount;
+
+        /// <summary>Количество всех выполненных задач и привычек</summary>
+        public int TotalCompletedCount
+        {
+            get => _TotalCompletedCount;
+            set => Set(ref _TotalCompletedCount, value);
+        }
+
+        #endregion
+
+
+
+        #region CurrentInWorkHabitsSeries : IEnumerable<ISeries> - Gauge-серия количества действующих привычек с процентом выполненных из них сегодня
+
+        /// <summary>Gauge-серия количества действующих привычек с процентом выполненных из них сегодня</summary>
+        private IEnumerable<ISeries> _CurrentInWorkHabitsSeries;
+
+        /// <summary>Gauge-серия количества действующих привычек с процентом выполненных из них сегодня</summary>
+        public IEnumerable<ISeries> CurrentInWorkHabitsSeries
+        {
+            get => _CurrentInWorkHabitsSeries;
+            set => Set(ref _CurrentInWorkHabitsSeries, value);
+        }
+
+        #endregion
+
+        #region CurrentInWorkHabitsCount : int - Количество действующих сейчас привычек
+
+        /// <summary>Количество действующих сейчас привычек</summary>
+        private int _CurrentInWorkHabitsCount;
+
+        /// <summary>Количество действующих сейчас привычек</summary>
+        public int CurrentInWorkHabitsCount
+        {
+            get => _CurrentInWorkHabitsCount;
+            set => Set(ref _CurrentInWorkHabitsCount, value);
+        }
+
+        #endregion
+
+
+
+        #region CurrentInWorkTasksSeries : IEnumerable<ISeries> - Gauge-серия количества действующих задач с процентом выполненных на текущий момент
+
+        /// <summary>Gauge-серия количества действующих задач с процентом выполненных на текущий момент</summary>
+        private IEnumerable<ISeries> _CurrentInWorkTasksSeries;
+
+        /// <summary>Gauge-серия количества действующих задач с процентом выполненных на текущий момент</summary>
+        public IEnumerable<ISeries> CurrentInWorkTasksSeries
+        {
+            get => _CurrentInWorkTasksSeries;
+            set => Set(ref _CurrentInWorkTasksSeries, value);
+        }
+
+        #endregion
+
+        #region CurrentInWorkTasksCount : int - Количество действующих задач
+
+        /// <summary>Количество действующих задач</summary>
+        private int _CurrentInWorkTasksCount;
+
+        /// <summary>Количество действующих задач</summary>
+        public int CurrentInWorkTasksCount
+        {
+            get => _CurrentInWorkTasksCount;
+            set => Set(ref _CurrentInWorkTasksCount, value);
+        }
+
+        #endregion
         #endregion
 
 

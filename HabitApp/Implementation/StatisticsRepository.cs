@@ -451,5 +451,116 @@ namespace HabitApp.Implementation
         }
 
         #endregion
+
+        #region MiniStats
+
+        public int GetTotalCompletionsCount(int userId)
+        {
+            NpgsqlConnection con = new NpgsqlConnection(connectionString);
+            con.Open();
+            if (con.FullState == ConnectionState.Broken || con.FullState == ConnectionState.Closed)
+            {
+                throw new Exception("Не работает соединение с бд");
+            }
+
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            command.CommandText = $@"with completed as 
+                                    ((select habits.id as cnt from habits 
+                                      join habit_completions on habits.id=habit_completions.habitid
+                                      where userid={userId} and Date(habit_completions.date) <= Date(current_date)) 
+                                    union all
+                                    (select daily_habits.id as cnt from daily_habits 
+                                     join daily_completions on daily_habits.id=daily_completions.dailyid
+                                     where userid={userId} and Date(daily_completions.date) <= Date(current_date)) 
+                                    union all
+                                    (select tasks.id as cnt from tasks 
+                                     join task_to_user on tasks.id=task_to_user.taskid
+                                     where tasks.status=true and task_to_user.userid={userId} and Date(task_to_user.date) <= Date(current_date)))
+ 
+                                    select count(*) from completed;";
+
+            var reader = command.ExecuteReader();
+
+            int result = 0;
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    result = Convert.ToInt32(reader["count"].ToString());
+                }
+                reader.Close();
+            }
+
+            con.Close();
+            return result;
+        }
+
+        public int GetTodayCompletedHabitsCount(int userId)
+        {
+            NpgsqlConnection con = new NpgsqlConnection(connectionString);
+            con.Open();
+            if (con.FullState == ConnectionState.Broken || con.FullState == ConnectionState.Closed)
+            {
+                throw new Exception("Не работает соединение с бд");
+            }
+
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            command.CommandText = $@"select count(*) from habits
+                                    join habit_completions on habitid = habits.id
+                                    where userid={userId} and Date(date) = Date(current_date);";
+
+            var reader = command.ExecuteReader();
+
+            int result = 0;
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    result = Convert.ToInt32(reader["count"].ToString());
+                }
+                reader.Close();
+            }
+
+            con.Close();
+            return result;
+        }
+
+        public int GetCurrentCompletedTasksCount(int userId)
+        {
+            NpgsqlConnection con = new NpgsqlConnection(connectionString);
+            con.Open();
+            if (con.FullState == ConnectionState.Broken || con.FullState == ConnectionState.Closed)
+            {
+                throw new Exception("Не работает соединение с бд");
+            }
+
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            command.CommandText = $@"select count(*) from tasks
+                                    join task_to_user on taskid=tasks.id
+                                    where userid={userId} and status=true";
+
+            var reader = command.ExecuteReader();
+
+            int result = 0;
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    result = Convert.ToInt32(reader["count"].ToString());
+                }
+                reader.Close();
+            }
+
+            con.Close();
+            return result;
+        }
+
+        #endregion
     }
 }
