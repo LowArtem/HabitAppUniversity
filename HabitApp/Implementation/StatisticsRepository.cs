@@ -6,6 +6,27 @@ using System.Data;
 
 namespace HabitApp.Implementation
 {
+    public class IdCountStruct
+    {
+        public int Id;
+        public int Count;
+
+        public IdCountStruct(int id, int count)
+        {
+            Id = id;
+            Count = count;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is IdCountStruct countStruct)
+            {
+                return this.Id == countStruct.Id && this.Count == countStruct.Count;
+            }
+            else return false;
+        }
+    }
+
     public class StatisticsRepository
     {
         private readonly string connectionString = Properties.Settings.Default.connectionString;
@@ -597,6 +618,41 @@ namespace HabitApp.Implementation
                 while (reader.Read())
                 {
                     resultList.Add(Convert.ToDateTime(reader["date"].ToString()));
+                }
+                reader.Close();
+            }
+
+            con.Close();
+            return resultList;
+        }
+
+        public List<IdCountStruct> GetCompletionsCountOfAllUsers()
+        {
+            NpgsqlConnection con = new NpgsqlConnection(connectionString);
+            con.Open();
+            if (con.FullState == ConnectionState.Broken || con.FullState == ConnectionState.Closed)
+            {
+                throw new Exception("Не работает соединение с бд");
+            }
+
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            command.CommandText = $@"select id, getCountOfCompletionsByUser(users.id) as cnt
+                                    from users
+                                    order by cnt desc;";
+
+            var reader = command.ExecuteReader();
+
+            List<IdCountStruct> resultList = new List<IdCountStruct>();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    resultList.Add(
+                        new IdCountStruct(
+                            Convert.ToInt32(reader["id"].ToString()), 
+                            Convert.ToInt32(reader["cnt"].ToString())));
                 }
                 reader.Close();
             }

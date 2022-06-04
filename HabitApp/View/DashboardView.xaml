@@ -236,7 +236,15 @@
                             UniformCornerRadius="10"
                             Margin="15"
                             Grid.Row="2">
-                            
+
+                            <lvc:PieChart
+                                TooltipPosition="Hidden"                                
+                                LegendPosition="Top"
+                                MaxAngle="360"                                
+                                Series="{Binding UserTopSeries}"
+                                InitialRotation="0"
+                                Total="100"/>
+
                         </materialDesign:Card>
                     </Grid>
                 </materialDesign:Card>

@@ -223,6 +223,16 @@ namespace HabitApp.VM
                 .WithMaxColumnWidth(30)
                 .AddValue(CompletionsDaysStreak, "Completions day streak", SKColors.Gold)
                 .BuildSeries();
+
+            double top = _statisticsService.GetTopOfAllUsersByCompletionsCount(userId);
+            UserTopSeries = new GaugeBuilder()
+                .WithLabelFormatter(point => point.PrimaryValue.ToString() + "%")
+                .WithLabelsPosition(LiveChartsCore.Measure.PolarLabelsPosition.ChartCenter)
+                .WithLabelsSize(40)
+                .WithInnerRadius(40)
+                .WithMaxColumnWidth(30)
+                .AddValue(top, "You are in the top")
+                .BuildSeries();
         }
 
         #region Dates XAxes
@@ -738,6 +748,23 @@ namespace HabitApp.VM
         }
 
         #endregion
+
+
+        #region UserTopSeries : IEnumerable<ISeries> - Gauge-серия текущего положения пользователя среди всех пользователей
+
+        /// <summary>Gauge-серия текущего положения пользователя среди всех пользователей</summary>
+        private IEnumerable<ISeries> _UserTopSeries;
+
+        /// <summary>Gauge-серия текущего положения пользователя среди всех пользователей</summary>
+        public IEnumerable<ISeries> UserTopSeries
+        {
+            get => _UserTopSeries;
+            set => Set(ref _UserTopSeries, value);
+        }
+
+        #endregion
+
+
         #endregion
 
 

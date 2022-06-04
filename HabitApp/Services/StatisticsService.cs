@@ -142,5 +142,18 @@ namespace HabitApp.Services
             }
             return maxStrike;
         }
+
+        public double GetTopOfAllUsersByCompletionsCount(int userId)
+        {
+            var allUsersCompletionsCountList = _statisticsRepository.GetCompletionsCountOfAllUsers();
+
+            int userCompletionsCount = GetTotalCompletionsCount(userId);
+
+            int userTop = allUsersCompletionsCountList.IndexOf(new IdCountStruct(userId, userCompletionsCount)) + 1;
+
+            double answer = (double)userTop / allUsersCompletionsCountList.Count * 100;
+
+            return Math.Round(answer, 2);
+        }
     }
 }
