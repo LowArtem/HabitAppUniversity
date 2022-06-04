@@ -35,6 +35,11 @@ namespace HabitApp.VM
             Properties.Settings.Default.userGroupId = groupid;
 
             Properties.Settings.Default.Save();
+
+            int? trueGroupId = null;
+            if (groupid != -1) trueGroupId = groupid;
+
+            (Application.Current as App).CurrentUser = new Data.User(id, username, password, money, experience, trueGroupId);
         }
 
         #region MessageQueue : SnackbarMessageQueue - Сообщение об ошибке
