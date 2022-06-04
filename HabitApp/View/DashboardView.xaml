@@ -118,8 +118,7 @@
                                 TooltipPosition="Hidden"
                                 LegendPosition="Top"
                                 MaxAngle="360"
-                                Series="{Binding TotalCompletedSeries}"
-                                InitialRotation="-90"                                
+                                Series="{Binding TotalCompletedSeries}"             
                                 Total="{Binding TotalCompletedCount}"/>
 
 
@@ -136,7 +135,7 @@
                                 LegendPosition="Top"
                                 MaxAngle="360"
                                 Series="{Binding CurrentInWorkHabitsSeries}"
-                                InitialRotation="-90"
+                                InitialRotation="0"
                                 Total="{Binding CurrentInWorkHabitsCount}"/>
                             
                         </materialDesign:Card>
@@ -150,9 +149,9 @@
                             <lvc:PieChart
                                 TooltipPosition="Hidden"
                                 LegendPosition="Top"
-                                MaxAngle="360"
+                                MaxAngle="360"                                
                                 Series="{Binding CurrentInWorkTasksSeries}"
-                                InitialRotation="-90"
+                                InitialRotation="0"
                                 Total="{Binding CurrentInWorkTasksCount}"/>
                             
                         </materialDesign:Card>
