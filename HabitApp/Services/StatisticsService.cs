@@ -1,4 +1,5 @@
 ﻿using HabitApp.Implementation;
+using HabitApp.Model;
 using LiveChartsCore.Defaults;
 using System;
 using System.Collections.Generic;
@@ -14,13 +15,15 @@ namespace HabitApp.Services
         private readonly HabitRepository _habitRepository;
         private readonly DailyHabitRepository _dailyHabitRepository;
         private readonly StatisticsRepository _statisticsRepository;
+        private readonly ICurrentDateTimeProvider _currentDateTimeProvider;
 
-        public StatisticsService(TaskRepository taskRepository, HabitRepository habitRepository, DailyHabitRepository dailyHabitRepository, StatisticsRepository statisticsRepository)
+        public StatisticsService(TaskRepository taskRepository, HabitRepository habitRepository, DailyHabitRepository dailyHabitRepository, StatisticsRepository statisticsRepository, ICurrentDateTimeProvider currentDateTimeProvider)
         {
             _taskRepository = taskRepository;
             _habitRepository = habitRepository;
             _dailyHabitRepository = dailyHabitRepository;
             _statisticsRepository = statisticsRepository;
+            _currentDateTimeProvider = currentDateTimeProvider;
         }
 
         public enum TypeOfPeriod
@@ -112,35 +115,37 @@ namespace HabitApp.Services
             return new List<int> { allTasks, completed };
         }
 
-        public int GetCompletionDaysStrike(int userId)
+        public (int, bool) GetCompletionDaysStrike(int userId)
         {
             var datesList = _statisticsRepository.GetCompletionDates(userId);
+            datesList.Reverse();
             int strike = 0;
-            int maxStrike = 0;
+            bool isCompletedToday = false;
 
-            DateTime? lastDate = null;
+            DateTime lastDate = _currentDateTimeProvider.GetCurrentDateTime();
+
+            if (datesList.Count == 0) return (0, false);
+
+            if ((datesList[0].Date - lastDate.Date).TotalDays == 0)
+            {
+                strike++;
+                isCompletedToday = true;
+            }
 
             foreach (var date in datesList)
-            {
-                if (lastDate != null)
+            {               
+                if ((lastDate.Date - date.Date).TotalDays > 1)
                 {
-                    if (date != lastDate)
-                    {
-                        lastDate = date;
-
-                        if (strike > maxStrike) maxStrike = strike;
-
-                        strike = 1;
-                    }
-                    else strike++;
+                    return (strike, isCompletedToday);
                 }
-                else
+                else if ((lastDate.Date - date.Date).TotalDays != 0)
                 {
                     lastDate = date;
-                    strike = 1;
-                }
+                    strike++;
+                }               
             }
-            return maxStrike;
+
+            return (strike, isCompletedToday);
         }
 
         public double GetTopOfAllUsersByCompletionsCount(int userId)

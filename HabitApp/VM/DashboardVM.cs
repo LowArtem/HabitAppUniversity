@@ -214,15 +214,31 @@ namespace HabitApp.VM
                 .AddValue(tasksList[1], "Tasks completed")
                 .BuildSeries();
 
-            CompletionsDaysStreak = _statisticsService.GetCompletionDaysStrike(userId);
-            CompletionDaysStrikeSeries = new GaugeBuilder()
-                .WithLabelFormatter(point => point.PrimaryValue.ToString())
-                .WithLabelsPosition(LiveChartsCore.Measure.PolarLabelsPosition.ChartCenter)
-                .WithLabelsSize(40)
-                .WithInnerRadius(40)
-                .WithMaxColumnWidth(30)
-                .AddValue(CompletionsDaysStreak, "Completions day streak", SKColors.Gold)
-                .BuildSeries();
+            bool isCompletedToday = false;
+            (CompletionsDaysStreak, isCompletedToday) = _statisticsService.GetCompletionDaysStrike(userId);
+
+            if (isCompletedToday)
+            {
+                CompletionDaysStrikeSeries = new GaugeBuilder()
+                    .WithLabelFormatter(point => point.PrimaryValue.ToString())
+                    .WithLabelsPosition(LiveChartsCore.Measure.PolarLabelsPosition.ChartCenter)
+                    .WithLabelsSize(40)
+                    .WithInnerRadius(40)
+                    .WithMaxColumnWidth(30)
+                    .AddValue(CompletionsDaysStreak, "Completions day streak", SKColors.Gold)
+                    .BuildSeries();
+            }
+            else
+            {
+                CompletionDaysStrikeSeries = new GaugeBuilder()
+                    .WithLabelFormatter(point => CompletionsDaysStreak.ToString())
+                    .WithLabelsPosition(LiveChartsCore.Measure.PolarLabelsPosition.ChartCenter)
+                    .WithLabelsSize(40)
+                    .WithInnerRadius(40)
+                    .WithMaxColumnWidth(30)
+                    .AddValue(0, "Completions day streak", SKColors.Gold)
+                    .BuildSeries();
+            }
 
             double top = _statisticsService.GetTopOfAllUsersByCompletionsCount(userId);
             UserTopSeries = new GaugeBuilder()

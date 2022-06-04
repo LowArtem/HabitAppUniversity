@@ -42,7 +42,6 @@ namespace HabitApp.VM
 
             (Application.Current as App).CurrentUser = user;
 
-            // TODO: тестовый вариант пока, на странице Login другой переход
             _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<DashboardView>());
         }
 
