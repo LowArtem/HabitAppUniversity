@@ -20,10 +20,7 @@ namespace HabitApp
     /// </summary>
     public partial class App : Application
     {
-        //public User CurrentUser { get; set; } = null;
-
-        // Для тестов:
-        public User CurrentUser { get; set; } = new User(7, "TrialBot", "TrialBot", 0, 0, null);
+        public User CurrentUser { get; set; }
 
         private static IHost _Host;
         public static IHost Host
@@ -90,15 +87,15 @@ namespace HabitApp
             services.AddTransient<StatisticsService>();
 
             services.AddSingleton<MainWindowVM>();
-            services.AddSingleton<HomeVM>();
+            services.AddTransient<HomeVM>();
             services.AddSingleton<LoginVM>();
-            services.AddSingleton<DashboardVM>();
+            services.AddTransient<DashboardVM>();
             services.AddSingleton<CompletionRatingDialogVM>();
 
             services.AddTransient<HomeView>();
-            services.AddScoped<LoginView>();
-            services.AddScoped<DashboardView>();
-            services.AddTransient<CompletionRatingDialog>();
+            services.AddTransient<LoginView>();
+            services.AddTransient<DashboardView>();
+            services.AddScoped<CompletionRatingDialog>();
 
             services.AddSingleton<PageNavigationManager>();
             services.AddSingleton<ICurrentDateTimeProvider, CurrentDateTimeProvider>();
