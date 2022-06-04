@@ -766,6 +766,13 @@
                                 Command="{Binding ChangeDailyHabitCommand}"
                                 Content="Save changes"/>
                         </Grid>
+                        
+                        <Button 
+                            Height="45"
+                            Width="200"
+                            Margin="10, 5, 10, 20"
+                            Command="{Binding AddNewDailyHabitCommand}"
+                            Content="Create new"/>
 
                     </StackPanel>
                 </materialDesign:Card>

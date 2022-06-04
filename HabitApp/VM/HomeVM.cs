@@ -48,7 +48,7 @@ namespace HabitApp.VM
             NavigateToDashboardCommand = new BaseCommand(OnNavigateToDashboardCommandExecuted, CanNavigateToDashboardCommandExecute);
 
             AddNewHabitCommand = new BaseCommand(OnAddNewHabitCommandExecuted, CanAddNewHabitCommandExecute);
-
+            AddNewDailyHabitCommand = new BaseCommand(OnAddNewDailyHabitCommandExecuted, CanAddNewDailyHabitCommandExecute);
 
             User currentUser;
             var app = Application.Current;
@@ -698,6 +698,60 @@ namespace HabitApp.VM
         #endregion
 
 
+
+        #region AddNewDailyHabitCommand
+
+        public ICommand AddNewDailyHabitCommand { get; }
+        private bool CanAddNewDailyHabitCommandExecute(object p) => true;
+
+        private void OnAddNewDailyHabitCommandExecuted(object p)
+        {
+            if (!IsNewDailyHabitCreating)
+            {
+                SelectedDailyHabitIndex = null;
+                SelectedDailyHabit = null;
+                DailyHabitCompletions = null;
+
+                SelectedDailyHabit = new DailyHabit("", "", Categories.Other, 
+                    (Application.Current as App).CurrentUser.Id, 
+                    new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 12, 0, 0));
+
+                IsNewDailyHabitCreating = true;
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(SelectedDailyHabit.Name) &&
+                    !string.IsNullOrEmpty(SelectedDailyHabit.Description))
+                {
+                    var newHabit = _allHabitCRUDService.AddNewDailyHabit(SelectedDailyHabit);
+                    DailyHabits.Add(newHabit);
+
+                    OnPropertyChanged(nameof(DailyHabits));
+                }
+                else
+                {
+                    MessageQueue.Enqueue("You have to fill all fields to create new daily habit");
+                }
+
+                IsNewDailyHabitCreating = false;
+            }
+        }
+
+        #endregion
+
+        #region IsNewDailyHabitCreating : bool - Пользователь сейчас создаёт новую ежедневную привычку
+
+        /// <summary>Пользователь сейчас создаёт новую ежедневную привычку</summary>
+        private bool _IsNewDailyHabitCreating = false;
+
+        /// <summary>Пользователь сейчас создаёт новую ежедневную привычку</summary>
+        public bool IsNewDailyHabitCreating
+        {
+            get => _IsNewDailyHabitCreating;
+            set => Set(ref _IsNewDailyHabitCreating, value);
+        }
+
+        #endregion
 
 
 
