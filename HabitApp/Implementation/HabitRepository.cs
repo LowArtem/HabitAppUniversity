@@ -26,7 +26,10 @@ namespace HabitApp.Implementation
             var reader = command.ExecuteReader();
             if (reader.HasRows)
             {
-                entity.Id = reader.GetInt32(0);
+                while (reader.Read())
+                {
+                    entity.Id = Convert.ToInt32(reader["id"].ToString());
+                }
                 reader.Close();
             }
 

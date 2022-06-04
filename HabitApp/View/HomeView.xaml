@@ -449,6 +449,13 @@
                                 Command="{Binding ChangeHabitCommand}"
                                 Content="Save changes"/>
                         </Grid>
+                        
+                        <Button 
+                            Height="45"
+                            Width="200"
+                            Margin="10, 5, 10, 20"
+                            Command="{Binding AddNewHabitCommand}"
+                            Content="Create new"/>
 
                     </StackPanel>
                 </materialDesign:Card>
@@ -1006,6 +1013,10 @@
                 </materialDesign:Card>
             </Grid>
         </Grid>
+        
+        <materialDesign:Snackbar
+            MessageQueue="{Binding MessageQueue}"/>
+        
     </Grid>
     </materialDesign:DialogHost>
 </UserControl>

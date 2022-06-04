@@ -47,6 +47,9 @@ namespace HabitApp.VM
             LogoutCommand = new BaseCommand(OnLogoutCommandExecuted, CanLogoutCommandExecute);
             NavigateToDashboardCommand = new BaseCommand(OnNavigateToDashboardCommandExecuted, CanNavigateToDashboardCommandExecute);
 
+            AddNewHabitCommand = new BaseCommand(OnAddNewHabitCommandExecuted, CanAddNewHabitCommandExecute);
+
+
             User currentUser;
             var app = Application.Current;
             if (app is App currentApp)
@@ -71,6 +74,8 @@ namespace HabitApp.VM
             _allHabitService = allHabitService;
 
             UpdateDailyHabitsStatus();
+
+            MessageQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(5000));
         }
 
 
@@ -640,6 +645,61 @@ namespace HabitApp.VM
         #endregion
 
 
+        #region AddNewHabitCommand
+
+        public ICommand AddNewHabitCommand { get; }
+        private bool CanAddNewHabitCommandExecute(object p) => true;
+
+        private void OnAddNewHabitCommandExecuted(object p)
+        {
+            if (!IsNewHabitCreating)
+            {
+                SelectedHabitIndex = null;
+                SelectedHabit = null;
+                HabitCompletions = null;
+
+                SelectedHabit = new Habit("", "", Categories.Other, (Application.Current as App).CurrentUser.Id);
+
+                IsNewHabitCreating = true;
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(SelectedHabit.Name) &&
+                    !string.IsNullOrEmpty(SelectedHabit.Description))
+                {
+                    var newHabit = _allHabitCRUDService.AddNewHabit(SelectedHabit);
+                    Habits.Add(newHabit);
+
+                    OnPropertyChanged(nameof(Habits));
+                }
+                else
+                {
+                    MessageQueue.Enqueue("You have to fill all fields to create new habit");
+                }
+
+                IsNewHabitCreating = false;
+            }
+        }
+
+        #endregion
+
+        #region IsNewHabitCreating : bool - Пользователь сейчас создаёт новую привычку
+
+        /// <summary>Пользователь сейчас создаёт новую привычку</summary>
+        private bool _IsNewHabitCreating = false;
+
+        /// <summary>Пользователь сейчас создаёт новую привычку</summary>
+        public bool IsNewHabitCreating
+        {
+            get => _IsNewHabitCreating;
+            set => Set(ref _IsNewHabitCreating, value);
+        }
+
+        #endregion
+
+
+
+
 
         #region DeleteHabitCompletionCommand
 
@@ -710,6 +770,21 @@ namespace HabitApp.VM
         private void OnNavigateToDashboardCommandExecuted(object p)
         {
             _pageNavigationManager.ChangePage(App.Host.Services.GetRequiredService<DashboardView>());
+        }
+
+        #endregion
+
+
+        #region MessageQueue : SnackbarMessageQueue - Сообщение об ошибке
+
+        /// <summary>Сообщение об ошибке</summary>
+        private SnackbarMessageQueue _MessageQueue;
+
+        /// <summary>Сообщение об ошибке</summary>
+        public SnackbarMessageQueue MessageQueue
+        {
+            get => _MessageQueue;
+            set => Set(ref _MessageQueue, value);
         }
 
         #endregion
