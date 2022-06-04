@@ -561,6 +561,50 @@ namespace HabitApp.Implementation
             return result;
         }
 
+        public List<DateTime> GetCompletionDates(int userId)
+        {
+            NpgsqlConnection con = new NpgsqlConnection(connectionString);
+            con.Open();
+            if (con.FullState == ConnectionState.Broken || con.FullState == ConnectionState.Closed)
+            {
+                throw new Exception("Не работает соединение с бд");
+            }
+
+            NpgsqlCommand command = new NpgsqlCommand();
+            command.Connection = con;
+            command.CommandText = $@"with completed as 
+                                    ((select habits.id as cnt, date from habits 
+                                      join habit_completions on habits.id=habit_completions.habitid
+                                      where userid={userId} and Date(habit_completions.date) <= Date(current_date)) 
+                                    union all
+                                    (select daily_habits.id as cnt, date from daily_habits 
+                                     join daily_completions on daily_habits.id=daily_completions.dailyid
+                                     where userid={userId} and Date(daily_completions.date) <= Date(current_date)) 
+                                    union all
+                                    (select tasks.id as cnt, date from tasks 
+                                     join task_to_user on tasks.id=task_to_user.taskid
+                                     where tasks.status=true and task_to_user.userid={userId} and Date(task_to_user.date) <= Date(current_date)))
+
+                                    select date from completed
+                                    order by date asc";
+
+            var reader = command.ExecuteReader();
+
+            List<DateTime> resultList = new List<DateTime>();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    resultList.Add(Convert.ToDateTime(reader["date"].ToString()));
+                }
+                reader.Close();
+            }
+
+            con.Close();
+            return resultList;
+        }
+
         #endregion
     }
 }

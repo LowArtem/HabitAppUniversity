@@ -213,6 +213,16 @@ namespace HabitApp.VM
                 .WithMaxColumnWidth(30)
                 .AddValue(tasksList[1], "Tasks completed")
                 .BuildSeries();
+
+            CompletionsDaysStreak = _statisticsService.GetCompletionDaysStrike(userId);
+            CompletionDaysStrikeSeries = new GaugeBuilder()
+                .WithLabelFormatter(point => point.PrimaryValue.ToString())
+                .WithLabelsPosition(LiveChartsCore.Measure.PolarLabelsPosition.ChartCenter)
+                .WithLabelsSize(40)
+                .WithInnerRadius(40)
+                .WithMaxColumnWidth(30)
+                .AddValue(CompletionsDaysStreak, "Completions day streak", SKColors.Gold)
+                .BuildSeries();
         }
 
         #region Dates XAxes
@@ -608,6 +618,36 @@ namespace HabitApp.VM
         }
 
         #endregion
+
+
+        #region CompletionsDaysStrike : int - Стрик подряд дней выполнений
+
+        /// <summary>Стрик подряд дней выполнений</summary>
+        private int _CompletionsDaysStrike;
+
+        /// <summary>Стрик подряд дней выполнений</summary>
+        public int CompletionsDaysStreak
+        {
+            get => _CompletionsDaysStrike;
+            set => Set(ref _CompletionsDaysStrike, value);
+        }
+
+        #endregion
+
+        #region CompletionDaysStrikeSeries : IEnumerable<ISeries> - Коллекция точек стрика дней
+
+        /// <summary>Коллекция точек стрика дней</summary>
+        private IEnumerable<ISeries> _CompletionDaysStrikeSeries;
+
+        /// <summary>Коллекция точек стрика дней</summary>
+        public IEnumerable<ISeries> CompletionDaysStrikeSeries
+        {
+            get => _CompletionDaysStrikeSeries;
+            set => Set(ref _CompletionDaysStrikeSeries, value);
+        }
+
+        #endregion
+
 
 
         #region Mini cards statistic series

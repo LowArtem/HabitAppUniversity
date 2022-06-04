@@ -215,16 +215,24 @@
 
                         <!--Card 1-->
                         <materialDesign:Card
-                            Background="#99f"
+                            Background="#EDE7F6"
                             UniformCornerRadius="10"
                             Margin="15"
                             Grid.Row="1">
-                            
+
+                            <lvc:PieChart
+                                TooltipPosition="Hidden"                                
+                                LegendPosition="Top"
+                                MaxAngle="360"                                
+                                Series="{Binding CompletionDaysStrikeSeries}"
+                                InitialRotation="0"
+                                Total="{Binding CompletionsDaysStrike}"/>
+
                         </materialDesign:Card>
 
                         <!--Card 2-->
                         <materialDesign:Card
-                            Background="#99f"
+                            Background="#EDE7F6"
                             UniformCornerRadius="10"
                             Margin="15"
                             Grid.Row="2">

@@ -111,5 +111,36 @@ namespace HabitApp.Services
 
             return new List<int> { allTasks, completed };
         }
+
+        public int GetCompletionDaysStrike(int userId)
+        {
+            var datesList = _statisticsRepository.GetCompletionDates(userId);
+            int strike = 0;
+            int maxStrike = 0;
+
+            DateTime? lastDate = null;
+
+            foreach (var date in datesList)
+            {
+                if (lastDate != null)
+                {
+                    if (date != lastDate)
+                    {
+                        lastDate = date;
+
+                        if (strike > maxStrike) maxStrike = strike;
+
+                        strike = 1;
+                    }
+                    else strike++;
+                }
+                else
+                {
+                    lastDate = date;
+                    strike = 1;
+                }
+            }
+            return maxStrike;
+        }
     }
 }
