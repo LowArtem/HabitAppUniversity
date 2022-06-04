@@ -49,6 +49,7 @@ namespace HabitApp.VM
 
             AddNewHabitCommand = new BaseCommand(OnAddNewHabitCommandExecuted, CanAddNewHabitCommandExecute);
             AddNewDailyHabitCommand = new BaseCommand(OnAddNewDailyHabitCommandExecuted, CanAddNewDailyHabitCommandExecute);
+            AddNewTaskCommand = new BaseCommand(OnAddNewTaskCommandExecuted, CanAddNewTaskCommandExecute);
 
             User currentUser;
             var app = Application.Current;
@@ -752,6 +753,59 @@ namespace HabitApp.VM
         }
 
         #endregion
+
+
+        #region AddNewTaskCommand
+
+        public ICommand AddNewTaskCommand { get; }
+        private bool CanAddNewTaskCommandExecute(object p) => true;
+
+        private void OnAddNewTaskCommandExecuted(object p)
+        {
+            if (!IsNewTaskCreating)
+            {
+                SelectedTaskIndex = null;
+                SelectedTask = null;
+
+                SelectedTask = new Task("", "", new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 12, 0, 0));
+
+                IsNewTaskCreating = true;
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(SelectedTask.Name) &&
+                    !string.IsNullOrEmpty(SelectedTask.Description))
+                {
+                    var newHabit = _allHabitCRUDService.AddNewTask(SelectedTask, (Application.Current as App).CurrentUser.Id);
+                    Tasks.Add(newHabit);
+
+                    OnPropertyChanged(nameof(Tasks));
+                }
+                else
+                {
+                    MessageQueue.Enqueue("You have to fill all fields to create task");
+                }
+
+                IsNewTaskCreating = false;
+            }
+        }
+
+        #endregion
+
+        #region IsNewTaskCreating : bool - Пользователь сейччас создаёт новую задачу
+
+        /// <summary>Пользователь сейччас создаёт новую задачу</summary>
+        private bool _IsNewTaskCreating = false;
+
+        /// <summary>Пользователь сейччас создаёт новую задачу</summary>
+        public bool IsNewTaskCreating
+        {
+            get => _IsNewTaskCreating;
+            set => Set(ref _IsNewTaskCreating, value);
+        }
+
+        #endregion
+
 
 
 

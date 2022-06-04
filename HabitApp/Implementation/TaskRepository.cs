@@ -8,11 +8,11 @@ using System.Data;
 
 namespace HabitApp.Implementation
 {
-    public class TaskRepository : IRepository<Task>
+    public class TaskRepository
     {
         private readonly string connectionString = Properties.Settings.Default.connectionString;
 
-        public Task Add(Task entity)
+        public Task Add(Task entity, int userId)
         {
             NpgsqlConnection con = new NpgsqlConnection(connectionString);
             con.Open();
@@ -41,9 +41,16 @@ namespace HabitApp.Implementation
             var reader = command.ExecuteReader();
             if (reader.HasRows)
             {
-                entity.Id = reader.GetInt32(0);
+                while (reader.Read())
+                {
+                    entity.Id = reader.GetInt32(0);
+                }
                 reader.Close();
             }
+
+            command.CommandText = $@"insert into task_to_user(taskid, userid, date) values
+                                    ({entity.Id}, {userId}, null);";
+            command.ExecuteNonQuery();
 
             con.Close();
             return entity;

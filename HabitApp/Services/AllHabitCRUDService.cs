@@ -46,9 +46,9 @@ namespace HabitApp.Services
             return _dailyHabitRepository.Add(dailyHabit);
         }
 
-        public Data.Task AddNewTask(Data.Task task)
+        public Data.Task AddNewTask(Data.Task task, int userId)
         {
-            return _taskRepository.Add(task);
+            return _taskRepository.Add(task, userId);
         }
         #endregion
 

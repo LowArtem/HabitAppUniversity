@@ -1015,6 +1015,13 @@
                                 Command="{Binding ChangeTaskCommand}"
                                 Content="Save changes"/>
                         </Grid>
+                        
+                        <Button 
+                            Height="45"
+                            Width="200"
+                            Margin="10, 5, 10, 20"
+                            Command="{Binding AddNewTaskCommand}"
+                            Content="Create new"/>
 
                     </StackPanel>
                 </materialDesign:Card>
