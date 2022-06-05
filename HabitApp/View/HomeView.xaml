@@ -337,6 +337,7 @@
                     <StackPanel>                    
                         <!--Name-->
                         <TextBox
+                            IsEnabled="{Binding IsSelectedHabitNotNull}"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             Margin="10, 10, 10, 20"
                             materialDesign:HintAssist.Hint="Name"
@@ -346,6 +347,7 @@
 
                         <!--Description-->
                         <TextBox
+                            IsEnabled="{Binding IsSelectedHabitNotNull}"
                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
                             Margin="10, 20, 10, 20"
                             VerticalAlignment="Top"
@@ -369,6 +371,7 @@
                                 Text="Difficulty:"/>
                         
                             <materialDesign:RatingBar
+                                IsEnabled="{Binding IsSelectedHabitNotNull}"
                                 Max="5"
                                 Value="{Binding SelectedHabit.Difficulty, Mode=TwoWay}"
                                 Orientation="Horizontal"
@@ -406,6 +409,7 @@
                                 Text="Type:"/>
                         
                             <ListBox
+                                IsEnabled="{Binding IsSelectedHabitNotNull}"
                                 Margin="40, 0, 0, 0"
                                 Style="{StaticResource MaterialDesignChoiceChipPrimaryListBox}">
                                 <ListBoxItem
@@ -422,6 +426,7 @@
 
                         <!--Category-->
                         <ComboBox 
+                            IsEnabled="{Binding IsSelectedHabitNotNull}"
                             Margin="10, 20, 10, 20"
                             SelectedIndex="{Binding SelectedHabit.Category, Converter={StaticResource CategoryStringToIntIndexConverter}, Mode=TwoWay}"
                             materialDesign:HintAssist.Hint="Category"
@@ -659,6 +664,7 @@
                     <StackPanel>
                         <!--Name-->
                         <TextBox
+                            IsEnabled="{Binding IsSelectedDailyHabitNotNull}"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             Margin="10, 10, 10, 20"
                             materialDesign:HintAssist.Hint="Name"
@@ -668,6 +674,7 @@
 
                         <!--Description-->
                         <TextBox
+                            IsEnabled="{Binding IsSelectedDailyHabitNotNull}"
                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
                             Margin="10, 20, 10, 20"
                             VerticalAlignment="Top"
@@ -691,6 +698,7 @@
                                 Text="Difficulty:"/>
 
                             <materialDesign:RatingBar
+                                IsEnabled="{Binding IsSelectedDailyHabitNotNull}"
                                 Max="5"
                                 Value="{Binding SelectedDailyHabit.Difficulty, Mode=TwoWay}"
                                 Orientation="Horizontal"
@@ -718,6 +726,7 @@
 
                         <!--Category-->
                         <ComboBox 
+                            IsEnabled="{Binding IsSelectedDailyHabitNotNull}"
                             Margin="10, 20, 10, 20"
                             SelectedIndex="{Binding SelectedDailyHabit.Category, Converter={StaticResource CategoryStringToIntIndexConverter}, Mode=TwoWay}"
                             materialDesign:HintAssist.Hint="Category"
@@ -727,6 +736,7 @@
                         
                         <!--Deadline-->
                         <materialDesign:TimePicker 
+                            IsEnabled="{Binding IsSelectedDailyHabitNotNull}"
                             Margin="10, 20, 10, 20"
                             FontSize="14"
                             Is24Hours="True"
@@ -875,6 +885,7 @@
                     <StackPanel>
                         <!--Name-->
                         <TextBox
+                            IsEnabled="{Binding IsSelectedTaskNotNull}"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             Margin="10, 10, 10, 20"
                             materialDesign:HintAssist.Hint="Name"
@@ -884,6 +895,7 @@
 
                         <!--Description-->
                         <TextBox
+                            IsEnabled="{Binding IsSelectedTaskNotNull}"
                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
                             Margin="10, 20, 10, 20"
                             VerticalAlignment="Top"
@@ -913,6 +925,7 @@
                                 Text="Difficulty:"/>
 
                             <materialDesign:RatingBar
+                                IsEnabled="{Binding IsSelectedTaskNotNull}"
                                 Grid.Column="1"
                                 Max="5"
                                 Value="{Binding SelectedTask.Difficulty, Mode=TwoWay}"
@@ -957,6 +970,7 @@
                                 Text="Priority:"/>
 
                             <materialDesign:RatingBar
+                                IsEnabled="{Binding IsSelectedTaskNotNull}"
                                 Grid.Column="1"
                                 Max="3"
                                 Value="{Binding SelectedTask.Priority, Mode=TwoWay}"
@@ -978,6 +992,7 @@
                         
                         <!--Deadline-->
                         <DatePicker
+                            IsEnabled="{Binding IsSelectedTaskNotNull}"
                             Margin="10, 20, 10, 20"
                             FontSize="14"
                             Style="{StaticResource MaterialDesignOutlinedDatePicker}"

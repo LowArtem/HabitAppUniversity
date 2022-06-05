@@ -74,6 +74,10 @@ namespace HabitApp.VM
             CategoriesList = Categories.GetAll();
             _allHabitService = allHabitService;
 
+            IsSelectedDailyHabitNotNull = SelectedDailyHabit != null;
+            IsSelectedHabitNotNull = SelectedHabit != null;
+            IsSelectedTaskNotNull = SelectedTask != null;
+
             UpdateDailyHabitsStatus();
 
             MessageQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(5000));
@@ -698,6 +702,21 @@ namespace HabitApp.VM
 
         #endregion
 
+        #region IsSelectedHabitNotNull : bool - Ни одна привычка не выбрана
+
+        /// <summary>Ни одна привычка не выбрана</summary>
+        private bool _IsSelectedHabitNotNull;
+
+        /// <summary>Ни одна привычка не выбрана</summary>
+        public bool IsSelectedHabitNotNull
+        {
+            get => _IsSelectedHabitNotNull;
+            set => Set(ref _IsSelectedHabitNotNull, value);
+        }
+
+        #endregion
+
+
 
 
         #region AddNewDailyHabitCommand
@@ -754,6 +773,22 @@ namespace HabitApp.VM
 
         #endregion
 
+        #region IsSelectedDailyHabitNotNull : bool - Ни одна ежедневная привычка не выбрана
+
+        /// <summary>Ни одна ежедневная привычка не выбрана</summary>
+        private bool _IsSelectedDailyHabitNotNull;
+
+        /// <summary>Ни одна ежедневная привычка не выбрана</summary>
+        public bool IsSelectedDailyHabitNotNull
+        {
+            get => _IsSelectedDailyHabitNotNull;
+            set => Set(ref _IsSelectedDailyHabitNotNull, value);
+        }
+
+        #endregion
+
+
+
 
         #region AddNewTaskCommand
 
@@ -805,6 +840,21 @@ namespace HabitApp.VM
         }
 
         #endregion
+
+        #region IsSelectedTaskNotNull : bool - Ни одна задача не выбрана
+
+        /// <summary>Ни одна задача не выбрана</summary>
+        private bool _IsSelectedTaskNotNull;
+
+        /// <summary>Ни одна задача не выбрана</summary>
+        public bool IsSelectedTaskNotNull
+        {
+            get => _IsSelectedTaskNotNull;
+            set => Set(ref _IsSelectedTaskNotNull, value);
+        }
+
+        #endregion
+
 
 
 
@@ -901,6 +951,10 @@ namespace HabitApp.VM
 
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
+            IsSelectedDailyHabitNotNull = SelectedDailyHabit != null;
+            IsSelectedHabitNotNull = SelectedHabit != null;
+            IsSelectedTaskNotNull = SelectedTask != null;
+
             if (propertyName == nameof(Habits))
             {
                 IsHabitsEmpty = Habits.Count == 0;
