@@ -47,6 +47,7 @@ namespace HabitApp.VM
                     Name = "Habits completions",
                     TooltipLabelFormatter = (chartPoint) => $"Habits at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 3 },
+                    LineSmoothness = 0.5,
                     GeometrySize = 12,
                     Values = HabitsCountByDay
                 },
@@ -55,6 +56,7 @@ namespace HabitApp.VM
                     Name = "Daily Habits completions",
                     TooltipLabelFormatter = (chartPoint) => $"Daily habits at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 },
+                    LineSmoothness = 0.5,
                     GeometrySize = 12,
                     Values = DailyHabitsCountByDay
                 },
@@ -63,6 +65,7 @@ namespace HabitApp.VM
                     Name = "Tasks completions",
                     TooltipLabelFormatter = (chartPoint) => $"Tasks at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.GreenYellow) { StrokeThickness = 3 },
+                    LineSmoothness = 0.5,
                     GeometrySize = 12,
                     Values = TasksCountByDay
                 }
@@ -75,6 +78,7 @@ namespace HabitApp.VM
                     Name = "Habits completions",
                     TooltipLabelFormatter = (chartPoint) => $"Habits at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 3 },
+                    LineSmoothness = 0.5,
                     GeometrySize = 12,
                     Values = HabitsCountByWeek
                 },
@@ -83,6 +87,7 @@ namespace HabitApp.VM
                     Name = "Daily Habits completions",
                     TooltipLabelFormatter = (chartPoint) => $"Daily habits at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 },
+                    LineSmoothness = 0.5,
                     GeometrySize = 12,
                     Values = DailyHabitsCountByWeek
                 },
@@ -91,6 +96,7 @@ namespace HabitApp.VM
                     Name = "Tasks completions",
                     TooltipLabelFormatter = (chartPoint) => $"Tasks at {new DateTime((long) chartPoint.SecondaryValue):dd.MM}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.GreenYellow) { StrokeThickness = 3 },
+                    LineSmoothness = 0.5,
                     GeometrySize = 12,
                     Values = TasksCountByWeek
                 }
@@ -103,6 +109,7 @@ namespace HabitApp.VM
                     Name = "Habits completions",
                     TooltipLabelFormatter = (chartPoint) => $"Habits at {new DateTime((long) chartPoint.SecondaryValue):MM.yy}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 3 },
+                    LineSmoothness = 0.5,
                     GeometrySize = 12,
                     Values = HabitsCountByMonth
                 },
@@ -111,6 +118,7 @@ namespace HabitApp.VM
                     Name = "Daily Habits completions",
                     TooltipLabelFormatter = (chartPoint) => $"Daily habits at {new DateTime((long) chartPoint.SecondaryValue):MM.yy}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 },
+                    LineSmoothness = 0.5,
                     GeometrySize = 12,
                     Values = DailyHabitsCountByMonth
                 },
@@ -119,6 +127,7 @@ namespace HabitApp.VM
                     Name = "Tasks completions",
                     TooltipLabelFormatter = (chartPoint) => $"Tasks at {new DateTime((long) chartPoint.SecondaryValue):MM.yy}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.GreenYellow) { StrokeThickness = 3 },
+                    LineSmoothness = 0.5,
                     GeometrySize = 12,
                     Values = TasksCountByMonth
                 }
@@ -131,6 +140,7 @@ namespace HabitApp.VM
                     Name = "Habits completions",
                     TooltipLabelFormatter = (chartPoint) => $"Habits at {new DateTime((long) chartPoint.SecondaryValue):yyy}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 3 },
+                    LineSmoothness = 0.5,
                     GeometrySize = 12,
                     Values = HabitsCountByYear
                 },
@@ -139,6 +149,7 @@ namespace HabitApp.VM
                     Name = "Daily Habits completions",
                     TooltipLabelFormatter = (chartPoint) => $"Daily habits at {new DateTime((long) chartPoint.SecondaryValue):yyyy}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 },
+                    LineSmoothness = 0.5,
                     GeometrySize = 12,
                     Values = DailyHabitsCountByYear
                 },
@@ -147,6 +158,7 @@ namespace HabitApp.VM
                     Name = "Tasks completions",
                     TooltipLabelFormatter = (chartPoint) => $"Tasks at {new DateTime((long) chartPoint.SecondaryValue):yyyy}: {chartPoint.PrimaryValue}",
                     Stroke = new SolidColorPaint(SKColors.GreenYellow) { StrokeThickness = 3 },
+                    LineSmoothness = 0.5,
                     GeometrySize = 12,
                     Values = TasksCountByYear
                 }
